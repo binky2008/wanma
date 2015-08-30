@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>产品报价维护</title>
+
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+
+    <script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+    <script type="text/javascript" src="../js/cwp_util.js"></script>
+
+    <style type="text/css">
+
+        .fitem label {
+            width:80px;
+        }
+ 
+    </style>
+
+    <script type="text/javascript">
+
+function initCombobox(id, code, params) {
+    var url = '../param/json/combo/' + code;
+    $.get(url, params, function(data){
+        var _data = [];
+        $.each(data, function(i, item){
+            _data.push({'id': item[0], 'text': item[1]});
+        });
+
+        $('#' + id).combobox( {
+            panelHeight: '120px',
+            valueField: 'id',
+            textField: 'text',
+            data: _data
+        });
+    });
+}
+
+function initCombobox4Tree(id,code,params,isParent,parentId) {
+    var url = '../param/json/combo/' + code;
+    $.get(url,params,function(data){
+        var _data = [];
+        var _id = [];
+        $.each(data,function(i,item){
+            _id.push(item[0]);
+        });
+        $.each(data,function(i,item){
+            if(isParent) {
+                if($.inArray(item[2],_id) == -1) {
+                    _data.push({'id':item[0],'text':item[1]});
+                }
+            } else {
+                if(parentId == item[2]) {
+                    _data.push({'id':item[0],'text':item[1]});
+                }
+            }
+        })
+
+        $('#' + id).combobox( {
+            panelHeight: '120px',
+            valueField: 'id',
+            textField: 'text',
+            data: _data
+
+        });
+    });
+}
+
+$(document).ready(function(){
+    var url = 'product.json';
+    $.getJSON(url, function(data){
+        if(data && data.length) {
+            var firstValue = data[0].id;
+        } 
+
+        $('#productId').combobox( {
+            panelHeight: '120px',
+            valueField: 'id',
+            textField: 'name',
+            data: data
+        });
+        var $cb = $('#_productId').combobox( {
+            panelHeight: '120px',
+            valueField: 'id',
+            textField: 'name',
+            data: data,
+            value: firstValue
+        });
+
+        firstValue && query(firstValue) ;
+    });
+ 
+    // initCombobox('typeId', 'quotationType');
+    // initCombobox('stateId', 'quotationState');
+    // initCombox4BusinessType('businessTypeId', 'businessType','isTree=true','云仓');
+
+    // initCombobox4Tree('cityId','warehouseList','isTree=true',true,null);
+
+    $("#cityId").combobox({
+        onSelect : function(record) {
+            initCombobox4Tree('warehouseId','warehouseList','isTree=true',false,record['id']);
+        }
+    });
+
+    // initComboboxServiceItem('serviceItemId');
+});
+
+function create(){
+    $('#dlg').dialog('open').dialog('setTitle','新增报价单').dialog('center');
+    $('#fm').form('clear');
+}
+
+function update(){
+    var row = $('#dg').datagrid('getSelected');
+    if (row){
+        $('#dlg').dialog('open').dialog('setTitle','修改报价单').dialog('center');
+
+        $.get("../product/quotation/" + row.id, {}, function(data){
+            data['state.id'] = data.state.id;
+            data['type.id'] = data.type.id;
+            data['product.id'] = data.product.id;
+            data['businessType.id'] = data.businessType.id;
+
+            $('#fm').form('load', data);
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要修改的行。'
+        });
+    }
+}
+
+function saveQuotation(){
+    $('#fm').form('submit',{
+        url: '../product/quotation',
+        onSubmit: function(){
+            return $(this).form('validate');
+        },
+        success: function(result){
+            var result = eval('('+result+')');
+            if (result.errorMsg){
+                $.messager.show({
+                    title: 'Error',
+                    msg: result.errorMsg
+                });
+            } else {
+                $('#dlg').dialog('close'); // close the dialog
+                $('#dg').datagrid('reload'); // reload the user data
+            }
+        }
+    });
+}
+
+function _remove(){
+    var row = $('#dg').datagrid('getSelected');
+    if (row){
+        $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
+            if (r) {
+                $.ajax({
+                     url: '../product/quotation' + row.id,
+                     type: 'DELETE',
+                     success: function(result) {
+                        $('#dg').datagrid('reload'); // reload the user data
+                     }
+                });
+            }
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要删除的行。'
+        });
+    }
+}
+
+function getComboboxValues(selector) {
+    if($(selector) && $(selector)[0]) {
+         return $(selector).combobox("getValues").join(",");
+    }
+    return null;
+}
+
+function query(productId) { 
+    productId = productId || getComboboxValues("#_productId");
+    if(!productId) return;
+
+    $('#dg').datagrid({
+        url : 'quotation.json',
+        method : 'get',
+        title : '产品报价列表',
+        pagination: true,
+        pageSize: 10,
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        singleSelect : true,
+        columns : [[
+            { field : 'code', title : '报价单编号', width : 60 },
+            { field : 'name', title : '报价单名称', width : 80 },
+            { field : 'productName', title : '产品', width : 80 },
+            { field : 'businessTypeName', title : '业务类别', width : 50 },
+            { field : 'startDate', title : '生效日期', width : 60, type : 'date' },
+            { field : 'endDate', title : '失效日期', width : 60, type : 'date' },
+            { field : 'typeName', title : '报价单类型', width : 60 },
+            { field : 'stateName', title : '报价单状态', width : 60 },
+            { field : 'cityName', title : '城市名称', width : 60 },
+            { field : 'warehouseName', title : '仓库名称', width : 60 },
+            { field : 'instruction1', title : '报价说明一', width : 100 },
+            { field : 'instruction2', title : '报价说明二', width : 100 },
+            { field : 'instruction3', title : '报价说明三', width : 100 } 
+        ]],
+        toolbar : [
+            {
+                text : '新建报价',
+                iconCls : 'icon-add',
+                handler : create
+            },'-',{
+                text : '修改报价',
+                iconCls : 'icon-edit',
+                handler : update
+            },'-',{
+                text : '删除报价',
+                iconCls : 'icon-remove',
+                handler : _remove
+            }
+        ],
+        onClickRow: function(index, row) {
+            queryDetails(row.id);
+        }
+    });
+}
+ 
+function queryDetails(headerId) {
+    $('#dg_detail').datagrid({
+        url : 'detail.json',
+        method : 'get',
+        title : '产品报价明细',
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        singleSelect : true,
+        columns : [[
+            { field : 'serviceItemName', title : '服务项', width : 60 },
+            { field : 'skuCategory', title : '货物类别', width : 60 },
+            { field : 'serviceContent', title : '服务内容', width : 60 },
+            { field : 'pricingMethod', title : '计价依据', width : 60 },
+            { field : 'pricingUnit', title : '计价单位', width : 60 },
+            { field : 'currency', title : '货币', width : 60 },
+            { field : 'standardPrice', title : '标准价格', width : 100 },
+            { field : 'priceDescr', title : '价格条款说明', width : 100 },
+            { field : 'exChargeDescr', title : '附加收费说明', width : 100 },
+            { field : 'origin', title : '发运地', width : 80 },
+            { field : 'terminal', title : '目的地', width : 80 }
+        ]],
+        toolbar : [
+            {
+                text : '新建',
+                iconCls : 'icon-add',
+                handler : createDetail
+            },'-',{
+                text : '修改',
+                iconCls : 'icon-edit',
+                handler : updateDetail
+            },'-',{
+                text : '删除',
+                iconCls : 'icon-remove',
+                handler : _removeDetail
+            }
+        ]
+    });
+}
+
+function createDetail() {
+    $('#dlg_detail').dialog('open').dialog('setTitle','新增报价单明细').dialog('center');
+    $('#fm_detail').form('clear');
+}
+function updateDetail() {
+    var row = $('#dg_detail').datagrid('getSelected');
+    if (row){
+        $('#dlg_detail').dialog('open').dialog('setTitle','修改报价单明细').dialog('center');
+
+        $.get("../quotationDetail/" + row.id, {}, function(data){
+            data['serviceItem.id'] = data.serviceItem.id;
+
+            $('#fm_detail').form('load', data);
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要修改的行。'
+        });
+    }
+}
+function _removeDetail() {
+    var row = $('#dg_detail').datagrid('getSelected');
+    if (row){
+        $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
+            if (r) {
+                $.ajax({
+                    url: '../product/quotation/detail/' + row.id,
+                    type: 'DELETE',
+                    success: function(result) {
+                        $('#dg_detail').datagrid('reload'); // reload the user data
+                    }
+                });
+            }
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要删除的行。'
+        });
+    }
+}
+
+function saveQuotationDetail(){
+
+    var row = $('#dg').datagrid('getSelected');
+
+    $('#fm_detail').form('submit',{
+        url: '../product/quotation/'+row.id+'/detail',
+        onSubmit: function(){
+            return $(this).form('validate');
+        },
+        success: function(result){
+            var result = eval('('+result+')');
+            if (result.errorMsg){
+                $.messager.show({
+                    title: 'Error',
+                    msg: result.errorMsg
+                });
+            } else {
+                $('#dlg_detail').dialog('close'); // close the dialog
+                $('#dg_detail').datagrid('reload'); // reload the user data
+            }
+        }
+    });
+}
+ 
+    </script>
+</head>
+
+<body>
+
+    <div id="cc" class="easyui-layout" fit="true" >
+        <div data-options="region:'north', title:'查询'" style="height:70px;padding:6px 12px;">
+            <label>产品：</label><input id="_productId" required="true">
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='query()'>查询</a>
+        </div>
+        <div data-options="region:'south'" style="height:50%" border="false">
+            <table id="dg_detail"></table>
+        </div>
+        <div data-options="region:'center'"  border="false">
+            <table id="dg"></table>
+        </div>
+    </div>
+
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:450px;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
+        <div class="ftitle">详细信息</div>
+        <form id="fm" method="post" novalidate>
+            <input name="id" type="hidden">
+            <div class="fitem">
+                <label>报价单编号:</label>
+                <input name="code" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>报价单名称:</label>
+                <input name="name" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>产品:</label>
+                <input name="product.id" id="productId" required="true">
+            </div>
+            <div class="fitem">
+                <label>业务类别:</label>
+                <input name="businessType.id" id="businessTypeId">
+            </div>
+            <div class="fitem">
+                <label>生效日期:</label>
+                <input name="startDate" class="easyui-datetimebox" />
+            </div>
+            <div class="fitem">
+                <label>失效日期:</label>
+                <input name="endDate" class="easyui-datetimebox" />
+            </div>
+            <div class="fitem">
+                <label>报价单类型:</label>
+                <input name="type.id" id="typeId">
+            </div>
+            <div class="fitem">
+                <label>报价单状态:</label>
+                <input name="state.id" id="stateId" required="true">
+            </div>
+            <div class="fitem">
+                <label>城市名称:</label>
+                <input name="city.id" id="cityId" required="true">
+            </div>
+            <div class="fitem">
+                <label>仓库名称:</label>
+                <input name="warehouse.id" id="warehouseId" required="true">
+            </div>
+            <div class="fitem">
+                <label>报价说明一:</label>
+                <input name="instruction1" class="easyui-textbox" required="true" data-options="multiline:true" style="width:550px;height:50px">
+            </div>
+            <div class="fitem">
+                <label>报价说明二:</label>
+                <input name="instruction2" class="easyui-textbox" required="true" data-options="multiline:true" style="width:550px;height:50px">
+            </div>
+            <div class="fitem">
+                <label>报价说明三:</label>
+                <input name="instruction3" class="easyui-textbox" required="true" data-options="multiline:true" style="width:550px;height:50px">
+            </div>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveQuotation()" style="width:90px">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+    </div>
+
+    <div id="dlg_detail" class="easyui-dialog" style="width:800px;height:450px;padding:10px 20px;" closed="true" buttons="#dlg-buttons_detail">
+        <div class="ftitle">详细信息</div>
+        <form id="fm_detail" method="post" novalidate>
+            <input name="id" type="hidden">
+            <div class="fitem">
+                <label>服务项:</label>
+                <input name="serviceItem.id" id="serviceItemId" required="true">
+            </div>
+            <div class="fitem">
+                <label>货物类别:</label>
+                <input name="skuCategory" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>服务内容:</label>
+                <input name="serviceContent" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>计价依据:</label>
+                <input name="pricingMethod" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>计价单位:</label>
+                <select class="easyui-combobox" name="pricingUnit">
+                    <option value="元/单">元/单</option>
+                    <option value="元/件">元/件</option>
+                </select>
+            </div>
+            <div class="fitem">
+                <label>货币:</label>
+                <select class="easyui-combobox" name="currency">
+                    <option value="人民币">人民币</option>
+                    <option value="美元">美元</option>
+                    <option value="港币">港币</option>
+                </select>
+            </div>
+            <div class="fitem">
+                <label>标准价格:</label>
+                <input name="standardPrice" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>价格条款说明:</label>
+                <input name="priceDescr" class="easyui-textbox" required="true"  data-options="multiline:true" style="width:550px;height:50px">
+            </div>
+            <div class="fitem">
+                <label>附加收费说明:</label>
+                <input name="exChargeDescr" class="easyui-textbox" required="true"  data-options="multiline:true" style="width:550px;height:50px">
+            </div>
+            <div class="fitem">
+                <label>发运地:</label>
+                <input name="origin" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>目的地:</label>
+                <input name="terminal" class="easyui-textbox" required="true">
+            </div>
+        </form>
+    </div>
+    <div id="dlg-buttons_detail">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveQuotationDetail()" style="width:90px">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg_detail').dialog('close')" style="width:90px">取消</a>
+    </div>
+
+</body>
+</html>

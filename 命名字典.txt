@@ -1,0 +1,25 @@
+基础信息 baseinfo
+订单 salesorder so
+货物 sku
+库存 inventory inv
+查询 query search
+分析 analyse
+统计 statistics
+记录 record
+检查 check
+每日 daily
+走势 trend
+报表 report
+展示 display
+导出 export
+预警 warning
+警告 alarm
+部署 deploy
+配置 config
+
+万马相关：
+
+网络表:
+所属中心、所属区域、网点名称、网点编号、负责人、手机号、客服电话、传真号码、是否做到付、是否签回单、是否自提、
+派送范围、非派送区域、特殊派送区域、公司详细地址、派送时效、录入签收时效；
+

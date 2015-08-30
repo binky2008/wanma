@@ -1,0 +1,182 @@
+[
+	{
+		"id": "1",
+		"name": "网络查询",
+		"child": [
+			{
+				"id": "11",
+				"name": "网络表查询",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "12",
+				"name": "路由表查询",
+				"url": "../modules/demo/crud.html"
+			},
+			{
+				"id": "13",
+				"name": "网内价格表查询",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	},
+	{
+		"id": "2",
+		"name": "我的网点",
+		"child": [
+			{
+				"id": "21",
+				"name": "客户管理",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "22",
+				"name": "人员管理",
+				"url": "../modules/demo/crud.html"
+			},
+			{
+				"id": "23",
+				"name": "车辆管理",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "24",
+				"name": "班次管理",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "25",
+				"name": "项目管理",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	},
+	{
+		"id": "3",
+		"name": "系统设置",
+		"child": [
+			{
+				"id": "31",
+				"name": "用户管理",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "32",
+				"name": "系统参数",
+				"url": "../modules/_param/param.htm"
+			},
+			{
+				"id": "33",
+				"name": "系统日志",
+				"url": "../modules/_log/log.htm"
+			},
+			{
+				"id": "34",
+				"name": "缓存管理",
+				"url": "../modules/_cache/cache.htm"
+			}
+		]
+	},
+	{
+		"id": "4",
+		"name": "录单",
+		"child": [
+			{
+				"id": "41",
+				"name": "普通录单",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "42",
+				"name": "代取件",
+				"url": "../modules/demo/crud.html"
+			},
+			{
+				"id": "43",
+				"name": "代录单管理",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	},
+	{
+		"id": "5",
+		"name": "订单管理",
+		"child": [
+			{
+				"id": "51",
+				"name": "订单管理",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	},
+	{
+		"id": "6",
+		"name": "寄件运作管理",
+		"child": [
+			{
+				"id": "61",
+				"name": "寄件排车管理",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "62",
+				"name": "寄件运单综合查询",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	},
+	{
+		"id": "7",
+		"name": "派件运作管理",
+		"child": [
+			{
+				"id": "71",
+				"name": "派件运单综合查询",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "72",
+				"name": "派件预报",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	},
+	{
+		"id": "8",
+		"name": "客服",
+		"child": [
+			{
+				"id": "51",
+				"name": "快件跟踪查询",
+				"url": "to_follow.html"
+			}
+		]
+	},
+	{
+		"id": "9",
+		"name": "我的KPI",
+		"child": [
+			{
+				"id": "91",
+				"name": "我的奖罚记录查询",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	},
+	{
+		"id": "10",
+		"name": "网点财务管理",
+		"child": [
+			{
+				"id": "101",
+				"name": "物料管理",
+				"url": "../modules/demo/xx.html"
+			},
+			{
+				"id": "102",
+				"name": "我的账户",
+				"url": "../modules/demo/xx.html"
+			}
+		]
+	}
+]

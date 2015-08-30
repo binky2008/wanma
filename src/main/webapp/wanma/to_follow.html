@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>快件跟踪查询</title>
+
+<link rel="stylesheet" type="text/css" href="css/wanma.css">
+
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+
+<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<STYLE type="text/css">
+
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+
+$(function(){
+	 
+});
+
+
+var FIELDS_1 = [
+            { field : 'f1', title : '寄件日期', width : 80, type : 'date' },
+            { field : 'f2', title : '寄件站点', width : 80 },
+            { field : 'f3', title : '客户名称', width : 80 },
+            { field : 'f4', title : '客户单号', width : 80 },
+            { field : 'f5', title : '运单编号', width : 100 }, 
+            { field : 'f6', title : '回单号', width : 80 },
+            { field : 'f7', title : '货物数量', width : 60 },
+            { field : 'f8', title : '货物体积（立方）', width : 90 },
+            { field : 'f9', title : '货物重量（KG）', width : 80 },
+            { field : 'fa', title : '计费重量（KG）', width : 80 },
+            { field : 'fb', title : '目的站点', width : 80 },
+            { field : 'fc', title : '收件客户', width : 80 },
+            { field : 'fc2', title : '收件地址', width : 80 },
+            { field : 'fd', title : '是否到付', width : 80 },
+            { field : 'fe', title : '是否代收货款', width : 80 }
+        ],
+    FIELDS_2 = [
+            { field : 'f1', title : '扫描时间', width : 90, type : 'date' },
+            { field : 'f2', title : '上传时间', width : 90 },
+            { field : 'f3', title : '班车号', width : 80 },
+            { field : 'f4', title : '目的地', width : 80 },
+            { field : 'f5', title : '件数', width : 80 }, 
+            { field : 'f6', title : '重量', width : 80 },
+            { field : 'f7', title : '来源', width : 60 },
+            { field : 'f8', title : '跟踪记录', width : 300 }
+        ];
+
+function query() { 
+    var trans_order_no = $("#trans_order_no").val();
+    // if(!trans_order_no) return;
+
+    $('#t1').datagrid({
+        url : 'data/to_follow_1.json',
+        method : 'get',
+        pagination: true,
+        pageSize: 10,
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        singleSelect : true,
+        columns : [FIELDS_1],
+        onClickRow: function(index, row) {
+            queryDetails(row.id);
+        }
+    });
+}
+ 
+function queryDetails(headerId) {
+    $('#t2').datagrid({
+        url : 'data/to_follow_2.json',
+        method : 'get',
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        singleSelect : true,
+        columns : [FIELDS_2]
+    });
+
+    // $('#t3').datagrid({
+    //     url : 'data/to_follow_3.json',
+    //     method : 'get',
+    //     fit : true,
+    //     fitColumns : true,
+    //     rownumbers : true,
+    //     singleSelect : true,
+    //     columns : [FIELDS_2]
+    // });
+}
+	
+</script>
+
+
+</head>
+
+<body>
+   
+    <div id="cc" class="easyui-layout" fit="true" >
+        <div data-options="region:'north', title:'快件跟踪查询'" style="height:100px;padding:6px 12px;">
+            <label>运单号：</label><input id="trans_order_no" required="true" style="height:50px; width:180px;"></input>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='query()'>查询</a>
+        </div>
+        <div data-options="region:'center'" border="false">
+        	<table id="t1" title="运单基本信息"></table>
+        </div>
+        <div data-options="region:'south'" style="height:50%" border="false">
+			<div class="easyui-tabs" fit="true" border="false">
+				<div title="主单扫描信息">
+					<table id="t2"></table>
+				</div>
+				<div title="子单扫描信息">
+					<table id="t3"></table>
+				</div>        		
+        	</div>
+        </div>
+    </div>
+
+</body>
+</html>
