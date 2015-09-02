@@ -16,81 +16,54 @@
 
 <STYLE type="text/css">
 
-.container {
-	background-color:#F9EE70;
-	margin:0 auto;
-	padding:5px;
-	width: 100%;
-	min-height:200px;
-	height:auto;   
-	box-shadow:4px 4px 5px #333;
+html {
+  height: 100%;
+}
+
+body{
+  padding:0;
+  margin:0;
+  height: 100%;
+  background-color: #FFF;
 }
 
 fieldset{
-	width:90%;
-	border:1px dashed #666;
-	margin:40px auto;
+	width:100%;
+  border:0px;
+	border-top:1px solid lightgrey;
+	margin:0 10px;
+  *border-radius:5px;
 }
  
 legend{
-	background-color:#F9EE70;
-	height:120px;
-	height:30px;
-	color:#630;
-	font-weight:bolder;
-	font-size:20px;
-	line-height:30px;
-	margin:-20px 10px 10px;
-	padding:0 10px;
+	height:25px;
+	font-weight: bolder;
+	font-size: 16px;
+	line-height: 25px;
+  *background-color: red;
+  margin-left: 10px;
 }
   
 div.row {
-	margin:10px;
-	padding:5px;
+	margin:6px 20px;
 }
  
-div.row label{
+div.row label {
+  display: inline-block;
+  min-width: 60px;
 	height:20px;
-	font-size:16px;
+	font-size:14px;
 	line-height:20px;
 	margin:0 10px;
 }
- 
-input.txt{
-	background-color:#F9EE70;
-	color:#333;
-	width:150px;
-	height:20px;
-	margin:0 10px;
-	font-size:16px;
-	line-height:20px;
-	border:none;
-	border-bottom:1px solid #565656;
 
+.btn-separator {  
+  display: inline-block;
+  height: 24px;  
+  border-left: 1px solid LightGrey;  
+  margin: 1px 1px;
 }
  
-input.txt:focus{
-	color:#333;
-	background-color: #FF0;
-	border-bottom:1px solid #F00;
-}
- 
-select{
-	width:100px;
-}
-
-option{
-	text-align:center;
-}
-
-input.btn{
-	width:50px;
-	height:20px;
-	color:#000008B;
-	background-color: transparent;
-	border:0;
-	padding:0;
-}
 		 
 </STYLE>
 
@@ -98,10 +71,25 @@ input.btn{
 
 
 $(function(){
+
+  $('#receiver').combobox( {
+          panelHeight: '80px',
+          valueField: 'id',
+          textField: 'text',
+          data: [{"id": "1", "text": "张三"}, {"id": "2", "text": "李四"}, {"id": "3", "text": "王五"}]
+      });
 	 
+  $('#serviceType').combobox( {
+          panelHeight: '80px',
+          valueField: 'id',
+          textField: 'text',
+          data: [{"id": "1", "text": "派送"}, {"id": "2", "text": "李四"}, {"id": "3", "text": "王五"}]
+      });
 });
 	
-
+function getGPS() {
+  $('#dlg').dialog('open');
+}
 
 </script>
 
@@ -109,79 +97,144 @@ $(function(){
 </head>
 
 <body>
-   
-  	<div class="container">
-        <form method="post">
-           <fieldset>
-           <legend>收件信息</legend>
-                   <div class="row">
-                   <label>1. 收货人:</label>
-                   <input style="width:100px" class="txt" type="text" />
-                   <label>2. 目的地:</label>
-                   <select>
-                   <option>北京</option>
-                   <option>上海</option>
-                   <option>武汉</option>
-                   <option>乌鲁木齐</option>
-                   </select>
-                   </div>
-                   <div class="row">
-                   <label>3. 联系电话:</label><input class="txt" type="text" />
-                   </div>
-                   <div class="row">
-                   <label>4. 详细地址:</label><input class="txt" style="width:400px"  type="text" />
-                   </div>
-           </fieldset>
-           <fieldset>
-           <legend>发件信息</legend>
-                   <div class="row">
-                   <label>1. 发货人:</label>
-                   <input style="width:100px" class="txt" type="text" />
-                   <label>2. 始发地:</label>
-                   <select>
-                   <option>北京</option>
-                   <option>上海</option>
-                   <option>武汉</option>
-                   <option>乌鲁木齐</option>
-                   </select>
-                   </div>
-                   <div class="row">
-                   <label>3. 联系电话:</label><input class="txt" type="text" />
-                   </div>
-                   <div class="row">
-                   <label>4. 详细地址:</label><input class="txt" style="width:400px"  type="text" />
-                   </div>
-           </fieldset>
-           <fieldset>
-           <legend>货物信息</legend>
-                   <div class="row">
-                   <label>1. 数量:</label><input class="txt" style="width:30px" maxlength="2" type="text" />
-                   <label>（1-99件）</label>
-                   <label>2. 体积:</label><input class="txt" style="width:30px" maxlength="3" type="text" />
-                   <label>3. 重量:</label><input class="txt" style="width:30px" maxlength="3" type="text" />
-                   <label>（Kg）</label>
-                   </div>
-                   <div class="row">
-                   <label>4. 运输方式:</label>
-                   <select>
-                   <option>航运</option>
-                   <option>火车</option>
-                   <option>汽车</option>
-                   <option>轮船</option>
-                   </select>
-                   </div>
-             <div class="row">
-               <label>5. 付款方式:</label>
-                   <p>
-                     <label><input type="radio" name="pay" value="单选"/>现金付款</label>
-                     <label><input type="radio" name="pay" value="单选"/>收件人付款</label>
-                     <label><input type="radio" name="pay" value="单选"/>第三方付款</label>
-                   </p>
-               </div>
-           </fieldset>
-        </form>
+
+  <div class="easyui-panel" style="padding:5px 5px; border:0px; border-bottom:1px solid #999;">
+      <table>
+        <tr>
+          <td>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',disabled:true">新增</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',disabled:true">修改</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',disabled:true">删除</a>     
+          </td>
+          <td><div class="datagrid-btn-separator"></div></td>
+          <td>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">修改</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'">刷新</a>     
+          </td>
+          <td><div class="datagrid-btn-separator"></div></td>
+          <td>
+            <a href="#" class="easyui-menubutton" data-options="menu:'#mm1'">导出</a>
+          </td>
+          <td><div class="datagrid-btn-separator"></div></td>
+          <td>
+            <a href="#" class="easyui-linkbutton">计算器</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help'">帮助</a>
+          </td>
+        </tr>
+      </table>     
+  </div>
+  <div id="mm1" style="width:100px;">
+        <div>导出CSV</div>
+        <div>导出Excel</div>
+  </div>
+  
+  <br> 
+	<div>
+    <form method="post">
+      <fieldset>
+        <legend>寄件信息</legend>
+        <div class="row">
+          <label>寄件网点:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>寄件时间:</label><input style="width:150px" class="easyui-datetimebox" required="true"/>
+          <label>收件员指派:</label><input id="receiver">
+        </div>
+        <div class="row">
+          <label>客户信息:</label><input style="width:635px" class="easyui-textbox" />
+        </div>
+      </fieldset>
+      <fieldset>
+        <legend>收件信息</legend>
+        <div class="row">
+          <label>收件公司:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>收件电话:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>收件人:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+        </div>
+        <div class="row">
+          <label>收件地址:</label><input style="width:635px" class="easyui-textbox" />
+          <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='getGPS()'>GPS</a>
+        </div> 
+        <div class="row">
+          <label>派件分拨:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>派件网点:</label><input style="width:150px" class="easyui-datetimebox" required="true"/>
+          <label>服务方式:</label><input id="serviceType" required="true">
+          <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='getRoute()'>查看路由</a>
+        </div>        
+      </fieldset>
+      <fieldset>
+        <legend>运单信息</legend>
+        <div class="row">
+          <label>运单编号:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>订单号:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>转入单号:</label><input style="width:150px" class="easyui-textbox"/>
+          <label>来源:</label><input style="width:150px" class="easyui-textbox" />
+        </div> 
+        <div class="row">
+          <label>货物名称:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>主要包装:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>件数:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+        </div> 
+        <div class="row">
+          <label>体积:</label><input style="width:150px" class="easyui-textbox" required="true"/>
+          <label>实际重量:</label><input style="width:150px" class="easyui-textbox"/>
+          <label>体积重量:</label><input style="width:150px" class="easyui-textbox"/>
+          <label>计费重量:</label><input style="width:150px" class="easyui-textbox"/>
+        </div> 
+        <div class="row">
+          <label>保价额:</label><input style="width:150px" class="easyui-textbox"/>
+          <label>保险费:</label><input style="width:150px" class="easyui-textbox"/>
+          <label>录单费:</label><input style="width:150px" class="easyui-textbox"/>
+          <label>产品类型:</label>
+          <input type="radio"><span>S3</span>
+          <input type="radio"><span>S10</span>
+          <input type="radio"><span>T3</span>
+          <input type="radio"><span>T10</span>
+        </div> 
+        <div class="row">
+          <label>备注:</label><input style="width:635px" class="easyui-textbox" />
+        </div> 
+       </fieldset>
+
+      <fieldset>
+        <legend>增值服务</legend>
+        <div class="row">
+          <label>是否原单返回:</label><input type="checkbox" checked onchange="alert( $(this).is(':checked') )">
+          <span>勾选填写回单号</span>
+          <label>回单号:</label><input style="width:150px" class="easyui-textbox"/>&nbsp;&nbsp;&nbsp;
+          <input type="checkbox"><label>是否上楼</label>
+          <input type="checkbox"><label>是否清点</label>
+          <input type="checkbox"><label>是否专车进仓</label>
+          <input type="checkbox"><label>是否报关</label>
+        </div> 
+        <div class="row">
+          <label>短信通知:</label>
+          <input type="checkbox"><label>寄件人</label>
+          <input type="checkbox"><label>收件人</label>
+        </div> 
+      </fieldset>
+      <fieldset>
+        <legend>客户支付方式</legend>
+        <div class="row">
+          <label>支付方式:</label>
+          <input type="radio" checked><label>现付</label>
+          <input type="radio"><label>月结</label>
+          <input type="radio"><label>到付</label>
+          <label>运费金额:</label><input style="width:150px" class="easyui-textbox"/>
+        </div> 
+      </fieldset>
+
+      <div style="text-align:center; margin:10px 0;">
+        <a href="#" class="easyui-linkbutton" style="width:100px" onclick='query()'>打印子单</a>&nbsp;&nbsp;&nbsp;
+        <a href="#" class="easyui-linkbutton" style="width:100px" onclick='query()'>转现场订单</a>
+      </div>
+      
+    </form>
         
 	</div>
+
+  <div id="dlg" class="easyui-dialog" title="查看派送网点GPS" style="width:1080px;height:600px;" closed="true">
+    <iframe scrolling="auto" frameborder="0" src="map.html" style="width:100%;height:100%;"></iframe>
+  </div>
 
 </body>
 </html>

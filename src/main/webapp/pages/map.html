@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>派送站点地图</title>
+
+<link rel="stylesheet" type="text/css" href="css/wanma.css">
+
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+
+<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=D074d454f25dcd542e766d5f788352d6"></script>
+
+<style type="text/css">
+
+#north { width: 100%; height:40px; padding: 10px 0 0 10px;}
+
+#west   { width: 66%; min-width:700px; height: 92%; padding: 1px;}
+#center { min-width:400px; }
+#map { height: 100%; }
+
+label {
+	display: inline-block;
+	min-width: 50px;
+	height:20px;
+	font-size:14px;
+	line-height:20px;
+	margin:0 10px;
+}
+
+#center label {
+	width: 25px;
+}
+
+</style>
+
+<script type="text/javascript">
+
+
+$(function(){
+
+	$("#address").textbox('setValue', "浙江省杭州市江干区九堡镇九堡家苑2-1-102");
+
+	$("#psqy").val("四季青 客运中心 航海路 下沙路 四季青 客运中心 航海路 下沙路 四季青 客运中心 航海路 下沙路 四季青 客运中心 航海路 下沙路 四季青 客运中心 航海路 下沙路");
+	$("#fpsqy").val("四季青 客运中心 航海路 下沙路 四季青 ");
+	 
+});
+	
+</script>
+	
+</head>
+<body>
+	
+
+	<div class="easyui-layout" fit="true" >
+		<div data-options="region:'north'" id="north" border="true">
+        	<label>收件地址:</label><input style="width:400px;height:28px;" class="easyui-textbox" id="address"/>
+        	<a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='query()'>GPS</a>
+        	<label>推荐派送网点:</label>
+	        <input type="radio" name="r1" checked><label>下沙一部</label>
+	        <input type="radio" name="r1"><label>九堡二部</label>
+	        <input type="radio" name="r1"><label>乔司三部</label>
+        </div>
+        <div data-options="region:'west'" id="west" border="true">
+            <div id="map"></div>
+        </div>
+        <div data-options="region:'center'" id="center" border="false" title="网点信息">
+        	<table>
+        		<tr>
+        			<td><label>派送区域:</label></td>
+        			<td><textarea style="height:100px;width:280px" id="psqy" name="psqy"></textarea></td>
+        		</tr>
+        		<tr>
+        			<td><label>非派送区域:</label></td>
+        			<td><textarea style="height:80px;width:280px" id="fpsqy"></textarea></td>
+        		</tr>
+        		<tr>
+        			<td><label>特殊区域:</label></td>
+        			<td><textarea style="height:80px;width:280px" id="tsqy"></textarea></td>
+        		</tr>
+        		<tr>
+        			<td><label>备注:</label></td>
+        			<td><textarea style="height:80px;width:280px" id="remark"></textarea></td>
+        		</tr>
+        	</table>
+
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+	// 百度地图API功能
+	// var map = new BMap.Map("map");
+	// var point = new BMap.Point(116.404, 39.915);
+	// map.centerAndZoom(point, 15);
+	// var marker = new BMap.Marker(point);  // 创建标注
+	// map.addOverlay(marker);               // 将标注添加到地图中
+	// marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+</script>
+
+   
+  <script type="text/javascript">
+    //创建和初始化地图函数：
+    function initMap(){
+      createMap();//创建地图
+      setMapEvent();//设置地图事件
+      addMapControl();//向地图添加控件
+      addMapOverlay();//向地图添加覆盖物
+    }
+    function createMap(){ 
+      map = new BMap.Map("map"); 
+      // map.centerAndZoom(new BMap.Point(120.285978,30.338269), 15);
+
+        // 创建地址解析器实例
+		var myGeo = new BMap.Geocoder();
+		// 将地址解析结果显示在地图上,并调整地图视野
+		myGeo.getPoint("浙江省杭州市江干区九堡镇九堡四组", function(point){
+			if (point) {
+				map.centerAndZoom(point, 15);
+				map.addOverlay(new BMap.Marker(point));
+			} else {
+				alert("您选择地址没有解析到结果!");
+			}
+		});
+
+    }
+    function setMapEvent(){
+      map.enableScrollWheelZoom();
+      map.enableKeyboard();
+      map.enableDragging();
+      map.enableDoubleClickZoom()
+    }
+    function addClickHandler(target,window){
+      target.addEventListener("click",function(){
+        target.openInfoWindow(window);
+      });
+    }
+    function addMapOverlay(){
+      var markers = [
+        {content:"我的备注",title:"九堡二部",imageOffset: {width:-46,height:-21},position:{lat:30.325564,lng:120.284756}},
+        {content:"我的备注",title:"乔司三部",imageOffset: {width:-46,height:-21},position:{lat:30.329928,lng:120.302866}},
+        {content:"我的备注",title:"下沙一部",imageOffset: {width:-46,height:-21},position:{lat:30.31459,lng:120.305238}}
+      ];
+      for(var index = 0; index < markers.length; index++ ){
+        var point = new BMap.Point(markers[index].position.lng,markers[index].position.lat);
+        var marker = new BMap.Marker(point,{icon:new BMap.Icon("http://api.map.baidu.com/lbsapi/createmap/images/icon.png",new BMap.Size(20,25),{
+          imageOffset: new BMap.Size(markers[index].imageOffset.width,markers[index].imageOffset.height)
+        })});
+        var label = new BMap.Label(markers[index].title,{offset: new BMap.Size(25,5)});
+        var opts = {
+          width: 200,
+          title: markers[index].title,
+          enableMessage: false
+        };
+        var infoWindow = new BMap.InfoWindow(markers[index].content,opts);
+        marker.setLabel(label);
+        addClickHandler(marker,infoWindow);
+        map.addOverlay(marker);
+        marker.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画
+      };
+      var plOpts = [
+        {strokeColor:"#f00",strokeWeight:"4",strokeOpacity:"0.6"},
+        {strokeColor:"#f00",strokeWeight:"4",strokeOpacity:"0.6"},
+        {strokeColor:"#f00",strokeWeight:"4",strokeOpacity:"0.6"}
+      ];
+      var plPath = [
+        [
+          new BMap.Point(120.28684,30.330988),
+          new BMap.Point(120.272683,30.323008),
+          new BMap.Point(120.272755,30.310911),
+          new BMap.Point(120.272252,30.309914),
+          new BMap.Point(120.296039,30.305549),
+          new BMap.Point(120.299776,30.322696),
+          new BMap.Point(120.2872,30.330925),
+          new BMap.Point(120.28684,30.331175),
+          new BMap.Point(120.28684,30.331175),
+          new BMap.Point(120.286912,30.33105),
+          new BMap.Point(120.286912,30.33105),
+          new BMap.Point(120.286912,30.330988),
+          new BMap.Point(120.286912,30.330988),
+          new BMap.Point(120.286912,30.330988)
+        ],
+        [
+          new BMap.Point(120.2872,30.331237),
+          new BMap.Point(120.291871,30.338905),
+          new BMap.Point(120.305238,30.338469),
+          new BMap.Point(120.31767,30.325314),
+          new BMap.Point(120.300207,30.322633),
+          new BMap.Point(120.287272,30.331112),
+          new BMap.Point(120.287272,30.331112),
+          new BMap.Point(120.287487,30.331237),
+          new BMap.Point(120.287487,30.331237),
+          new BMap.Point(120.287487,30.331175),
+          new BMap.Point(120.287487,30.331175),
+          new BMap.Point(120.287631,30.33105),
+          new BMap.Point(120.287631,30.33105),
+          new BMap.Point(120.287559,30.330925),
+          new BMap.Point(120.287559,30.330925),
+          new BMap.Point(120.287559,30.330925)
+        ],
+        [
+          new BMap.Point(120.300207,30.322571),
+          new BMap.Point(120.320976,30.325751),
+          new BMap.Point(120.311562,30.304676),
+          new BMap.Point(120.304232,30.304177),
+          new BMap.Point(120.296398,30.305424),
+          new BMap.Point(120.296327,30.305486),
+          new BMap.Point(120.296327,30.305486),
+          new BMap.Point(120.296327,30.305486)
+        ],
+      ];
+      for(var index = 0; index < plOpts.length; index++){
+        var polyline = new BMap.Polyline(plPath[index],plOpts[index]);
+        map.addOverlay(polyline);
+      }
+    }
+    //向地图添加控件
+    function addMapControl(){
+      var scaleControl = new BMap.ScaleControl({anchor:BMAP_ANCHOR_BOTTOM_LEFT});
+      scaleControl.setUnit(BMAP_UNIT_IMPERIAL);
+      map.addControl(scaleControl);
+      var navControl = new BMap.NavigationControl({anchor:BMAP_ANCHOR_TOP_LEFT,type:BMAP_NAVIGATION_CONTROL_LARGE});
+      map.addControl(navControl);
+      var overviewControl = new BMap.OverviewMapControl({anchor:BMAP_ANCHOR_BOTTOM_RIGHT,isOpen:true});
+      map.addControl(overviewControl);
+    }
+    var map;
+    initMap();
+
+  </script>
+</html>

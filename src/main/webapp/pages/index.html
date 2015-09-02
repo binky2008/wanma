@@ -99,7 +99,8 @@ function InitLeftMenu() {
       }
     );
 
-		if( i==0 ) selectedPanelname = menu1Name;
+	// if( i==0 ) selectedPanelname = menu1Name;
+	selectedPanelname = "&nbsp;&nbsp;" + "录单";
   });
 
 	$('#nav').accordion('select', selectedPanelname);
@@ -111,6 +112,8 @@ function InitLeftMenu() {
 		addTab(tabTitle, url);
 		$('.navlist li div').removeClass("selected");
 		$(this).parent().addClass("selected");
+
+		$('#main').layout('collapse', 'west');
 		
 	}).hover(
 		function(){ $(this).parent().addClass("hover"); }, 
@@ -192,17 +195,17 @@ function closeTab(action) {
           break;
       case "closeall":
           $.each(tabTitles, function (i, n) {
-              if (n != onlyOpenTitle){
-                  $('#tabs').tabs('close', n);
-							}
+            if (n != onlyOpenTitle){
+                $('#tabs').tabs('close', n);
+			}
           });
           break;
       case "closeother":
           var currtab_title = currentTab.panel('options').title;
           $.each(tabTitles, function (i, n) {
-              if (n != currtab_title && n != onlyOpenTitle){
-                  $('#tabs').tabs('close', n);
-							}
+            if (n != currtab_title && n != onlyOpenTitle){
+                $('#tabs').tabs('close', n);
+			}
           });
           break;
     }
@@ -212,7 +215,7 @@ function closeTab(action) {
 
 </head>
 
-<body class="easyui-layout" style="overflow-y: hidden" fit="true" scroll="no">
+<body class="easyui-layout" style="overflow-y: hidden" fit="true" scroll="no" id="main">
   <div region="north" id="north" split="true" border="false">
       <span class="head">欢迎【张三丰】</span>
       <span style="padding-left:10px; font-size:16px;">万马网点管理系统</span>
