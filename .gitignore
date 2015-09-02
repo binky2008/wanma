@@ -8,3 +8,9 @@ build
 .project
 .svn
 *.db
+
+# IDEA artifacts and output dirs
+*.iml
+*.ipr
+*.iws
+.idea
