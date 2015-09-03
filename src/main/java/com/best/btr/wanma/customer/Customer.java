@@ -84,6 +84,14 @@ public class Customer extends OperateInfo {
         return this.getId();
     }
 
+    public String getSettleTypeName() {
+        return null != settleType ? settleType.getText() : "";
+    }
+
+    public String getStateName() {
+        return state.getText();
+    }
+
     public Long getId() {
         return id;
     }

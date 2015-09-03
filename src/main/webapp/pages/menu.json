@@ -27,7 +27,7 @@
 			{
 				"id": "21",
 				"name": "客户管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/customer/crud.html"
 			},
 			{
 				"id": "22",

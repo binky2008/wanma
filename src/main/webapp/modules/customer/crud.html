@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Demo</title>
+    <link rel="stylesheet" type="text/css" href="../../tools/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../../tools/easyui/themes/icon.css">
+
+    <script type="text/javascript" src="../../tools/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../../tools/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+    <style type="text/css">
+        body {
+            margin: 2px;
+            font-family: '微软雅黑'; 
+        }
+        #fm{
+            margin:0;
+            padding:10px 30px;
+        }
+        .ftitle{
+            font-size:14px;
+            font-weight:bold;
+            padding:5px 0;
+            margin-bottom:10px;
+            border-bottom:1px solid #ccc;
+        }
+        .fitem{
+            margin-bottom:5px;
+        }
+        .fitem label{
+            display:inline-block;
+            width:80px;
+        }
+        .fitem input{
+            width:160px;
+        }
+    </style>
+
+    <script type="text/javascript">
+
+$(document).ready(function(){
+    initCombobox('stateId', 'CustomerState');
+    initCombobox('settleTypeId', 'SettleType');
+});
+
+function initCombobox(id, code, params) {
+    var url = '../../param/json/combo/' + code;
+    $.get(url, params, function(data){
+        var _data = [];
+        $.each(data, function(i, item){
+            _data.push({'id': item[0], 'text': item[1]});
+        });
+
+        $('#' + id).combobox( {
+                    panelHeight: '120px',
+                    valueField: 'id',
+                    textField: 'text',
+                    data: _data
+                });
+    });
+}
+
+function create(){
+    $('#dlg').dialog('open').dialog('setTitle','新增').dialog('center');
+    $('#fm').form('clear');
+}
+
+function update(){
+    var row = $('#dg').datagrid('getSelected');
+    if (row){
+        $('#dlg').dialog('open').dialog('setTitle','修改').dialog('center');
+
+        $.get("../../customer/" + row.id, {}, function(data){
+            data['state.id'] = data.state.id;
+            data['settleType.id'] = data.settleType.id;
+            data['lockVersion'] = data.lockVersion;
+            $('#fm').form('load', data);
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要修改的行。'
+        });
+    }
+}
+
+function save(){
+    $('#fm').form('submit',{
+        url: '../../customer',
+        onSubmit: function(){
+            return $(this).form('validate');
+        },
+        success: function(result){
+            var result = eval('(' + result + ')');
+            if (result.errorMsg){
+                $.messager.show({
+                    title: 'Error',
+                    msg: result.errorMsg
+                });
+            } else {
+                $('#dlg').dialog('close'); // close the dialog
+                $('#dg').datagrid('reload'); // reload the user data
+            }
+        }
+    });
+}
+
+function _remove(){
+    var row = $('#dg').datagrid('getSelected');
+    if (row){
+        $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
+            if (r) {
+                $.ajax({
+                     url: '../../customer/' + row.id,
+                     type: 'DELETE',
+                     success: function(result) {
+                        $('#dg').datagrid('reload'); // reload the user data
+                     }
+                });
+            }
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要删除的行。'
+        });
+    }
+}
+    </script>
+
+</head>
+<body>
+    <table id="dg" title="数据列表" class="easyui-datagrid" border="false"
+        url="../../customer/"
+        toolbar="#toolbar" pagination="true"
+        rownumbers="true" fitColumns="true" fit="true" singleSelect="true">
+        <thead>
+            <tr>
+                <th field="id" width="50">ID</th>
+                <th field="code" width="50">客户编码</th>
+                <th field="name" width="50">客户名称</th>
+                <th field="fullName" width="50">客户全称</th>
+                <th field="contacts" width="50">联系人</th>
+                <th field="phone1" width="50">联系电话</th>
+                <th field="ownerSite" width="50">所属站点</th>
+                <th field="settleTypeName" width="50">结算方式</th>
+                <th field="stateName" width="50">状态</th>
+            </tr>
+        </thead>
+    </table>
+
+    <div id="toolbar">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
+    </div>
+
+    <div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
+        <div class="ftitle">详细信息</div>
+        <form id="fm" method="post" novalidate>
+            <input name="id" type="hidden">
+            <input name="lockVersion" type="hidden">
+            <div class="fitem">
+                <label>客户编码:</label>
+                <input name="code" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>客户名称:</label>
+                <input name="name" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>客户全称:</label>
+                <input name="fullName" class="easyui-textbox">
+            </div>
+            <div class="fitem">
+                <label>联系人:</label>
+                <input name="contacts" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>联系电话:</label>
+                <input name="phone1" class="easyui-textbox" required="true" validType="phone">
+            </div>
+            <div class="fitem">
+                <label>所属站点:</label>
+                <input name="ownerSite" class="easyui-textbox" required="true">
+            </div>
+            <div class="fitem">
+                <label>结算类型:</label>
+                <input name="settleType.id" id="settleTypeId" required="true">
+            </div>
+            <div class="fitem">
+                <label>状态:</label>
+                <input name="state.id" id="stateId" required="true">
+            </div>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()" style="width:90px">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+    </div>
+
+</body>
+</html>
