@@ -42,7 +42,8 @@
 
 $(document).ready(function(){
     initCombobox('stateId', 'State');
-    initCombobox('settleTypeId', 'SettleType');
+    initCombobox('genderId', 'Gender');
+    initCombobox('departmentId', 'Department');
 });
 
 function initCombobox(id, code, params) {
@@ -72,9 +73,10 @@ function update(){
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改').dialog('center');
 
-        $.get("../customer/" + row.id, {}, function(data){
+        $.get("../user/" + row.id, {}, function(data){
             data['state.id'] = data.state.id;
-            data['settleType.id'] = data.settleType.id;
+            data['gender.id'] = data.gender.id;
+            data['department.id'] = data.department.id;
             data['lockVersion'] = data.lockVersion;
             $('#fm').form('load', data);
         });
@@ -89,7 +91,7 @@ function update(){
 
 function save(){
     $('#fm').form('submit',{
-        url: '../customer',
+        url: '../user',
         onSubmit: function(){
             return $(this).form('validate');
         },
@@ -115,7 +117,7 @@ function _remove(){
         $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
             if (r) {
                 $.ajax({
-                     url: '../customer/' + row.id,
+                     url: '../user/' + row.id,
                      type: 'DELETE',
                      success: function(result) {
                         $('#dg').datagrid('reload'); // reload the user data
@@ -136,19 +138,20 @@ function _remove(){
 </head>
 <body>
     <table id="dg" title="数据列表" class="easyui-datagrid" border="false"
-        url="../customer/"
+        url="../user/"
         toolbar="#toolbar" pagination="true"
         rownumbers="true" fitColumns="true" fit="true" singleSelect="true">
         <thead>
             <tr>
                 <th field="id" width="50">ID</th>
-                <th field="code" width="50">客户编码</th>
-                <th field="name" width="50">客户名称</th>
-                <th field="fullName" width="50">客户全称</th>
-                <th field="contacts" width="50">联系人</th>
-                <th field="phone1" width="50">联系电话</th>
+                <th field="code" width="50">用户编码</th>
+                <th field="name" width="50">用户名称</th>
+                <th field="position" width="50">岗位</th>
+                <th field="departmentName" width="50">部门</th>
+                <th field="phone" width="50">联系电话</th>
+                <th field="genderName" width="50">性别</th>
                 <th field="ownerSite" width="50">所属站点</th>
-                <th field="settleTypeName" width="50">结算方式</th>
+                <th field="email" width="50">邮箱</th>
                 <th field="stateName" width="50">状态</th>
             </tr>
         </thead>
@@ -166,36 +169,44 @@ function _remove(){
             <input name="id" type="hidden" />
             <input id="lockVersion" name="lockVersion" type="hidden" />
             <div class="fitem">
-                <label>客户编码:</label>
-                <input name="code" class="easyui-textbox" required="true" />
+                <label>用户编码:</label>
+                <input name="code" class="easyui-textbox" required />
             </div>
             <div class="fitem">
-                <label>客户名称:</label>
-                <input name="name" class="easyui-textbox" required="true" />
+                <label>用户名称:</label>
+                <input name="name" class="easyui-textbox" required />
             </div>
             <div class="fitem">
-                <label>客户全称:</label>
-                <input name="fullName" class="easyui-textbox" />
+                <label>密码:</label>
+                <input name="password" class="easyui-textbox" type="password" required />
             </div>
             <div class="fitem">
-                <label>联系人:</label>
-                <input name="contacts" class="easyui-textbox" required="true" />
+                <label>岗位:</label>
+                <input name="position" class="easyui-textbox" required />
+            </div>
+            <div class="fitem">
+                <label>部门:</label>
+                <input name="department.id" id="departmentId" required />
             </div>
             <div class="fitem">
                 <label>联系电话:</label>
-                <input name="phone1" class="easyui-textbox" required="true" />
+                <input name="phone" class="easyui-textbox" required />
+            </div>
+            <div class="fitem">
+                <label>性别:</label>
+                <input name="gender.id" id="genderId" required />
             </div>
             <div class="fitem">
                 <label>所属站点:</label>
-                <input name="ownerSite" class="easyui-textbox" required="true" />
+                <input name="ownerSite" class="easyui-textbox" required />
             </div>
             <div class="fitem">
-                <label>结算类型:</label>
-                <input name="settleType.id" id="settleTypeId" required="true" />
+                <label>邮箱:</label>
+                <input name="email" class="easyui-textbox" />
             </div>
             <div class="fitem">
                 <label>状态:</label>
-                <input name="state.id" id="stateId" required="true" />
+                <input name="state.id" id="stateId" required />
             </div>
         </form>
     </div>

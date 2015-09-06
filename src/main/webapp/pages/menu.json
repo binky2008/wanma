@@ -32,7 +32,7 @@
 			{
 				"id": "22",
 				"name": "人员管理",
-				"url": "../modules/demo/crud.html"
+				"url": "../pages/bas_user_crud.html"
 			},
 			{
 				"id": "23",

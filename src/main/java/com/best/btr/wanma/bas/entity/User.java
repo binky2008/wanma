@@ -56,7 +56,7 @@ public class User extends OperateInfo {
     private String ownerSite;
 
     /** 身份证照片附件地址 */
-    @Column(length = 255, nullable = false)
+    @Column(length = 255)
     private String identityUrl;
 
     /** 头像 */
@@ -82,6 +82,18 @@ public class User extends OperateInfo {
     @Override
     public Serializable getPK() {
         return this.getId();
+    }
+
+    public String getStateName() {
+        return null != state ? state.getText() : "";
+    }
+
+    public String getDepartmentName() {
+        return null != department ? department.getText() : "";
+    }
+
+    public String getGenderName() {
+        return null != gender ? gender.getText() : "";
     }
 
     public Long getId() {
