@@ -1,4 +1,4 @@
-package com.best.btr.wanma.customer;
+package com.best.btr.wanma.bas.so;
 
 import com.jinhe.tss.framework.persistence.pagequery.MacrocodeQueryCondition;
 

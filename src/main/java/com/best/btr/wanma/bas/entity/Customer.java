@@ -1,4 +1,4 @@
-package com.best.btr.wanma.customer;
+package com.best.btr.wanma.bas.entity;
 
 import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;

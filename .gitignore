@@ -14,3 +14,5 @@ build
 *.ipr
 *.iws
 .idea
+
+src/main/resources/rebel.xml

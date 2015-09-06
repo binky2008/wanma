@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Demo</title>
-    <link rel="stylesheet" type="text/css" href="../../tools/easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="../../tools/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
 
-    <script type="text/javascript" src="../../tools/easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="../../tools/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="../../tools/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
 
     <style type="text/css">
         body {
@@ -46,7 +46,7 @@ $(document).ready(function(){
 });
 
 function initCombobox(id, code, params) {
-    var url = '../../param/json/combo/' + code;
+    var url = '../param/json/combo/' + code;
     $.get(url, params, function(data){
         var _data = [];
         $.each(data, function(i, item){
@@ -72,7 +72,7 @@ function update(){
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改').dialog('center');
 
-        $.get("../../customer/" + row.id, {}, function(data){
+        $.get("../customer/" + row.id, {}, function(data){
             data['state.id'] = data.state.id;
             data['settleType.id'] = data.settleType.id;
             data['lockVersion'] = data.lockVersion;
@@ -89,7 +89,7 @@ function update(){
 
 function save(){
     $('#fm').form('submit',{
-        url: '../../customer',
+        url: '../customer',
         onSubmit: function(){
             return $(this).form('validate');
         },
@@ -115,7 +115,7 @@ function _remove(){
         $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
             if (r) {
                 $.ajax({
-                     url: '../../customer/' + row.id,
+                     url: '../customer/' + row.id,
                      type: 'DELETE',
                      success: function(result) {
                         $('#dg').datagrid('reload'); // reload the user data
@@ -136,7 +136,7 @@ function _remove(){
 </head>
 <body>
     <table id="dg" title="数据列表" class="easyui-datagrid" border="false"
-        url="../../customer/"
+        url="../customer/"
         toolbar="#toolbar" pagination="true"
         rownumbers="true" fitColumns="true" fit="true" singleSelect="true">
         <thead>

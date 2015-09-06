@@ -1,5 +1,8 @@
-package com.best.btr.wanma.customer;
+package com.best.btr.wanma.bas.action;
 
+import com.best.btr.wanma.bas.entity.Customer;
+import com.best.btr.wanma.bas.so.CustomerSO;
+import com.best.btr.wanma.bas.service.CustomerService;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

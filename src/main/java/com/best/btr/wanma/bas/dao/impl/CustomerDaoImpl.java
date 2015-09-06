@@ -1,5 +1,7 @@
-package com.best.btr.wanma.customer;
+package com.best.btr.wanma.bas.dao.impl;
 
+import com.best.btr.wanma.bas.dao.CustomerDao;
+import com.best.btr.wanma.bas.entity.Customer;
 import com.jinhe.tss.framework.persistence.BaseDao;
 import org.springframework.stereotype.Repository;
 

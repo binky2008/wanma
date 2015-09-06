@@ -1,5 +1,8 @@
 package com.best.btr.wanma.customer;
 
+import com.best.btr.wanma.bas.action.CustomerAction;
+import com.best.btr.wanma.bas.entity.Customer;
+import com.best.btr.wanma.bas.so.CustomerSO;
 import com.jinhe.tss.demo.TxTestSupport;
 import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.component.param.ParamConstants;

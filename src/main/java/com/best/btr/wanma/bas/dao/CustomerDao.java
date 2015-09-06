@@ -1,5 +1,6 @@
-package com.best.btr.wanma.customer;
+package com.best.btr.wanma.bas.dao;
 
+import com.best.btr.wanma.bas.entity.Customer;
 import com.jinhe.tss.framework.persistence.IDao;
 
 import java.util.List;

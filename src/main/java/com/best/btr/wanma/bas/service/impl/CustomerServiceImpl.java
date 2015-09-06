@@ -1,5 +1,9 @@
-package com.best.btr.wanma.customer;
+package com.best.btr.wanma.bas.service.impl;
 
+import com.best.btr.wanma.bas.dao.CustomerDao;
+import com.best.btr.wanma.bas.entity.Customer;
+import com.best.btr.wanma.bas.service.CustomerService;
+import com.best.btr.wanma.bas.so.CustomerSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
 import org.springframework.beans.factory.annotation.Autowired;
