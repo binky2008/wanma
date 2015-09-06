@@ -75,6 +75,10 @@ public class User extends OperateInfo {
     @Column(length = 128)
     private Date registerDate;
 
+    /** 状态 停用 启用 */
+    @ManyToOne
+    private Param state;
+
     @Override
     public Serializable getPK() {
         return this.getId();
@@ -190,5 +194,13 @@ public class User extends OperateInfo {
 
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public Param getState() {
+        return state;
+    }
+
+    public void setState(Param state) {
+        this.state = state;
     }
 }

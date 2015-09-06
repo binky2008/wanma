@@ -1,4 +1,4 @@
-package com.best.btr.wanma.customer;
+package com.best.btr.wanma.bas;
 
 import com.best.btr.wanma.bas.action.CustomerAction;
 import com.best.btr.wanma.bas.entity.Customer;
