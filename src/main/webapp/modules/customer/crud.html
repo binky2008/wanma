@@ -13,7 +13,7 @@
     <style type="text/css">
         body {
             margin: 2px;
-            font-family: '微软雅黑'; 
+            font-family: '微软雅黑';
         }
         #fm{
             margin:0;
@@ -64,7 +64,7 @@ function initCombobox(id, code, params) {
 
 function create(){
     $('#dlg').dialog('open').dialog('setTitle','新增').dialog('center');
-    $('#fm').form('clear');
+    $('#lockVersion').val('0'); //給版本号设置默认值.
 }
 
 function update(){
@@ -94,7 +94,7 @@ function save(){
             return $(this).form('validate');
         },
         success: function(result){
-            var result = eval('(' + result + ')');
+            result = eval('(' + result + ')');
             if (result.errorMsg){
                 $.messager.show({
                     title: 'Error',
@@ -102,6 +102,7 @@ function save(){
                 });
             } else {
                 $('#dlg').dialog('close'); // close the dialog
+                $('#fm').form('clear');
                 $('#dg').datagrid('reload'); // reload the user data
             }
         }
@@ -162,39 +163,39 @@ function _remove(){
     <div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
         <div class="ftitle">详细信息</div>
         <form id="fm" method="post" novalidate>
-            <input name="id" type="hidden">
-            <input name="lockVersion" type="hidden">
+            <input name="id" type="hidden" />
+            <input id="lockVersion" name="lockVersion" type="hidden" />
             <div class="fitem">
                 <label>客户编码:</label>
-                <input name="code" class="easyui-textbox" required="true">
+                <input name="code" class="easyui-textbox" required="true" />
             </div>
             <div class="fitem">
                 <label>客户名称:</label>
-                <input name="name" class="easyui-textbox" required="true">
+                <input name="name" class="easyui-textbox" required="true" />
             </div>
             <div class="fitem">
                 <label>客户全称:</label>
-                <input name="fullName" class="easyui-textbox">
+                <input name="fullName" class="easyui-textbox" />
             </div>
             <div class="fitem">
                 <label>联系人:</label>
-                <input name="contacts" class="easyui-textbox" required="true">
+                <input name="contacts" class="easyui-textbox" required="true" />
             </div>
             <div class="fitem">
                 <label>联系电话:</label>
-                <input name="phone1" class="easyui-textbox" required="true" validType="phone">
+                <input name="phone1" class="easyui-textbox" required="true" />
             </div>
             <div class="fitem">
                 <label>所属站点:</label>
-                <input name="ownerSite" class="easyui-textbox" required="true">
+                <input name="ownerSite" class="easyui-textbox" required="true" />
             </div>
             <div class="fitem">
                 <label>结算类型:</label>
-                <input name="settleType.id" id="settleTypeId" required="true">
+                <input name="settleType.id" id="settleTypeId" required="true" />
             </div>
             <div class="fitem">
                 <label>状态:</label>
-                <input name="state.id" id="stateId" required="true">
+                <input name="state.id" id="stateId" required="true" />
             </div>
         </form>
     </div>
