@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>User</title>
+    <title>Employee</title>
     <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
 
@@ -73,7 +73,7 @@ function update(){
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改').dialog('center');
 
-        $.get("../user/" + row.id, {}, function(data){
+        $.get("../employee/" + row.id, {}, function(data){
             data['state.id'] = data.state.id;
             data['gender.id'] = data.gender.id;
             data['department.id'] = data.department.id;
@@ -91,7 +91,7 @@ function update(){
 
 function save(){
     $('#fm').form('submit',{
-        url: '../user',
+        url: '../employee',
         onSubmit: function(){
             return $(this).form('validate');
         },
@@ -105,7 +105,7 @@ function save(){
             } else {
                 $('#dlg').dialog('close'); // close the dialog
                 $('#fm').form('clear');
-                $('#dg').datagrid('reload'); // reload the user data
+                $('#dg').datagrid('reload'); // reload the employee data
             }
         }
     });
@@ -117,10 +117,10 @@ function _remove(){
         $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
             if (r) {
                 $.ajax({
-                     url: '../user/' + row.id,
+                     url: '../employee/' + row.id,
                      type: 'DELETE',
                      success: function(result) {
-                        $('#dg').datagrid('reload'); // reload the user data
+                        $('#dg').datagrid('reload'); // reload the employee data
                      }
                 });
             }
@@ -138,14 +138,14 @@ function _remove(){
 </head>
 <body>
     <table id="dg" title="数据列表" class="easyui-datagrid" border="false"
-        url="../user/"
+        url="../employee/"
         toolbar="#toolbar" pagination="true"
         rownumbers="true" fitColumns="true" fit="true" singleSelect="true">
         <thead>
             <tr>
                 <th field="id" width="50">ID</th>
-                <th field="code" width="50">用户编码</th>
-                <th field="name" width="50">用户名称</th>
+                <th field="code" width="50">员工编码</th>
+                <th field="name" width="50">员工名称</th>
                 <th field="position" width="50">岗位</th>
                 <th field="departmentName" width="50">部门</th>
                 <th field="phone" width="50">联系电话</th>
@@ -169,11 +169,11 @@ function _remove(){
             <input name="id" type="hidden" />
             <input id="lockVersion" name="lockVersion" type="hidden" />
             <div class="fitem">
-                <label>用户编码:</label>
+                <label>员工编码:</label>
                 <input name="code" class="easyui-textbox" required />
             </div>
             <div class="fitem">
-                <label>用户名称:</label>
+                <label>员工名称:</label>
                 <input name="name" class="easyui-textbox" required />
             </div>
             <div class="fitem">

@@ -10,7 +10,7 @@ import java.util.Map;
  * 搜索客户信息的条件。
  * @author Created by Hsian on 15/9/3.
  */
-public class UserSO extends MacrocodeQueryCondition {
+public class EmployeeSO extends MacrocodeQueryCondition {
 
     /** 编码 */
     private String code;

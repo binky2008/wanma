@@ -1,8 +1,8 @@
 package com.best.btr.wanma.bas.action;
 
-import com.best.btr.wanma.bas.entity.User;
-import com.best.btr.wanma.bas.so.UserSO;
-import com.best.btr.wanma.bas.service.UserService;
+import com.best.btr.wanma.bas.entity.Employee;
+import com.best.btr.wanma.bas.so.EmployeeSO;
+import com.best.btr.wanma.bas.service.EmployeeService;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,12 +17,12 @@ import java.util.List;
 /**
  * @author Created by Hsian on 15/9/3.
  */
-@Controller("UserAction")
-@RequestMapping("/user")
-public class UserAction {
+@Controller("EmployeeAction")
+@RequestMapping("/employee")
+public class EmployeeAction {
 
     @Autowired
-    private UserService service;
+    private EmployeeService service;
 
     /**
      * 获取所有的客户信息
@@ -30,7 +30,7 @@ public class UserAction {
      */
     @RequestMapping("/")
     @ResponseBody
-    public List<User> getAllEntities() {
+    public List<Employee> getAllEntities() {
         return service.getAllEntities();
     }
 
@@ -41,7 +41,7 @@ public class UserAction {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public User getEntityById(@PathVariable Long id) {
+    public Employee getEntityById(@PathVariable Long id) {
         return service.getEntityById(id);
     }
 
@@ -49,18 +49,18 @@ public class UserAction {
      * 更新客户信息，包括新增与修改。
      * 如果Id为空新增，否则修改。
      *
-     * @param user 需要更新的客户
+     * @param employee 需要更新的客户
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public User save(User user) {
-        if (null == user.getId()) {
-            service.create(user);
+    public Employee save(Employee employee) {
+        if (null == employee.getId()) {
+            service.create(employee);
         } else {
-            service.update(user);
+            service.update(employee);
         }
-        return user;
+        return employee;
     }
 
     /**
@@ -70,7 +70,7 @@ public class UserAction {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public User delete(@PathVariable Long id) {
+    public Employee delete(@PathVariable Long id) {
         return service.delete(id);
     }
 
@@ -83,7 +83,7 @@ public class UserAction {
      */
     @RequestMapping(value = "/{page}")
     @ResponseBody
-    public List<?> search(HttpServletResponse response, UserSO so, @PathVariable int page) {
+    public List<?> search(HttpServletResponse response, EmployeeSO so, @PathVariable int page) {
         so.getPage().setPageNum(page);
         PageInfo pageInfo = service.search(so);
         return pageInfo.getItems();

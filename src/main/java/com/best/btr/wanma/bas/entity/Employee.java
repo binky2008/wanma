@@ -8,16 +8,16 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 系统用户
+ * 网点人员/员工.
  * @author Created by Lu on 15/9/3.
  */
 @Entity
-@Table(name = "WM_BAS_USER")
-@SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", initialValue = 1000, allocationSize = 10)
-public class User extends OperateInfo {
+@Table(name = "WM_BAS_EMPLOYEE")
+@SequenceGenerator(name = "employee_sequence", sequenceName = "employee_sequence", initialValue = 1000, allocationSize = 10)
+public class Employee extends OperateInfo {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "employee_sequence")
     private Long id;
 
     /** 编码 */

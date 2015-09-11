@@ -1,7 +1,7 @@
 package com.best.btr.wanma.bas.service;
 
-import com.best.btr.wanma.bas.entity.User;
-import com.best.btr.wanma.bas.so.UserSO;
+import com.best.btr.wanma.bas.entity.Employee;
+import com.best.btr.wanma.bas.so.EmployeeSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 
 import java.util.List;
@@ -9,46 +9,46 @@ import java.util.List;
 /**
  * @author Created by Lu on 15/9/3.
  */
-public interface UserService {
+public interface EmployeeService {
 
     /**
      * 根据Id获取客户信息
      * @param id 唯一Id
      * @return
      */
-    User getEntityById(Long id);
+    Employee getEntityById(Long id);
 
     /**
      * 获取所有的客户信息
      * @return
      */
-    List<User> getAllEntities();
+    List<Employee> getAllEntities();
 
     /**
      * 创建客户信息
      * @param entity 需要创建的客户信息
      * @return
      */
-    User create(User entity);
+    Employee create(Employee entity);
 
     /**
      * 更新客户信息
      * @param entity 需要更新的客户信息
      * @return
      */
-    User update(User entity);
+    Employee update(Employee entity);
 
     /**
      * 根据Id删除客户信息
      * @param id
      * @return
      */
-    User delete(Long id);
+    Employee delete(Long id);
 
     /**
      * 搜索客户信息
      * @param so 搜索条件
      * @return
      */
-    PageInfo search(UserSO so);
+    PageInfo search(EmployeeSO so);
 }

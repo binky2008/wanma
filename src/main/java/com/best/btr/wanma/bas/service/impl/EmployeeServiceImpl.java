@@ -1,9 +1,9 @@
 package com.best.btr.wanma.bas.service.impl;
 
-import com.best.btr.wanma.bas.dao.UserDao;
-import com.best.btr.wanma.bas.entity.User;
-import com.best.btr.wanma.bas.service.UserService;
-import com.best.btr.wanma.bas.so.UserSO;
+import com.best.btr.wanma.bas.dao.EmployeeDao;
+import com.best.btr.wanma.bas.entity.Employee;
+import com.best.btr.wanma.bas.service.EmployeeService;
+import com.best.btr.wanma.bas.so.EmployeeSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,40 +14,40 @@ import java.util.List;
 /**
  * @author Created by Lu on 15/9/3.
  */
-@Service("UserService")
-public class UserServiceImpl implements UserService {
+@Service("EmployeeService")
+public class EmployeeServiceImpl implements EmployeeService {
 
     @Autowired
-    private UserDao dao;
+    private EmployeeDao dao;
 
     @Override
-    public User getEntityById(Long id) {
+    public Employee getEntityById(Long id) {
         return dao.getEntityById(id);
     }
 
     @Override
-    public List<User> getAllEntities() {
+    public List<Employee> getAllEntities() {
         return dao.getAllEntities();
     }
 
     @Override
-    public User create(User entity) {
+    public Employee create(Employee entity) {
         return dao.create(entity);
     }
 
     @Override
-    public User update(User entity) {
-        return (User) dao.update(entity);
+    public Employee update(Employee entity) {
+        return (Employee) dao.update(entity);
     }
 
     @Override
-    public User delete(Long id) {
+    public Employee delete(Long id) {
         return dao.deleteById(id);
     }
 
     @Override
-    public PageInfo search(UserSO so) {
-        String hql = " from User o "
+    public PageInfo search(EmployeeSO so) {
+        String hql = " from Employee o "
                 + " where 1=1 " + so.toConditionString()
                 + " order by o.id desc ";
 
