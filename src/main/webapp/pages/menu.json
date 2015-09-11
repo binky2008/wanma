@@ -37,7 +37,7 @@
 			{
 				"id": "23",
 				"name": "车辆管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../pages/bas_vehicle_crud.html"
 			},
 			{
 				"id": "24",
