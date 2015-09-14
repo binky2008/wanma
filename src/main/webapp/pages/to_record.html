@@ -91,6 +91,30 @@ function getGPS() {
   $('#dlg').dialog('open');
 }
 
+var myloader = function(param, success, error){
+  var q = param.q || '';
+  if (q.length <= 2){return false}
+  $.ajax({
+      url: 'http://gd.geobytes.com/AutoCompleteCity',
+      dataType: 'jsonp',
+      data: {
+          q: q
+      },
+      success: function(data){
+          var items = $.map(data, function(item,index){
+              return {
+                  id: index,
+                  name: item
+              };
+          });
+          success(items);
+      },
+      error: function(){
+          error.apply(this, arguments);
+      }
+  });
+}
+
 </script>
 
 
@@ -151,7 +175,12 @@ function getGPS() {
           <label>收件人:</label><input style="width:150px" class="easyui-textbox" required="true"/>
         </div>
         <div class="row">
-          <label>收件地址:</label><input style="width:635px" class="easyui-textbox" />
+          <label>收件地址:</label><input class="easyui-combobox" style="width:620px" data-options="
+                loader: myloader,
+                mode: 'remote',
+                valueField: 'id',
+                textField: 'name'
+            ">
           <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='getGPS()'>GPS</a>
         </div> 
         <div class="row">

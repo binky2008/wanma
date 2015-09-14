@@ -77,30 +77,29 @@ function InitLeftMenu() {
 	$("#nav").accordion({animate:true, fit:true, border:false});
 
 	var selectedPanelname = '';
-  $.each(_menus, function(i, menu1) {
-  	var menu1Name = "&nbsp;&nbsp;" + menu1.name;
+	$.each(_menus, function(i, menu1) {
+	  	var menu1Name = "&nbsp;&nbsp;" + menu1.name;
 
 		var menuHTML = [];
 		menuHTML.push('<ul class="navlist">');
-    $.each(menu1.child, function(j, menu2) {
-    	menuHTML.push('<li>');
-    	menuHTML.push('<div><a ref="' + menu2.id + '" href="#" rel="' + menu2.url + '" >');
-    	menuHTML.push('  <span class="icon ' + menu2.icon + '" >&nbsp;</span><span class="nav">' + menu2.name + '</span>');
-    	menuHTML.push('</a></div>');
+	    $.each(menu1.child, function(j, menu2) {
+	    	menuHTML.push('<li>');
+	    	menuHTML.push('<div><a ref="' + menu2.id + '" href="#" rel="' + menu2.url + '" >');
+	    	menuHTML.push('  <span class="icon ' + menu2.icon + '" >&nbsp;</span><span class="nav">' + menu2.name + '</span>');
+	    	menuHTML.push('</a></div>');
 
-			menuHTML.push('</li>');
-    });
+				menuHTML.push('</li>');
+	    });
 		menuHTML.push('</ul>');
 
 		$('#nav').accordion('add', {
-          title: menu1Name,
-          content: menuHTML.join('\n'),
-          //iconCls: 'icon ' + menu1.icon
-      }
-    );
+			title: menu1Name,
+			content: menuHTML.join('\n'),
+			//iconCls: 'icon ' + menu1.icon
+      	});
 
-	// if( i==0 ) selectedPanelname = menu1Name;
-	selectedPanelname = "&nbsp;&nbsp;" + "录单";
+		// if( i==0 ) selectedPanelname = menu1Name;
+		selectedPanelname = "&nbsp;&nbsp;" + "录单";
   });
 
 	$('#nav').accordion('select', selectedPanelname);

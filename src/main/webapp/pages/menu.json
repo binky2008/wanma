@@ -6,7 +6,7 @@
 			{
 				"id": "11",
 				"name": "网络表查询",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			},
 			{
 				"id": "12",
@@ -16,7 +16,7 @@
 			{
 				"id": "13",
 				"name": "网内价格表查询",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	},
@@ -58,7 +58,7 @@
 			{
 				"id": "31",
 				"name": "用户管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			},
 			{
 				"id": "32",
@@ -94,7 +94,7 @@
 			{
 				"id": "43",
 				"name": "代录单管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	},
@@ -105,7 +105,7 @@
 			{
 				"id": "51",
 				"name": "订单管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	},
@@ -116,12 +116,12 @@
 			{
 				"id": "61",
 				"name": "寄件排车管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			},
 			{
 				"id": "62",
 				"name": "寄件运单综合查询",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	},
@@ -132,12 +132,12 @@
 			{
 				"id": "71",
 				"name": "派件运单综合查询",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			},
 			{
 				"id": "72",
 				"name": "派件预报",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	},
@@ -159,7 +159,7 @@
 			{
 				"id": "91",
 				"name": "我的奖罚记录查询",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	},
@@ -170,12 +170,12 @@
 			{
 				"id": "101",
 				"name": "物料管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			},
 			{
 				"id": "102",
 				"name": "我的账户",
-				"url": "../modules/demo/xx.html"
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	}

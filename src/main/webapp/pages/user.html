@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>用户管理</title>
+
+<link rel="stylesheet" type="text/css" href="css/wanma.css">
+
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+
+<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<STYLE type="text/css">
+
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+
+$(function(){
+	 
+});
+	
+</script>
+
+
+</head>
+
+<body>
+
+	<div id="cc" class="easyui-layout" fit="true" >
+		<div data-options="region:'north', title:'用户查询'" style="height:100px;padding:6px 12px;">
+            <label>用户名：</label><input id="userName" required="true" class="easyui-textbox" style="width:180px;"></input>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='query()'>查询</a>
+        </div>
+        <div data-options="region:'center'" border="false" title="用户列表">
+        	<table id="t1"></table>
+        	<div id="toolbar">
+		        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
+		        <a href="#" class="easyui-linkbutton" plain="true" onclick="syncFromV5()">同步V5</a>
+		        <a href="#" class="easyui-linkbutton" plain="true" onclick="stop()">停用</a>
+		    </div>
+        </div>
+    </div>
+
+    <div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px;" closed="true" buttons="#dlg-buttons">
+        <div class="ftitle">详细信息</div>
+        <form id="fm" method="post" novalidate>
+            <input name="id" type="hidden">
+            <table>
+            	<tr>
+            		<td>
+            			<label>用户名:</label>
+            		</td>
+            		<td>
+                		<input name="loginName" class="easyui-textbox" required="true">
+            		</td>
+            		<td>
+            			<label>中文名称:</label>
+            		</td>
+            		<td>
+                		<input name="userName" class="easyui-textbox" required="true">
+            		</td>
+            		<td>
+            			<label>用户类型:</label>
+            		</td>
+            		<td>
+                		<input name="userType.id" id="userType" class="easyui-textbox" required="true">
+            		</td>
+            	</tr>
+            	<tr>
+            		<td>
+            			<label>所属组织:</label>
+            		</td>
+            		<td>
+                		<input name="org" class="easyui-textbox" required="true">
+            		</td>
+            		<td>
+            			<label>加盟方:</label>
+            		</td>
+            		<td>
+                		<input name="franchisee" class="easyui-textbox" required="true">
+            		</td>
+            		<td>
+            			<label>加盟方:</label>
+            		</td>
+            		<td>
+                		<input name="franchisee" class="easyui-textbox" required="true">
+            		</td>
+            	</tr>
+            </table>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()" style="width:90px">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+    </div>
+   
+
+</body>
+</html>
