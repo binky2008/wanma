@@ -47,7 +47,7 @@
 			{
 				"id": "25",
 				"name": "项目管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../pages/bas_project_crud.html"
 			}
 		]
 	},
