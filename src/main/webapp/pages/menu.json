@@ -42,7 +42,7 @@
 			{
 				"id": "24",
 				"name": "班次管理",
-				"url": "../modules/demo/xx.html"
+				"url": "../pages/bas_vehicle_schedule_crud.html"
 			},
 			{
 				"id": "25",

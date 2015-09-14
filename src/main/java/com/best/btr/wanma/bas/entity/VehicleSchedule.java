@@ -5,7 +5,6 @@ import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -23,12 +22,12 @@ public class VehicleSchedule extends OperateInfo {
     private Long id;
 
     /** 所属分拨 */
-    @Column(length = 128, nullable = false)
-    private String parentSite;
+    @ManyToOne
+    private Centre centre;
 
     /** 所属站点 */
-    @Column(length = 128, nullable = false)
-    private String ownerSite;
+    @ManyToOne
+    private Site site;
 
     /** 编码 */
     @Column(length = 128, unique = true, nullable = false)
@@ -36,7 +35,7 @@ public class VehicleSchedule extends OperateInfo {
 
     /** 班次号 */
     @Column(length = 128)
-    private String taskCode;
+    private String serialCode;
 
     /** 车型 */
     @ManyToOne
@@ -44,7 +43,7 @@ public class VehicleSchedule extends OperateInfo {
 
     /** 班次类型 */
     @Column(length = 128)
-    private String taskType;
+    private String serialType;
 
     /** 到岗时间 */
     private Date arrivalTime;
@@ -67,6 +66,22 @@ public class VehicleSchedule extends OperateInfo {
         return this.getId();
     }
 
+    public String getCentreName() {
+        return null != this.getCentre() ? this.getCentre().getName() : "";
+    }
+
+    public String getSiteName() {
+        return null != this.getSite() ? this.getSite().getName() : "";
+    }
+
+    public String getVehicleTypeName() {
+        return null != this.getVehicleType() ? this.getVehicleType().getName() : "";
+    }
+
+    public String getStateName() {
+        return null != state ? state.getText() : "";
+    }
+
     public Long getId() {
         return id;
     }
@@ -75,20 +90,20 @@ public class VehicleSchedule extends OperateInfo {
         this.id = id;
     }
 
-    public String getParentSite() {
-        return parentSite;
+    public Centre getCentre() {
+        return centre;
     }
 
-    public void setParentSite(String parentSite) {
-        this.parentSite = parentSite;
+    public void setCentre(Centre centre) {
+        this.centre = centre;
     }
 
-    public String getOwnerSite() {
-        return ownerSite;
+    public Site getSite() {
+        return site;
     }
 
-    public void setOwnerSite(String ownerSite) {
-        this.ownerSite = ownerSite;
+    public void setSite(Site site) {
+        this.site = site;
     }
 
     public String getCode() {
@@ -99,12 +114,12 @@ public class VehicleSchedule extends OperateInfo {
         this.code = code;
     }
 
-    public String getTaskCode() {
-        return taskCode;
+    public String getSerialCode() {
+        return serialCode;
     }
 
-    public void setTaskCode(String taskCode) {
-        this.taskCode = taskCode;
+    public void setSerialCode(String serialCode) {
+        this.serialCode = serialCode;
     }
 
     public Param getVehicleType() {
@@ -115,12 +130,12 @@ public class VehicleSchedule extends OperateInfo {
         this.vehicleType = vehicleType;
     }
 
-    public String getTaskType() {
-        return taskType;
+    public String getSerialType() {
+        return serialType;
     }
 
-    public void setTaskType(String taskType) {
-        this.taskType = taskType;
+    public void setSerialType(String serialType) {
+        this.serialType = serialType;
     }
 
     public Date getArrivalTime() {
@@ -162,6 +177,5 @@ public class VehicleSchedule extends OperateInfo {
     public void setState(Param state) {
         this.state = state;
     }
-
 
 }

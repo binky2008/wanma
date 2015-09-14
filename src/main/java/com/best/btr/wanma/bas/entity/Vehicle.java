@@ -57,6 +57,22 @@ public class Vehicle extends OperateInfo {
         return this.getId();
     }
 
+    public String getCentreName() {
+        return null != this.getCentre() ? this.getCentre().getName() : "";
+    }
+
+    public String getSiteName() {
+        return null != this.getSite() ? this.getSite().getName() : "";
+    }
+
+    public String getTypeName() {
+        return null != this.getType() ? this.getType().getName() : "";
+    }
+
+    public String getStateName() {
+        return null != state ? state.getText() : "";
+    }
+
     public Long getId() {
         return id;
     }
