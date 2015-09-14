@@ -1,4 +1,4 @@
-package com.best.btr.wanma.user.action;
+package com.best.btr.wanma.system.action;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.best.btr.wanma.user.UserSO;
-import com.best.btr.wanma.user.entiy.User;
-import com.best.btr.wanma.user.service.UserService;
+import com.best.btr.wanma.system.UserSO;
+import com.best.btr.wanma.system.entity.User;
+import com.best.btr.wanma.system.service.UserService;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 
 @Controller("UserAction")

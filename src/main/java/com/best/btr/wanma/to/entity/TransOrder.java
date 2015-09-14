@@ -8,7 +8,7 @@ import javax.persistence.ManyToOne;
 import com.best.btr.wanma.bas.entity.Centre;
 import com.best.btr.wanma.bas.entity.Customer;
 import com.best.btr.wanma.bas.entity.Site;
-import com.best.btr.wanma.user.entiy.User;
+import com.best.btr.wanma.system.entity.User;
 import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
 

@@ -1,4 +1,4 @@
-package com.best.btr.wanma.user;
+package com.best.btr.wanma.system;
 
 import java.util.List;
 
@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.best.btr.wanma.user.action.UserAction;
-import com.best.btr.wanma.user.entiy.User;
+import com.best.btr.wanma.system.UserSO;
+import com.best.btr.wanma.system.action.UserAction;
+import com.best.btr.wanma.system.entity.User;
 import com.jinhe.tss.demo.TxTestSupport;
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.component.param.ParamConstants;
 
 public class UserTest extends TxTestSupport {
 	
@@ -24,22 +24,8 @@ public class UserTest extends TxTestSupport {
 	public void setUp() throws Exception {
 		super.setUp();
 		
-		if(paramService.getParam("UserJob") == null) {
-        	Param cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "UserJob", "员工岗位");
-        	addComboItem( cp.getId(), "1", "客服" );
-        	addComboItem( cp.getId(), "2", "物流专员" );
-        	addComboItem( cp.getId(), "3", "财务" );
-        	addComboItem( cp.getId(), "4", "职业经理人" );
-        }
 		list1 = paramService.getComboParam("UserJob");
-		
-		if(paramService.getParam("UserType") == null) {
-        	Param cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "UserType", "用户类型");
-        	addComboItem( cp.getId(), "1", "实操用户" );
-        	addComboItem( cp.getId(), "2", "管理用户" );
-        	addComboItem( cp.getId(), "3", "超级管理员" );
-        }
-		list2 = paramService.getComboParam("UserJob");
+		list2 = paramService.getComboParam("UserType");
 	}
 	
 	@Test
@@ -54,7 +40,6 @@ public class UserTest extends TxTestSupport {
 		entity.setPassword("123456");
 		entity.setFranchisee("加盟方");
 		entity.setOrg("浙江分公司");
-		entity.setUserJob(list1.get(0));
 		entity.setUserType(list2.get(0));
 		
 		entity = action.save(entity );

@@ -10,9 +10,11 @@
 <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
 
-<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
-<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
 
 <STYLE type="text/css">
 
@@ -35,7 +37,7 @@ $(function(){
 <body>
 
 	<div id="cc" class="easyui-layout" fit="true" >
-		<div data-options="region:'north', title:'用户查询'" style="height:100px;padding:6px 12px;">
+		<div data-options="region:'north'" style="height:45px;padding:6px 12px;">
             <label>用户名：</label><input id="userName" required="true" class="easyui-textbox" style="width:180px;"></input>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='query()'>查询</a>
         </div>
@@ -44,33 +46,31 @@ $(function(){
         	<div id="toolbar">
 		        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
 		        <a href="#" class="easyui-linkbutton" plain="true" onclick="syncFromV5()">同步V5</a>
-		        <a href="#" class="easyui-linkbutton" plain="true" onclick="stop()">停用</a>
 		    </div>
         </div>
     </div>
 
-    <div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px;" closed="true" buttons="#dlg-buttons">
-        <div class="ftitle">详细信息</div>
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:320px;padding:10px;" closed="false" buttons="#dlg-buttons" title="用户信息">
         <form id="fm" method="post" novalidate>
             <input name="id" type="hidden">
             <table>
             	<tr>
-            		<td>
+            		<td width="60px">
             			<label>用户名:</label>
             		</td>
-            		<td>
+            		<td width="160px">
                 		<input name="loginName" class="easyui-textbox" required="true">
             		</td>
-            		<td>
+            		<td width="60px">
             			<label>中文名称:</label>
             		</td>
-            		<td>
+            		<td width="160px">
                 		<input name="userName" class="easyui-textbox" required="true">
             		</td>
-            		<td>
+            		<td width="60px">
             			<label>用户类型:</label>
             		</td>
-            		<td>
+            		<td width="160px">
                 		<input name="userType.id" id="userType" class="easyui-textbox" required="true">
             		</td>
             	</tr>

@@ -1,11 +1,11 @@
-package com.best.btr.wanma.user.service;
+package com.best.btr.wanma.system.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.best.btr.wanma.user.UserSO;
-import com.best.btr.wanma.user.dao.UserDao;
-import com.best.btr.wanma.user.entiy.User;
+import com.best.btr.wanma.system.UserSO;
+import com.best.btr.wanma.system.dao.UserDao;
+import com.best.btr.wanma.system.entity.User;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
  

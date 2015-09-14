@@ -1,4 +1,4 @@
-package com.best.btr.wanma.user;
+package com.best.btr.wanma.system;
 
 import java.util.HashMap;
 import java.util.Map;

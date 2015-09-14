@@ -1,17 +1,17 @@
 package com.best.btr.wanma.bas;
 
-import com.best.btr.wanma.bas.action.CustomerAction;
-import com.best.btr.wanma.bas.entity.Customer;
-import com.best.btr.wanma.bas.so.CustomerSO;
-import com.jinhe.tss.demo.TxTestSupport;
-import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.component.param.ParamConstants;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import com.best.btr.wanma.bas.action.CustomerAction;
+import com.best.btr.wanma.bas.entity.Customer;
+import com.best.btr.wanma.bas.so.CustomerSO;
+import com.jinhe.tss.demo.TxTestSupport;
+import com.jinhe.tss.framework.component.param.Param;
 
 /**
  * @author Created by Lu on 15/8/31.
@@ -28,18 +28,7 @@ public class CustomerTest extends TxTestSupport {
     public void setUp() throws Exception {
         super.setUp();
 
-        if (null == paramService.getParam("CustomerState")) {
-            Param cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "CustomerState", "测试状态");
-            addComboItem(cp.getId(), "1", "停用");
-            addComboItem(cp.getId(), "0", "启用");
-        }
-        stateList = paramService.getComboParam("CustomerState");
-
-        if (null == paramService.getParam("SettleType")) {
-            Param param = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "SettleType", "结算方式");
-            addComboItem(param.getId(), "0", "现付");
-            addComboItem(param.getId(), "1", "月结");
-        }
+        stateList = paramService.getComboParam("EntityState");
         settleTypeList = paramService.getComboParam("SettleType");
     }
 
@@ -89,7 +78,7 @@ public class CustomerTest extends TxTestSupport {
         action.delete(id);
 
         customerList = action.getAllEntities();
-        junit.framework.Assert.assertEquals(0, customerList.size());
+        Assert.assertEquals(0, customerList.size());
 
     }
 }

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>员工管理</title>
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+
+    <script src="../tools/easyui/jquery.min.js"></script>
+    <script src="../tools/easyui/jquery.easyui.min.js"></script>
+    <script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+    <script src="js/common.js"></script>
+
+    <style type="text/css">
+
+        .fitem label{
+            display:inline-block;
+            width:80px;
+        }
+        .fitem input{
+            width:160px;
+        }
+        
+    </style>
+
+    <script type="text/javascript">
+
+$(document).ready(function(){
+    initCombobox('stateId', 'EntityState');
+
+    initGrid();
+});
+
+function create(){
+    $('#dlg').dialog('open').dialog('setTitle','新增员工').dialog('center');
+    $('#lockVersion').val('0'); //給版本号设置默认值.
+}
+
+function update(){
+    var row = $('#t1').datagrid('getSelected');
+    if (row){
+        $('#dlg').dialog('open').dialog('setTitle','修改员工信息').dialog('center');
+
+        $.get("../employee/" + row.id, {}, function(data){
+            data['state.id'] = data.state.id;
+            data['lockVersion'] = data.lockVersion;
+            $('#fm').form('load', data);
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要修改的行。'
+        });
+    }
+}
+
+function save(){
+    $('#fm').form('submit',{
+        url: '../employee',
+        onSubmit: function(){
+            return $(this).form('validate');
+        },
+        success: function(result){
+            result = eval('(' + result + ')');
+            if (result.errorMsg){
+                $.messager.show({
+                    title: 'Error',
+                    msg: result.errorMsg
+                });
+            } else {
+                $('#dlg').dialog('close'); // close the dialog
+                $('#fm').form('clear');
+                $('#t1').datagrid('reload'); // reload the employee data
+            }
+        }
+    });
+}
+
+function _remove(){
+    var row = $('#t1').datagrid('getSelected');
+    if (row){
+        $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
+            $.ajax({
+                 url: '../employee/' + row.id,
+                 type: 'DELETE',
+                 success: function(result) {
+                    $('#t1').datagrid('reload'); 
+                 }
+            });
+        
+        });
+    }
+    else {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要删除的行。'
+        });
+    }
+}
+
+var FIELDS_1 = [
+        { field : 'id', title : 'ID', width : 90},
+        { field : 'name', title : '员工名称', width : 90 },
+        { field : 'code', title : '员工编码', width : 80 },
+        { field : 'stateName', title : '状态', width : 80 },
+        { field : 'position', title : '岗位', width : 80 }, 
+        { field : 'department', title : '部门', width : 80 }, 
+        { field : 'ownerSiteName', title : '所属站点', width : 80 }, 
+        { field : 'gender', title : '性别', width : 80 }, 
+        { field : 'email', title : '邮箱', width : 80 }, 
+        { field : 'phone', title : '联系电话', width : 80 }
+    ];
+
+function initGrid() {
+    $.get('../employee/', {}, function(data){
+        $.each(data, function(i, item){
+            item.stateName = item.state.text;
+        });
+
+        $('#t1').datagrid({
+            fit : true,
+            fitColumns : true,
+            rownumbers : true,
+            singleSelect : true,
+            toolbar: "#toolbar",
+            columns : [FIELDS_1],
+            data: data
+        });
+    });
+}
+    </script>
+
+</head>
+<body>
+
+    <div id="cc" class="easyui-layout" fit="true" >
+        <div data-options="region:'north'" style="height:45px;padding:6px 12px;">
+            <label>员工编码：</label><input id="userName" required="true" class="easyui-textbox" style="width:180px;"></input>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='query()'>查询</a>
+        </div>
+        <div data-options="region:'center'" border="false" title="用户列表">
+            <table id="t1"></table>
+            <div id="toolbar">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:320px;padding:10px" closed="true" buttons="#dlg-buttons">
+        <form id="fm" method="post" novalidate>
+            <input name="id" type="hidden" />
+            <input id="lockVersion" name="lockVersion" type="hidden" />
+            <table border="1">
+                <tr>
+                    <td class="label">员工编码:</td>
+                    <td width="160px">
+                        <input name="code" class="easyui-textbox" required="true">
+                    </td>
+                    <td class="label">员工名称:</td>
+                    <td width="160px">
+                        <input name="name" class="easyui-textbox" required="true">
+                    </td>
+                    <td class="label">密码:</td>
+                    <td width="160px">
+                        <input name="password" class="easyui-textbox" required="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">岗位:</td>
+                    <td width="160px">
+                        <input name="position.id" id="positionId" class="easyui-textbox" required="true">
+                    </td>
+                    <td class="label">部门:</td>
+                    <td width="160px">
+                        <input name="department" class="easyui-textbox">
+                    </td>
+                    <td class="label">联系电话:</td>
+                    <td width="160px">
+                        <input name="phone" class="easyui-textbox" required="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">性别:</td>
+                    <td>
+                        <input name="gender" type="radio" value="男" checked><label>男</label>
+                        <input name="gender" type="radio" value="女"><label>女</label>
+                    </td>
+                    <td class="label">所属站点:</td>
+                    <td>
+                        <input name="ownerSite" class="easyui-textbox" required="true">
+                    </td>
+                    <td class="label">状态:</td>
+                    <td>
+                        <input name="state.id" id="stateId" required />
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()" style="width:90px">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+    </div>
+
+</body>
+</html>

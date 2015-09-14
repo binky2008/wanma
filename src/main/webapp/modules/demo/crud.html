@@ -111,15 +111,13 @@ function _remove(){
     var row = $('#t1').datagrid('getSelected');
     if (row){
         $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
-            if (r) {
-                $.ajax({
-                     url: '../../demo/' + row.id,
-                     type: 'DELETE',
-                     success: function(result) {
-                        $('#t1').datagrid('reload'); // reload the user data
-                     }
-                });
-            }
+            $.ajax({
+                 url: '../../demo/' + row.id,
+                 type: 'DELETE',
+                 success: function(result) {
+                    $('#t1').datagrid('reload'); // reload the user data
+                 }
+            });
         });
     }
     else {

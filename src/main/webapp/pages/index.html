@@ -59,7 +59,7 @@ a:hover{ color:red; text-decoration:underline; }
 
 var onlyOpenTitle="欢迎使用";
 
-var _menus;
+var _menus, ownerSite;
 
 $(function(){
 	$.getJSON("menu.json", function(json){
@@ -70,6 +70,8 @@ $(function(){
 		
 	attachTabCloseEnvet();
 	attachTabEnvet();
+
+	ownerSite = "柯桥一部";
 });
 
 //初始化左侧

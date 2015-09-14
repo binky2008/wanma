@@ -1,7 +1,7 @@
-package com.best.btr.wanma.user.service;
+package com.best.btr.wanma.system.service;
 
-import com.best.btr.wanma.user.UserSO;
-import com.best.btr.wanma.user.entiy.User;
+import com.best.btr.wanma.system.UserSO;
+import com.best.btr.wanma.system.entity.User;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
  
 public interface UserService {

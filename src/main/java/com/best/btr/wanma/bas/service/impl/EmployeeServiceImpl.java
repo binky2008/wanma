@@ -1,15 +1,20 @@
 package com.best.btr.wanma.bas.service.impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.best.btr.wanma.bas.dao.EmployeeDao;
 import com.best.btr.wanma.bas.entity.Employee;
 import com.best.btr.wanma.bas.service.EmployeeService;
 import com.best.btr.wanma.bas.so.EmployeeSO;
+import com.best.btr.wanma.system.ParamsUtil;
+import com.best.btr.wanma.system.dao.UserDao;
+import com.best.btr.wanma.system.entity.User;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
+import com.jinhe.tss.util.InfoEncoder;
 
 /**
  * @author Created by Lu on 15/9/3.
@@ -17,35 +22,51 @@ import java.util.List;
 @Service("EmployeeService")
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    private EmployeeDao dao;
+    @Autowired private EmployeeDao dao;
+    @Autowired private UserDao userDao;
 
-    @Override
     public Employee getEntityById(Long id) {
         return dao.getEntityById(id);
     }
 
-    @Override
     public List<Employee> getAllEntities() {
         return dao.getAllEntities();
     }
 
-    @Override
     public Employee create(Employee entity) {
-        return dao.create(entity);
+    	entity = dao.create(entity);
+    	
+    	// TODO 调用邮件接口，开通电子邮件 135xxxxxxxx@btrbi.800best.com
+    	try {
+    		
+    	} catch(Exception e) {
+    		// 调用出错不影响后面的注册步骤
+    	}
+    	
+    	// 同时注册一个登陆账号User
+    	User user = new User();
+    	user.setLoginName(entity.getCode());
+    	user.setUserName(entity.getName());
+    	user.setEmail(entity.getEmail());
+    	user.setPassword( InfoEncoder.string2MD5(entity.getPassword()) );
+    	user.setState(entity.getState());
+    	user.setTelephone(entity.getPhone());
+    	user.setMobile(entity.getCode());
+    	user.setUserType(ParamsUtil.getParamItem("UserType", "实操用户"));
+    	user.setEmployee(entity);
+    	userDao.create(user);
+        
+		return entity;
     }
 
-    @Override
     public Employee update(Employee entity) {
         return (Employee) dao.update(entity);
     }
 
-    @Override
     public Employee delete(Long id) {
         return dao.deleteById(id);
     }
 
-    @Override
     public PageInfo search(EmployeeSO so) {
         String hql = " from Employee o "
                 + " where 1=1 " + so.toConditionString()

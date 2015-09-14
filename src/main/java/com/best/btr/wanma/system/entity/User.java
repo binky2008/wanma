@@ -1,4 +1,4 @@
-package com.best.btr.wanma.user.entiy;
+package com.best.btr.wanma.system.entity;
 
 import java.io.Serializable;
 
@@ -11,13 +11,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.best.btr.wanma.bas.entity.Site;
+import com.best.btr.wanma.bas.entity.Employee;
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.component.param.ParamConstants;
 import com.jinhe.tss.framework.persistence.IEntity;
 
 @Entity
-@Table(name = "wm_user")
+@Table(name = "wm_sys_user")
 @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", initialValue = 1000, allocationSize = 10)
 public class User implements IEntity {
 			
@@ -37,48 +36,41 @@ public class User implements IEntity {
 	@Column(length = 100, nullable = false) 
 	private String userName;
 	
-	@Column(length = 30, nullable = false) 
+	@Column(length = 100, nullable = false) 
 	private String password;
 	
-	/** 用户状态：停用、启用 */
-	private Integer disabled = ParamConstants.TRUE;
+    /** 状态 停用 启用 */
+    @ManyToOne
+    private Param state;
 	
 	/**
-	 * 用户类型：实操用户、管理用户、超级管理员
+	 * 用户类型：实操用户、网点编号、管理用户、超级管理员
 	 */
 	@ManyToOne
 	private Param userType;
 	
 	/**
-	 * 员工岗位：客服、物流专员、财务、职业经理人
+	 * 用户对应网点员工信息
 	 */
 	@ManyToOne
-	private Param userJob;
+	private Employee employee;
 	
 	/**
-	 * 操作站点
+	 * 所属组织, 网点所属组织同步自天马
 	 */
-	@ManyToOne
-	private Site ownerSite;
+	@Column(length = 100) 
+	private String org;
+	
+	/** 加盟方 */
+	@Column(length = 100) 
+	private String franchisee;
 	
 	private String mobile;
 	private String telephone;
 	private String email;
-	private String idCardNo; // 身份证
+	private String idCardNo;   // 身份证
 	private String address;
 	private String department; // 所属部门
-	
-	/**
-	 * 所属组织, 网点所属组织同步至天马
-	 */
-	@Column(length = 30, nullable = false) 
-	private String org;
-	
-	/**
-	 * 加盟方
-	 */
-	@Column(length = 30, nullable = false) 
-	private String franchisee;
 
 	public Serializable getPK() {
 		return this.getId();
@@ -122,22 +114,6 @@ public class User implements IEntity {
 
 	public void setUserType(Param userType) {
 		this.userType = userType;
-	}
-
-	public Param getUserJob() {
-		return userJob;
-	}
-
-	public void setUserJob(Param userJob) {
-		this.userJob = userJob;
-	}
-
-	public Site getOwnerSite() {
-		return ownerSite;
-	}
-
-	public void setOwnerSite(Site ownerSite) {
-		this.ownerSite = ownerSite;
 	}
 
 	public String getMobile() {
@@ -204,12 +180,19 @@ public class User implements IEntity {
 		this.franchisee = franchisee;
 	}
 
-	public Integer getDisabled() {
-		return disabled;
+	public Param getState() {
+		return state;
 	}
 
-	public void setDisabled(Integer disabled) {
-		this.disabled = disabled;
+	public void setState(Param state) {
+		this.state = state;
 	}
-	
+
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}	
 }

@@ -4,6 +4,7 @@ import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
 
 import javax.persistence.*;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -27,33 +28,26 @@ public class Employee extends OperateInfo {
     /** 名称 */
     @Column(length = 128, nullable = false)
     private String name;
+    
+    /** 所属站点 */
+    @ManyToOne
+	private Site ownerSite;
 
     /**
-     * 岗位
-     * TODO 物流专员、客服、财务、经理，岗位可以多选
-     * 是不是相当于角色?
-     */
+	 * 员工岗位：客服、物流专员、财务、职业经理人，岗位可以多选
+	 */
     private String position;
 
     /** 部门 */
-    @ManyToOne
-    private Param department;
-
-    /** 电话 */
-    @Column(length = 128, nullable = false)
+    private String department;
+    
     private String phone;
-
-    /** 密码 */
-    @Column(length = 255, nullable = false)
+    
+    @Transient
     private String password;
 
     /** 性别 */
-    @ManyToOne
-    private Param gender;
-
-    /** 所属站点 */
-    @Column(length = 128, nullable = false)
-    private String ownerSite;
+    private String gender;
 
     /** 身份证照片附件地址 */
     @Column(length = 255)
@@ -67,7 +61,7 @@ public class Employee extends OperateInfo {
     @Column(length = 128)
     private String email;
 
-    /** 注册来源 */
+    /** 注册来源: APP | PC */
     @Column(length = 128)
     private String original;
 
@@ -82,18 +76,6 @@ public class Employee extends OperateInfo {
     @Override
     public Serializable getPK() {
         return this.getId();
-    }
-
-    public String getStateName() {
-        return null != state ? state.getText() : "";
-    }
-
-    public String getDepartmentName() {
-        return null != department ? department.getText() : "";
-    }
-
-    public String getGenderName() {
-        return null != gender ? gender.getText() : "";
     }
 
     public Long getId() {
@@ -128,11 +110,11 @@ public class Employee extends OperateInfo {
         this.position = position;
     }
 
-    public Param getDepartment() {
+    public String getDepartment() {
         return department;
     }
 
-    public void setDepartment(Param department) {
+    public void setDepartment(String department) {
         this.department = department;
     }
 
@@ -152,19 +134,19 @@ public class Employee extends OperateInfo {
         this.password = password;
     }
 
-    public Param getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Param gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
-    public String getOwnerSite() {
+    public Site getOwnerSite() {
         return ownerSite;
     }
 
-    public void setOwnerSite(String ownerSite) {
+    public void setOwnerSite(Site ownerSite) {
         this.ownerSite = ownerSite;
     }
 

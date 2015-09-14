@@ -1,17 +1,17 @@
 package com.best.btr.wanma.bas;
 
-import com.best.btr.wanma.bas.action.EmployeeAction;
-import com.best.btr.wanma.bas.entity.Employee;
-import com.best.btr.wanma.bas.so.EmployeeSO;
-import com.jinhe.tss.demo.TxTestSupport;
-import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.component.param.ParamConstants;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import com.best.btr.wanma.bas.action.EmployeeAction;
+import com.best.btr.wanma.bas.entity.Employee;
+import com.best.btr.wanma.bas.so.EmployeeSO;
+import com.jinhe.tss.demo.TxTestSupport;
+import com.jinhe.tss.framework.component.param.Param;
 
 /**
  * @author Created by Lu on 15/9/6.
@@ -27,12 +27,7 @@ public class EmployeeTest extends TxTestSupport {
     public void setUp() throws Exception {
         super.setUp();
 
-        if (null == paramService.getParam("EmployeeState")) {
-            Param cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "EmployeeState", "测试状态");
-            addComboItem(cp.getId(), "1", "停用");
-            addComboItem(cp.getId(), "0", "启用");
-        }
-        stateList = paramService.getComboParam("EmployeeState");
+        stateList = paramService.getComboParam("EntityState");
     }
 
     @Test
@@ -49,7 +44,7 @@ public class EmployeeTest extends TxTestSupport {
         employee.setState(stateList.get(0));
         employee.setPhone("13558996822");
         employee.setPassword("13558996822");
-        employee.setOwnerSite("江干一部");
+        employee.setOwnerSite(null);
         employee.setIdentityUrl("identityUrl");
         employee.setHeadPictureUrl("HeadPictureUrl");
         employee = action.save(employee);
