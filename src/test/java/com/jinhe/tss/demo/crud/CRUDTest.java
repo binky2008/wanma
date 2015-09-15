@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jinhe.tss.demo.TxTestSupport;
 import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framwork.EasyUIDataGrid;
 
 public class CRUDTest extends TxTestSupport {
 	
@@ -51,12 +52,12 @@ public class CRUDTest extends TxTestSupport {
 		
 		DemoSO so = new DemoSO();
 		so.setCode("test 1");
-		List<?> list2 = action.search(response, so , 1);
-		Assert.assertEquals(1, list2.size());
+		EasyUIDataGrid dg = action.search(response, so , 1, 10);
+		Assert.assertEquals(1, dg.total);
 		
 		so.setCode("test 22");
-		List<?> list3 = action.search(response, so , 1);
-		Assert.assertEquals(0, list3.size());
+		dg = action.search(response, so , 1, 10);
+		Assert.assertEquals(0, dg.total);
 		
 		action.delete(id);
 		

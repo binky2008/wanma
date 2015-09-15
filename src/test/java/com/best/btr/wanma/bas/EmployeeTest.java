@@ -67,14 +67,14 @@ public class EmployeeTest extends TxTestSupport {
         // 搜索
         EmployeeSO so = new EmployeeSO();
         so.setCode(code);
-        List<?> list2 = action.search(response, so, 1);
+        List<?> list2 = action.search(response, so, 1, 10).rows;
         Assert.assertEquals(1, list2.size());
 
         // 删除
         action.delete(id);
 
         employeeList = action.getAllEntities();
-        junit.framework.Assert.assertEquals(0, employeeList.size());
+        Assert.assertEquals(0, employeeList.size());
 
     }
 }

@@ -55,51 +55,26 @@ $(function(){
             <input name="id" type="hidden">
             <table>
             	<tr>
-            		<td width="60px">
-            			<label>用户名:</label>
-            		</td>
+            		<td class="label"><label>用户名:</td>
             		<td width="160px">
                 		<input name="loginName" class="easyui-textbox" required="true">
             		</td>
-            		<td width="60px">
-            			<label>中文名称:</label>
-            		</td>
+            		<td class="label">中文名称:</td>
             		<td width="160px">
                 		<input name="userName" class="easyui-textbox" required="true">
             		</td>
-            		<td width="60px">
-            			<label>用户类型:</label>
-            		</td>
+            		<td class="label">用户类型:</td>
             		<td width="160px">
                 		<input name="userType.id" id="userType" class="easyui-textbox" required="true">
             		</td>
             	</tr>
-            	<tr>
-            		<td>
-            			<label>所属组织:</label>
-            		</td>
-            		<td>
-                		<input name="org" class="easyui-textbox" required="true">
-            		</td>
-            		<td>
-            			<label>加盟方:</label>
-            		</td>
-            		<td>
-                		<input name="franchisee" class="easyui-textbox" required="true">
-            		</td>
-            		<td>
-            			<label>加盟方:</label>
-            		</td>
-            		<td>
-                		<input name="franchisee" class="easyui-textbox" required="true">
-            		</td>
-            	</tr>
+    
             </table>
         </form>
     </div>
     <div id="dlg-buttons">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()" style="width:90px">保存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" >取消</a>
     </div>
    
 

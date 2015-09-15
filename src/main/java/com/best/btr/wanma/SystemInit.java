@@ -16,7 +16,7 @@ public class SystemInit {
 	
 	@Autowired protected ParamService paramService;
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public Object init() {
 		if (null == paramService.getParam("EntityState")) {

@@ -1,9 +1,7 @@
 package com.best.btr.wanma.bas.action;
 
-import com.best.btr.wanma.bas.entity.Employee;
-import com.best.btr.wanma.bas.so.EmployeeSO;
-import com.best.btr.wanma.bas.service.EmployeeService;
-import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,8 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import com.best.btr.wanma.bas.entity.Employee;
+import com.best.btr.wanma.bas.service.EmployeeService;
+import com.best.btr.wanma.bas.so.EmployeeSO;
+import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
+import com.jinhe.tss.framwork.EasyUIDataGrid;
 
 /**
  * @author Created by Hsian on 15/9/3.
@@ -81,11 +82,13 @@ public class EmployeeAction {
      * @param page
      * @return
      */
-    @RequestMapping(value = "/{page}")
+    @RequestMapping(value = "/query")
     @ResponseBody
-    public List<?> search(HttpServletResponse response, EmployeeSO so, @PathVariable int page) {
+    public EasyUIDataGrid search(EmployeeSO so, int page, int rows) {
         so.getPage().setPageNum(page);
-        PageInfo pageInfo = service.search(so);
-        return pageInfo.getItems();
+        so.getPage().setPageSize(rows);
+        
+        PageInfo pi = service.search(so);
+        return new EasyUIDataGrid(pi);
     }
 }

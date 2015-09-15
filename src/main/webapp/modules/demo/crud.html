@@ -11,38 +11,48 @@
     <script type="text/javascript" src="../../tools/easyui/easyui-lang-zh_CN.js"></script>
 
     <style type="text/css">
-        body {
-            margin: 2px;
-            font-family: '微软雅黑'; 
+        #dlg {
+            padding:3px
         }
-        #fm{
-            margin:0;
-            padding:10px 30px;
+        #dlg-buttons a {
+            width: 90px;
         }
-        .ftitle{
-            font-size:14px;
-            font-weight:bold;
-            padding:5px 0;
-            margin-bottom:10px;
-            border-bottom:1px solid #ccc;
+
+        #queryContainer {
+            height:40px;
+            padding:8px 0 0 10px;
         }
-        .fitem{
-            margin-bottom:5px;
+        #queryContainer input { width: 180px; }
+
+        #fm table {
+            border-collapse: collapse;
         }
-        .fitem label{
-            display:inline-block;
-            width:80px;
+        #fm table td {
+            border: 1px solid #999;
+            padding: 5px;
         }
-        .fitem input{
-            width:160px;
+
+        #fm table { border: 1px solid #999; }
+        #fm table tr { height: 40px; }
+
+        #fm table .label {
+            background-color: #eee;
+            width:60px;
+            text-align: right;
         }
+        #fm table input.easyui-textbox {
+            width:172px;
+        }
+
     </style>
 
     <script type="text/javascript">
 
 $(document).ready(function(){
     initCombobox('stateId', 'DemoState');
-    initGrid();
+    initCombobox('param3', 'DemoState');
+
+    query();
 });
 
 function initCombobox(id, code, params) {
@@ -100,8 +110,7 @@ function saveUser(){
                 });
             } else {
                 $('#dlg').dialog('close'); // close the dialog
-                // $('#t1').datagrid('reload'); // reload the user data
-                initGrid();
+                $('#t1').datagrid('reload'); // reload the grid data
             }
         }
     });
@@ -139,69 +148,98 @@ var FIELDS_1 = [
         { field : 'udf3', title : '自定义3', width : 80 }
     ];
 
-function initGrid() {
-    $.get('../../demo/', {}, function(data){
-        $.each(data, function(i, item){
-            item.stateName = item.state.text;
-        });
+function query(params) {
+    params = params || {};
 
-        $('#t1').datagrid({
-            fit : true,
-            fitColumns : true,
-            rownumbers : true,
-            singleSelect : true,
-            toolbar: "#toolbar",
-            columns : [FIELDS_1],
-            data: data
-        });
+    $('#t1').datagrid({
+        url: '../../demo/query',
+        queryParams: params,
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        rownumbers : true,
+        singleSelect : true,
+        toolbar: "#toolbar",
+        columns : [FIELDS_1],
+        loadFilter: function(data){
+            $.each(data.rows, function(i, item){
+                item.stateName = item.state.text;
+            });
+            return data;
+        }
     });
+}
+
+function beginQuery() {
+    var params = {};
+    params.code = $('#param1').val();
+    params.name = $('#param2').val();
+    params.stateId = $('#param3').textbox("getValue");
+    query(params);
 }
 
     </script>
 
 </head>
 <body>
-    <table id="t1" title="数据列表"></table>
-
-    <div id="toolbar">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
+    <div id="main" class="easyui-layout" fit="true" >
+        <div id="queryContainer" data-options="region:'north'" border="false">
+            <label>编码：</label>
+            <input id="param1" class="easyui-textbox"></input>&nbsp;
+            <label>名称：</label>
+            <input id="param2" class="easyui-textbox"></input>&nbsp;
+            <label>状态：</label>
+            <input id="param3" class="easyui-textbox"></input>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
+        </div>
+        <div id="dataContainer" data-options="region:'center'" border="false" title="数据列表">
+            <table id="t1" border="false"></table>
+            <div id="toolbar">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
+            </div>
+        </div>
     </div>
 
-    <div id="dlg" class="easyui-dialog" style="width:400px;height:320px;padding:10px 20px;" closed="true" buttons="#dlg-buttons">
-        <div class="ftitle">详细信息</div>
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:200px;" closed="true" buttons="#dlg-buttons">
         <form id="fm" method="post" novalidate>
             <input name="id" type="hidden">
-            <div class="fitem">
-                <label>名称:</label>
-                <input name="name" class="easyui-textbox" required="true">
-            </div>
-            <div class="fitem">
-                <label>编码:</label>
-                <input name="code" class="easyui-textbox" required="true">
-            </div>
-            <div class="fitem">
-                <label>状态:</label>
-                <input name="state.id" id="stateId" required="true">
-            </div>
-            <div class="fitem">
-                <label>自定义1:</label>
-                <input name="udf1" class="easyui-textbox">
-            </div>
-            <div class="fitem">
-                <label>自定义2:</label>
-                <input name="udf2" class="easyui-textbox">
-            </div>
-            <div class="fitem">
-                <label>自定义3:</label>
-                <input name="udf3" class="easyui-textbox" validType="email">
-            </div>
+            <table>
+                <tr>
+                    <td class="label">编码:</td>
+                    <td>
+                        <input name="code" class="easyui-textbox" required="true">
+                    </td>
+                    <td class="label">名称:</td>
+                    <td>
+                        <input name="name" class="easyui-textbox" required="true">
+                    </td>
+                    <td class="label">状态:</td>
+                    <td>
+                        <input name="state.id" id="stateId" class="easyui-textbox" required="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">自定义1:</td>
+                    <td>
+                        <input name="udf1" class="easyui-textbox">
+                    </td>
+                    <td class="label">自定义2:</td>
+                    <td>
+                        <input name="udf2" class="easyui-textbox">
+                    </td>
+                    <td class="label">自定义3:</td>
+                    <td>
+                        <input name="udf3" class="easyui-textbox" validType="email">
+                    </td>
+                </tr>
+            </table>
         </form>
     </div>
     <div id="dlg-buttons">
-        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()" style="width:90px">保存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">取消</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="saveUser()">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" >取消</a>
     </div>
 
 </body>

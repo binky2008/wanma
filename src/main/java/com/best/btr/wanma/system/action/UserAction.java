@@ -1,7 +1,5 @@
 package com.best.btr.wanma.system.action;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import com.best.btr.wanma.system.UserSO;
 import com.best.btr.wanma.system.entity.User;
 import com.best.btr.wanma.system.service.UserService;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
+import com.jinhe.tss.framwork.EasyUIDataGrid;
 
 @Controller("UserAction")
 @RequestMapping("/user")
@@ -48,11 +47,11 @@ public class UserAction {
     
     @RequestMapping("/{page}")
     @ResponseBody
-    public List<?> search(HttpServletResponse response, UserSO so, @PathVariable int page) {
+    public EasyUIDataGrid search(HttpServletResponse response, UserSO so, @PathVariable int page) {
     	so.getPage().setPageNum(page);
-        PageInfo pageResult = service.search(so);
+        PageInfo pi = service.search(so);
         
-        return pageResult.getItems();
+        return new EasyUIDataGrid(pi);
     }
 }
 

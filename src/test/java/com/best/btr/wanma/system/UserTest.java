@@ -31,7 +31,7 @@ public class UserTest extends TxTestSupport {
 	@Test
 	public void test() {
 		UserSO so = new UserSO();
-		List<?> list = action.search(response, so, 1);
+		List<?> list = action.search(response, so, 1).rows;
 		Assert.assertEquals(0, list.size());
 		
 		User entity = new User();
@@ -55,20 +55,20 @@ public class UserTest extends TxTestSupport {
 		entity = action.getEntityById(id);
 		Assert.assertEquals("test 1 update", entity.getUserName());
 		
-		list = action.search(response, so, 1);
+		list = action.search(response, so, 1).rows;
 		Assert.assertEquals(1, list.size());
 		
 		so.setLoginName("test 1");
-		List<?> list2 = action.search(response, so , 1);
+		List<?> list2 = action.search(response, so , 1).rows;
 		Assert.assertEquals(1, list2.size());
 		
 		so.setLoginName("test 22");
-		List<?> list3 = action.search(response, so , 1);
+		List<?> list3 = action.search(response, so , 1).rows;
 		Assert.assertEquals(0, list3.size());
 		
 		action.delete(id);
 		
-		list = action.search(response, so, 1);;
+		list = action.search(response, so, 1).rows;
 		Assert.assertEquals(0, list.size());
 	}
 
