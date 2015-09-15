@@ -19,13 +19,15 @@ a:hover{ color:red; text-decoration:underline; }
 #fm table {
     border-collapse: collapse;
 }
-#fm table td {
-    border: 1px solid #999;
-    padding: 5px;
-}
 
 #fm table { border: 1px solid #999; }
+
 #fm table tr { height: 40px; }
+
+#fm table td {
+    border: 1px solid #dddddd;
+    padding: 5px;
+}
 
 #fm table .label {
     background-color: #eee;

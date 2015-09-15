@@ -27,7 +27,7 @@
 			{
 				"id": "21",
 				"name": "客户管理",
-				"url": "../pages/bas_customer_crud.html"
+				"url": "../pages/bas_customer.html"
 			},
 			{
 				"id": "22",
@@ -37,17 +37,17 @@
 			{
 				"id": "23",
 				"name": "车辆管理",
-				"url": "../pages/bas_vehicle_crud.html"
+				"url": "../pages/bas_vehicle.html"
 			},
 			{
 				"id": "24",
 				"name": "班次管理",
-				"url": "../pages/bas_vehicle_schedule_crud.html"
+				"url": "../pages/bas_vehicle_schedule.html"
 			},
 			{
 				"id": "25",
 				"name": "项目管理",
-				"url": "../pages/bas_project_crud.html"
+				"url": "../pages/bas_project.html"
 			}
 		]
 	},

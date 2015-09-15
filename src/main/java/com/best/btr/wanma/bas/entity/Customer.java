@@ -61,8 +61,8 @@ public class Customer extends OperateInfo {
     private String address;
 
     /** 所属站点 */
-    @Column(length = 128, nullable = false)
-    private String ownerSite;
+    @ManyToOne
+    private Site ownerSite;
 
     /** 所属行业 */
     @Column(length = 128)
@@ -180,11 +180,11 @@ public class Customer extends OperateInfo {
         this.address = address;
     }
 
-    public String getOwnerSite() {
+    public Site getOwnerSite() {
         return ownerSite;
     }
 
-    public void setOwnerSite(String ownerSite) {
+    public void setOwnerSite(Site ownerSite) {
         this.ownerSite = ownerSite;
     }
 

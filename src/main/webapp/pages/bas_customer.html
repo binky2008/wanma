@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+
+    <link rel="stylesheet" type="text/css" href="css/wanma.css">
+
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+
+    <script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+    <script src="js/common.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function(){
+            initCombobox('stateId', 'State');
+            initCombobox('settleTypeId', 'SettleType');
+            query();
+        });
+
+        function create(){
+            $('#dlg').dialog('open').dialog('setTitle','新增客户').dialog('center');
+            $('#lockVersion').val('0'); //給版本号设置默认值.
+            $('#ownerSite').textbox('setValue', window.parent.ownerSite).textbox('readonly', true);
+        }
+
+        function update(){
+            var row = $('#t1').datagrid('getSelected');
+            if (row){
+                $('#dlg').dialog('open').dialog('setTitle','修改客户信息').dialog('center');
+
+                $.get("../customer/" + row.id, {}, function(data){
+                    data['state.id'] = data.state.id;
+                    data['settleType.id'] = data.settleType.id;
+                    data['lockVersion'] = data.lockVersion;
+                    $('#fm').form('load', data);
+                });
+            } else {
+                $.messager.alert({
+                    title: '提示',
+                    msg: '您没有选中任何行，请先点击选中需要修改的行。'
+                });
+            }
+        }
+
+        function save(){
+            $('#fm').form('submit',{
+                url: '../customer',
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    result = eval('(' + result + ')');
+                    if (result.errorMsg){
+                        $.messager.show({
+                            title: 'Error',
+                            msg: result.errorMsg
+                        });
+                    } else {
+                        $('#dlg').dialog('close'); // close the dialog
+                        $('#fm').form('clear');
+                        $('#t1').datagrid('reload'); // reload the customer data
+                    }
+                }
+            });
+        }
+
+        function _remove(){
+            var row = $('#t1').datagrid('getSelected');
+            if (row){
+                $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
+                    if (r) {
+                        $.ajax({
+                             url: '../customer/' + row.id,
+                             type: 'DELETE',
+                             success: function(result) {
+                                $('#t1').datagrid('reload'); // reload the customer data
+                             }
+                        });
+                    }
+                });
+            }
+            else {
+                $.messager.alert({
+                    title: '提示',
+                    msg: '您没有选中任何行，请先点击选中需要删除的行。'
+                });
+            }
+        }
+
+        /**
+         * 页面展示的字段
+         */
+        var CUSTOMER_FIELDS_1 = [
+            { field : 'id', title : 'ID', width : 90},
+            { field : 'code', title : '客户编码', width : 90 },
+            { field : 'name', title : '客户名称', width : 80 },
+            { field : 'fullName', title : '客户全称', width : 80 },
+            { field : 'contacts', title : '联系人', width : 80 },
+            { field : 'phone1', title : '联系电话', width : 80 },
+            { field : 'ownerSite', title : '所属站点', width : 80 },
+            { field : 'settleTypeName', title : '结算方式', width : 80 },
+            { field : 'stateName', title : '状态', width : 80 }
+        ];
+
+        /**
+         * 可用于第一次加载数据,也可用于查询;
+         * 第一次加载数据页面时参数为空.
+         */
+        function query(params) {
+            params = params || {};
+            $('#t1').datagrid({
+                url : "../customer/query",
+                queryParams : params,
+                fit : true,
+                fitColumns : true,
+                pagination : true,
+                rownumbers : true,
+                singleSelect : true,
+                toolbar : "#toolbar",
+                columns : [CUSTOMER_FIELDS_1],
+                loadFilter : function(data) {
+                    $.each(data.rows, function(i, item) {
+//                        item.stateName = item.state.text;
+//                        item.ownerSiteName = item.ownerSite.name;
+                    });
+                    return data;
+                }
+            });
+        }
+
+        /**
+         * 收集查询的条件
+         */
+        function beginQuery() {
+            var params = {};
+            params.code = $('#param1').val();
+            params.name = $('#param2').val();
+            params.phone1 = $('#param3').val();
+            query(params);
+        }
+    </script>
+
+</head>
+<body>
+
+    <div id="main" class="easyui-layout" fit="true" >
+        <div id="queryContainer" data-options="region:'north'" border="false">
+            <label>客户编码:</label>
+            <input id="param1" class="easyui-textbox" />&nbsp;
+            <label>客户名称:</label>
+            <input id="param2" class="easyui-textbox" />&nbsp;
+            <label>联系电话:</label>
+            <input id="param3" class="easyui-textbox" />
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
+        </div>
+        <div id="dataContainer" data-options="region:'center'" border="false" title="客户列表">
+            <table id="t1" border="false"></table>
+            <div id="toolbar">
+                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:200px;" closed="true" buttons="#dlg-buttons">
+        <form id="fm" method="post" novalidate>
+            <input name="id" type="hidden" />
+            <input id="lockVersion" name="lockVersion" type="hidden" />
+            <table>
+                <tr>
+                    <td class="label">客户编码:</td>
+                    <td>
+                        <input name="code" class="easyui-textbox" required="true" />
+                    </td>
+                    <td class="label">客户名称:</td>
+                    <td>
+                        <input name="name" class="easyui-textbox" required="true" />
+                    </td>
+                    <td class="label">客户全称:</td>
+                    <td>
+                        <input name="fullName" class="easyui-textbox" required="false" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">联系人:</td>
+                    <td>
+                        <input name="contacts" class="easyui-textbox" required="true" />
+                    </td>
+                    <td class="label">联系电话:</td>
+                    <td>
+                        <input name="phone1" class="easyui-textbox" required="true" />
+                    </td>
+                    <td class="label">所属站点:</td>
+                    <td>
+                        <input name="ownerSite" class="easyui-textbox" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">结算类型:</td>
+                    <td>
+                        <input name="settleType.id" id="settleTypeId" class="easyui-textbox" required="true" />
+                    </td>
+                    <td class="label">状态:</td>
+                    <td>
+                        <input name="state.id" id="stateId" class="easyui-textbox" required="true" />
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()" style="width:90px">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+    </div>
+
+</body>
+</html>

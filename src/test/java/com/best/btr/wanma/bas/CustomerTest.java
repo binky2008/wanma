@@ -1,17 +1,17 @@
 package com.best.btr.wanma.bas;
 
-import java.util.List;
-
+import com.best.btr.wanma.bas.action.CustomerAction;
+import com.best.btr.wanma.bas.entity.Customer;
+import com.best.btr.wanma.bas.entity.Site;
+import com.best.btr.wanma.bas.so.CustomerSO;
+import com.jinhe.tss.demo.TxTestSupport;
+import com.jinhe.tss.framework.component.param.Param;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.best.btr.wanma.bas.action.CustomerAction;
-import com.best.btr.wanma.bas.entity.Customer;
-import com.best.btr.wanma.bas.so.CustomerSO;
-import com.jinhe.tss.demo.TxTestSupport;
-import com.jinhe.tss.framework.component.param.Param;
+import java.util.List;
 
 /**
  * @author Created by Lu on 15/8/31.
@@ -49,7 +49,7 @@ public class CustomerTest extends TxTestSupport {
         customer.setPhone1("13558996822");
         customer.setSsq("浙江省杭州市江干区");
         customer.setAddress("2号大街");
-        customer.setOwnerSite("江干一部");
+        customer.setOwnerSite(new Site());
         customer.setSendMessage(true);
         customer = action.save(customer);
 
@@ -71,7 +71,7 @@ public class CustomerTest extends TxTestSupport {
         // 搜索
         CustomerSO so = new CustomerSO();
         so.setCode(code);
-        List<?> list2 = action.search(response, so, 1);
+        List<?> list2 = action.search(so, 1, 20).rows;
         Assert.assertEquals(1, list2.size());
 
         // 删除
