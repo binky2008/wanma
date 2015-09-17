@@ -34,9 +34,7 @@ public class DemoServiceImpl implements DemoService {
 	}
  
     public PageInfo search(DemoSO so) {
-        String hql = " from DemoEntity o " 
-        		+ " where 1=1 " + so.toConditionString() 
-        		+ " order by o.id desc ";
+        String hql = " from DemoEntity o where 1=1 " + so.toConditionString();
  
         PaginationQueryByHQL pageQuery = new PaginationQueryByHQL(dao.em(), hql, so);
         return pageQuery.getResultList();

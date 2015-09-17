@@ -43,7 +43,9 @@ public class EmployeeAction {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Employee getEntityById(@PathVariable Long id) {
-        return service.getEntityById(id);
+        Employee entity = service.getEntityById(id);
+        entity.setPassword("111111111111111111111111111111");
+		return entity;
     }
 
     /**

@@ -1,4 +1,4 @@
-function initCombobox(id, code, params) {
+function initCombobox(id, code, params, init) {
     var url = '../param/json/combo/' + code;
     $.get(url, params, function(data){
         var _data = [];
@@ -12,5 +12,9 @@ function initCombobox(id, code, params) {
                     textField: 'text',
                     data: _data
                 });
+
+        if(data[init]) {
+            $('#' + id).combobox('setValue', data[init][0]);
+        }
     });
 }

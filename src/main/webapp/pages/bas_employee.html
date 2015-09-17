@@ -1,41 +1,69 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>员工管理</title>
+<meta charset="UTF-8">
+<title>员工管理</title>
 
-    <link rel="stylesheet" type="text/css" href="css/wanma.css">
+<link rel="stylesheet" href="css/wanma.css">
 
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
 
-    <script src="../tools/easyui/jquery.min.js"></script>
-    <script src="../tools/easyui/jquery.easyui.min.js"></script>
-    <script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
 
-    <script src="js/common.js"></script>
+<script src="js/common.js"></script>
 
-    <style type="text/css">
+<style type="text/css">
 
+.ackspan { display: none; }
 
-    </style>
+</style>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
 $(document).ready(function(){
-    initCombobox('stateId', 'EntityState');
+    query();
+    
+    initCombobox('stateId', 'EntityState', {}, 1);
     initCombobox('positionId', 'UserJob');
 
     initCombobox('param3', 'UserJob');
 
-    query();
+    $('#positionId').combobox( {
+        onChange : function(newValue, oldValue) {
+            var newText = $(this).combobox("getText") || '';
+            if ( newText.indexOf('财务') < 0 ) {
+                $(".ackspan").hide();
+                $("#_ack").textbox("setValue", "000000");
+            } 
+            else {
+                $(".ackspan").show();
+            }
+        },
+        onSelect: function(record) {
+            // console.log(record); // {"id":11, "text": "财务"}
+        }
+    });
+
+    $('#ownerSiteId').combobox( {
+            panelHeight: '60px',
+            valueField: 'id',
+            textField: 'name',
+            data: [window.parent.ownerSite]
+        }).textbox('readonly', true);
+
 });
 
 function create(){
-    $('#dlg').dialog('open').dialog('setTitle','新增员工').dialog('center');
+    $('#fm').form('clear');
+    $('#dlg').dialog('open').dialog('setTitle', '新增员工').dialog('center');
     $('#lockVersion').val('0'); //給版本号设置默认值.
 
-    $('#ownerSite').textbox('setValue', window.parent.ownerSite).textbox('readonly', true);
+    $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
+    initCombobox('stateId', 'EntityState', {}, 1);
+    $('#_code').textbox('readonly', false);
 }
 
 function update(){
@@ -45,9 +73,12 @@ function update(){
 
         $.get("../employee/" + row.id, {}, function(data){
             data['state.id'] = data.state.id;
-            data['position.id'] = data.position.id;
+            data['ownerSite.id'] = data.ownerSite.id;
+            if(data.position) data['position.id'] = data.position.id;
 
             $('#fm').form('load', data);
+
+            $('#_code').textbox('readonly', true);
         });
     }
     else {
@@ -72,12 +103,16 @@ function save(){
                     msg: result.errorMsg
                 });
             } else {
-                $('#dlg').dialog('close'); // close the dialog
-                $('#fm').form('clear');
+                closeDialog();
                 $('#t1').datagrid('reload'); // reload the employee data
             }
         }
     });
+}
+
+function closeDialog() {
+    $('#dlg').dialog('close'); // close the dialog
+    $('#fm').form('clear');
 }
 
 function _remove(){
@@ -101,16 +136,15 @@ function _remove(){
     }
 }
 
-var FIELDS_1 = [
-        { field : 'id', title : 'ID', width : 90},
-        { field : 'name', title : '员工名称', width : 90 },
+var FIELDS_1 = [        
         { field : 'code', title : '员工编码', width : 80 },
+        { field : 'name', title : '员工名称', width : 80 },
         { field : 'stateName', title : '状态', width : 80 },
         { field : 'positionName', title : '岗位', width : 80 }, 
         { field : 'department', title : '部门', width : 80 }, 
         { field : 'ownerSiteName', title : '所属站点', width : 80 }, 
         { field : 'gender', title : '性别', width : 80 }, 
-        { field : 'email', title : '邮箱', width : 80 }, 
+        { field : 'email', title : '邮箱', width : 100 }, 
         { field : 'phone', title : '联系电话', width : 80 }
     ];
 
@@ -119,6 +153,7 @@ function query(params) {
 
     $('#t1').datagrid({
         url: '../employee/query',
+        queryParams: params,
         fit : true,
         fitColumns : true,
         pagination : true,
@@ -129,7 +164,8 @@ function query(params) {
         loadFilter: function(data){
             $.each(data.rows, function(i, item){
                 item.stateName = item.state.text;
-                item.positionName = item.position.text;
+                item.positionName = item.position ? item.position.text : "";
+                item.ownerSiteName = item.ownerSite.name;
             });
             return data;
         }
@@ -140,22 +176,20 @@ function beginQuery() {
     var params = {};
     params.code = $('#param1').val();
     params.name = $('#param2').val();
+    params.positionId = $('#param3').textbox("getValue");
     query(params);
 }
 
-    </script>
+</script>
 
 </head>
 <body>
 
     <div id="main" class="easyui-layout" fit="true" >
         <div id="queryContainer" data-options="region:'north'" border="false">
-            <label>员工编码：</label>
-            <input id="param1" class="easyui-textbox" style="width:180px;"></input>&nbsp;
-            <label>员工姓名：</label>
-            <input id="param2" class="easyui-textbox" style="width:180px;"></input>&nbsp;
-            <label>岗位：</label>
-            <input id="param3" class="easyui-textbox" style="width:180px;"></input>
+            <label>员工编码：</label><input id="param1" class="easyui-textbox"></input>&nbsp;
+            <label>员工姓名：</label><input id="param2" class="easyui-textbox"></input>&nbsp;
+            <label>员工岗位：</label><input id="param3" class="easyui-textbox"></input>&nbsp;
 
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
         </div>
@@ -165,11 +199,13 @@ function beginQuery() {
                 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
+
             </div>
+
         </div>
     </div>
 
-    <div id="dlg" class="easyui-dialog" title="员工信息" style="width:800px;height:200px;" closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" title="员工信息" style="width:800px;height:245px;" closed="true" buttons="#dlg-buttons">
         <form id="fm" method="post" novalidate>
             <input name="id" type="hidden" />
             <input id="lockVersion" name="lockVersion" type="hidden" />
@@ -177,7 +213,7 @@ function beginQuery() {
                 <tr>
                     <td class="label">员工编码:</td>
                     <td>
-                        <input name="code" class="easyui-textbox" required="true">
+                        <input name="code" id="_code" class="easyui-textbox" required="true">
                     </td>
                     <td class="label">员工姓名:</td>
                     <td>
@@ -185,7 +221,7 @@ function beginQuery() {
                     </td>
                     <td class="label">密码:</td>
                     <td>
-                        <input name="password" class="easyui-textbox" required="true">
+                        <input name="password" class="easyui-textbox" type="password" required="true">
                     </td>
                 </tr>
                 <tr>
@@ -210,11 +246,28 @@ function beginQuery() {
                     </td>
                     <td class="label">所属站点:</td>
                     <td>
-                        <input name="ownerSite" id="ownerSite" class="easyui-textbox" required="true">
+                        <input name="ownerSite.id" id="ownerSiteId" class="easyui-textbox" required="true">
                     </td>
                     <td class="label">状态:</td>
                     <td>
                         <input name="state.id" id="stateId" class="easyui-textbox" style="width:80px;" required="true">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">身份证照:</td>
+                    <td>
+                        <input class="easyui-filebox" name="file1" data-options="prompt:'选择附件'" style="width:100%">
+                    </td>
+                    <td class="label">头像:</td>
+                    <td>
+                        <input class="easyui-filebox" name="file1" data-options="prompt:'选择附件'" style="width:100%">
+                    </td>
+                    <td class="label"><span class="ackspan">验证码:</span></td>
+                    <td>
+                        <span class="ackspan">
+                            <input name="ack" id="_ack" class="easyui-textbox" style="width:80px;" required="true">
+                            <a href="#" class="easyui-linkbutton" onclick="getACK()">获取验证码</a>
+                        </span>                       
                     </td>
                 </tr>
             </table>
@@ -222,7 +275,7 @@ function beginQuery() {
     </div>
     <div id="dlg-buttons">
         <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存</a>
-        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')">取消</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog();">取消</a>
     </div>
 
 </body>

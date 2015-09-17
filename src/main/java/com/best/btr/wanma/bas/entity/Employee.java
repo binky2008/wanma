@@ -36,7 +36,8 @@ public class Employee extends OperateInfo {
     /**
 	 * 员工岗位：客服、物流专员、财务、职业经理人，岗位可以多选
 	 */
-    private String position;
+    @ManyToOne
+    private Param position;
 
     /** 部门 */
     private String department;
@@ -102,11 +103,11 @@ public class Employee extends OperateInfo {
         this.name = name;
     }
 
-    public String getPosition() {
+    public Param getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(Param position) {
         this.position = position;
     }
 

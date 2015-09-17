@@ -67,7 +67,7 @@ public class EmployeeTest extends TxTestSupport {
         // 搜索
         EmployeeSO so = new EmployeeSO();
         so.setCode(code);
-        List<?> list2 = action.search(response, so, 1, 10).rows;
+        List<?> list2 = action.search(so, 1, 10).rows;
         Assert.assertEquals(1, list2.size());
 
         // 删除

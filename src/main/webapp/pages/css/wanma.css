@@ -13,6 +13,7 @@ a:hover{ color:red; text-decoration:underline; }
 #queryContainer {
 	height: 40px;
 	padding: 8px 0 0 10px;
+	background-color: #fff;
 }
 #queryContainer input { width: 180px; }
 

@@ -9,11 +9,14 @@ public class UserSO extends MacrocodeQueryCondition {
     
 	private String  userName;
 	private String  loginName; 
+	
+	private Long positionId;
     
 	public Map<String, Object> getConditionMacrocodes() {
 		Map<String, Object> map = new HashMap<String, Object>() ;
         map.put("${userName}", " and o.userName = :userName");
         map.put("${loginName}", " and o.loginName = :loginName");
+        map.put("${positionId}", " and o.position.id = :positionId");
         
         return map;
 	}
@@ -32,6 +35,14 @@ public class UserSO extends MacrocodeQueryCondition {
 
 	public void setLoginName(String loginName) {
 		this.loginName = loginName;
+	}
+
+	public Long getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
 	}
 
 }

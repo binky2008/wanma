@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html> 
 <head>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
-	<meta charset="UTF-8">
-	<title>万马网点管理系统</title>
-	<link rel="shortcut icon" href="images/wanma.ico">
-	<link rel="Bookmark" href="images/wanma.ico">
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>万马网点管理系统</title>
+<link rel="shortcut icon" href="images/wanma.ico">
+<link rel="Bookmark" href="images/wanma.ico">
 
-	<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
-  <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
 
-  <script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
-  <script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
 
-	<STYLE type="text/css">
+<STYLE type="text/css">
 
 * { font-size:12px; font-family:Tahoma,Verdana,微软雅黑,新宋体; }
 body{ background:#D2E0F2; }
@@ -71,7 +71,7 @@ $(function(){
 	attachTabCloseEnvet();
 	attachTabEnvet();
 
-	ownerSite = "柯桥一部";
+	ownerSite = {"id" : 1, "name": "柯桥一部"};
 });
 
 //初始化左侧
@@ -101,7 +101,7 @@ function InitLeftMenu() {
       	});
 
 		// if( i==0 ) selectedPanelname = menu1Name;
-		selectedPanelname = "&nbsp;&nbsp;" + "录单";
+		selectedPanelname = "&nbsp;&nbsp;" + "我的网点";
   });
 
 	$('#nav').accordion('select', selectedPanelname);

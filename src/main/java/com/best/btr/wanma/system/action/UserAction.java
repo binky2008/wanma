@@ -1,7 +1,5 @@
 package com.best.btr.wanma.system.action;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,10 +43,12 @@ public class UserAction {
         return service.delete(id);
     }
     
-    @RequestMapping("/{page}")
+    @RequestMapping("/query")
     @ResponseBody
-    public EasyUIDataGrid search(HttpServletResponse response, UserSO so, @PathVariable int page) {
+    public EasyUIDataGrid search(UserSO so, int page, int rows) {
     	so.getPage().setPageNum(page);
+    	so.getPage().setPageSize(rows);
+    	
         PageInfo pi = service.search(so);
         
         return new EasyUIDataGrid(pi);

@@ -30,7 +30,8 @@ public class SystemInit {
         	addComboItem( cp.getId(), "1", "客服" );
         	addComboItem( cp.getId(), "2", "物流专员" );
         	addComboItem( cp.getId(), "3", "财务" );
-        	addComboItem( cp.getId(), "4", "职业经理人" );
+        	addComboItem( cp.getId(), "4", "财务兼客服" );
+        	addComboItem( cp.getId(), "5", "职业经理人" );
         }
 		
 		if(paramService.getParam("UserType") == null) {

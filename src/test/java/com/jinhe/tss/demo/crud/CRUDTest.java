@@ -52,11 +52,11 @@ public class CRUDTest extends TxTestSupport {
 		
 		DemoSO so = new DemoSO();
 		so.setCode("test 1");
-		EasyUIDataGrid dg = action.search(response, so , 1, 10);
+		EasyUIDataGrid dg = action.search(request, so , 1, 10);
 		Assert.assertEquals(1, dg.total);
 		
 		so.setCode("test 22");
-		dg = action.search(response, so , 1, 10);
+		dg = action.search(request, so , 1, 10);
 		Assert.assertEquals(0, dg.total);
 		
 		action.delete(id);
