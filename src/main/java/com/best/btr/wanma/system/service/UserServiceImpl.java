@@ -31,9 +31,7 @@ public class UserServiceImpl implements UserService {
 	}
  
     public PageInfo search(UserSO so) {
-        String hql = " from User o " 
-        		+ " where 1=1 " + so.toConditionString() 
-        		+ " order by o.id desc ";
+        String hql = " from User o  where 1=1 " + so.toConditionString();
  
         PaginationQueryByHQL pageQuery = new PaginationQueryByHQL(dao.em(), hql, so);
         return pageQuery.getResultList();

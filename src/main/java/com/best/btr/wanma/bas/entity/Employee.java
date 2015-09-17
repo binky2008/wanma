@@ -1,12 +1,20 @@
 package com.best.btr.wanma.bas.entity;
 
-import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
-
-import javax.persistence.*;
-
 import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
  * 网点人员/员工.
@@ -15,7 +23,7 @@ import java.util.Date;
 @Entity
 @Table(name = "WM_BAS_EMPLOYEE")
 @SequenceGenerator(name = "employee_sequence", sequenceName = "employee_sequence", initialValue = 1000, allocationSize = 10)
-public class Employee extends OperateInfo {
+public class Employee extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "employee_sequence")
@@ -73,8 +81,10 @@ public class Employee extends OperateInfo {
     /** 状态 停用 启用 */
     @ManyToOne
     private Param state;
+    
+    @Transient
+    private int ack; // 注册时六位手机验证码
 
-    @Override
     public Serializable getPK() {
         return this.getId();
     }
@@ -198,4 +208,12 @@ public class Employee extends OperateInfo {
     public void setState(Param state) {
         this.state = state;
     }
+
+	public int getAck() {
+		return ack;
+	}
+
+	public void setAck(int ack) {
+		this.ack = ack;
+	}
 }

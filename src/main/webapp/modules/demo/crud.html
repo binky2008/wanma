@@ -14,6 +14,8 @@
 <script src="../../tools/easyui/datagrid-filter.js"></script>
 <script src="../../tools/easyui/easyui-lang-zh_CN.js"></script>
 
+<script src="../../pages/js/common.js"></script>
+
 <style type="text/css">
     
 
@@ -24,30 +26,15 @@
 $(document).ready(function(){
     query();
 
-    initCombobox('stateId', 'DemoState');
-    initCombobox('param3', 'DemoState');
+    initCombobox('stateId', 'EntityState');
+    initCombobox('param3', 'EntityState');
 });
-
-function initCombobox(id, code, params) {
-    var url = '../../param/json/combo/' + code;
-    $.get(url, params, function(data){
-        var _data = [];
-        $.each(data, function(i, item){
-            _data.push({'id': item[0], 'text': item[1]});
-        });
-
-        $('#' + id).combobox( {
-                    panelHeight: '120px',
-                    valueField: 'id',
-                    textField: 'text',
-                    data: _data
-                });
-    });
-}
 
 function create(){
     $('#dlg').dialog('open').dialog('setTitle','新增').dialog('center');
     $('#fm').form('clear');
+
+    initCombobox('stateId', 'EntityState', {}, 1);
 }
 
 function update(){
@@ -169,48 +156,12 @@ function query(params) {
     //     }]);
 }
 
-var cmenu;
-function createColumnMenu(){
-    cmenu = $('<div/>').appendTo('body');
-    cmenu.menu({
-        onClick: function(item){
-            if (item.iconCls == 'icon-ok'){
-                $('#t1').datagrid('hideColumn', item.name);
-                cmenu.menu('setIcon', {
-                    target: item.target,
-                    iconCls: 'icon-empty'
-                });
-            } else {
-                $('#t1').datagrid('showColumn', item.name);
-                cmenu.menu('setIcon', {
-                    target: item.target,
-                    iconCls: 'icon-ok'
-                });
-            }
-        }
-    });
-    var fields = $('#t1').datagrid('getColumnFields');
-    for(var i=0; i<fields.length; i++){
-        var field = fields[i];
-        var col = $('#t1').datagrid('getColumnOption', field);
-        cmenu.menu('appendItem', {
-            text: col.title,
-            name: field,
-            iconCls: 'icon-ok'
-        });
-    }
-}
-
 function beginQuery() {
     var params = {};
     params.code = $('#param1').val();
     params.name = $('#param2').val();
     params.stateId = $('#param3').textbox("getValue");
     query(params);
-}
-
-function _export() {
-
 }
 
 </script>

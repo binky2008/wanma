@@ -58,7 +58,7 @@
 			{
 				"id": "31",
 				"name": "用户管理",
-				"url": "../modules/demo/crud.html"
+				"url": "../pages/sys_user.html"
 			},
 			{
 				"id": "32",

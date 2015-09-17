@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jinhe.tss.framework.exception.BusinessException;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
  
@@ -22,6 +23,12 @@ public class DemoServiceImpl implements DemoService {
 	}
 
 	public DemoEntity create(DemoEntity entity) {
+    	// 检查账号是否已经存在
+    	List<?> list = dao.getEntities("from DemoEntity o where o.code = ?", entity.getCode());
+    	if(list.size() > 0) {
+    		throw new BusinessException("相同Code的记录已经存在。");
+    	}
+    	
 		return dao.create(entity);
 	}
 	

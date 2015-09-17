@@ -13,12 +13,12 @@ import javax.persistence.Table;
 
 import com.best.btr.wanma.bas.entity.Employee;
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.persistence.IEntity;
+import com.jinhe.tss.framwork.AbstractEntity;
 
 @Entity
 @Table(name = "wm_sys_user")
 @SequenceGenerator(name = "user_sequence", sequenceName = "user_sequence", initialValue = 1000, allocationSize = 10)
-public class User implements IEntity {
+public class User extends AbstractEntity {
 			
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "user_sequence")

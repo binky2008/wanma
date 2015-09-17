@@ -1,6 +1,6 @@
 package com.best.btr.wanma.bas.action;
 
-import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.best.btr.wanma.bas.entity.Employee;
 import com.best.btr.wanma.bas.service.EmployeeService;
 import com.best.btr.wanma.bas.so.EmployeeSO;
+import com.jinhe.tss.framework.exception.BusinessException;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
+import com.jinhe.tss.framework.sso.context.Context;
 import com.jinhe.tss.framwork.EasyUIDataGrid;
 
 /**
@@ -24,16 +26,6 @@ public class EmployeeAction {
 
     @Autowired
     private EmployeeService service;
-
-    /**
-     * 获取所有的客户信息
-     * @return
-     */
-    @RequestMapping("/")
-    @ResponseBody
-    public List<Employee> getAllEntities() {
-        return service.getAllEntities();
-    }
 
     /**
      * 根据Id获取客户信息
@@ -59,11 +51,30 @@ public class EmployeeAction {
     @ResponseBody
     public Employee save(Employee employee) {
         if (null == employee.getId()) {
+        	// 检查验证码是否匹配
+        	Object ackInSession = Context.getRequestContext().getSession().getAttribute("ack");
+        	Integer ackInput = employee.getAck();
+        	if(ackInput > 0 && !ackInput.equals(ackInSession) ) {
+        		// 验证码不匹配则抛出异常
+        		throw new BusinessException("验证码错误，请重新输入。");
+        	}
+        	
             service.create(employee);
         } else {
             service.update(employee);
         }
         return employee;
+    }
+    
+    @RequestMapping(value = "/ack", method = RequestMethod.POST)
+    @ResponseBody
+    public Object getACK(String mobile) {
+    	int ack = new Random().nextInt(900000) + 100000;
+    	Context.getRequestContext().getSession().setAttribute("ack", ack);
+    	
+    	// TODO 往参数指定的手机号码发送验证码短信
+    	
+    	return "success";
     }
 
     /**

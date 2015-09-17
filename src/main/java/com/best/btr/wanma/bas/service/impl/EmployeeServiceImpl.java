@@ -1,5 +1,6 @@
 package com.best.btr.wanma.bas.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import com.best.btr.wanma.bas.so.EmployeeSO;
 import com.best.btr.wanma.system.ParamsUtil;
 import com.best.btr.wanma.system.dao.UserDao;
 import com.best.btr.wanma.system.entity.User;
+import com.jinhe.tss.framework.exception.BusinessException;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
 import com.jinhe.tss.util.InfoEncoder;
@@ -28,12 +30,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getEntityById(Long id) {
         return dao.getEntityById(id);
     }
-
-    public List<Employee> getAllEntities() {
-        return dao.getAllEntities();
-    }
-
+  
     public Employee create(Employee entity) {
+    	// 检查账号是否已经存在
+    	List<?> list = dao.getEntities("from Employee o where o.code = ?", entity.getCode());
+    	if(list.size() > 0) {
+    		throw new BusinessException("相同手机号的员工记录已经存在。");
+    	}
+    	
+    	entity.setRegisterDate(new Date());
     	entity = dao.create(entity);
     	
     	// TODO 调用邮件接口，开通电子邮件 135xxxxxxxx@btrbi.com
@@ -88,6 +93,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public Employee delete(Long id) {
+    	// TODO User表有外键关联到本表，删除前需要先删除User表的记录。
+    	String hql = "from User o where o.employee.id=?";
+    	List<?> list = dao.getEntities(hql, id);
+    	dao.deleteAll(list);
+    	
         return dao.deleteById(id);
     }
 

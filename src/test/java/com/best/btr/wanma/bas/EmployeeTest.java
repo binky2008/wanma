@@ -33,7 +33,7 @@ public class EmployeeTest extends TxTestSupport {
     @Test
     public void testCRUD() {
         // 获取所有的实体
-        List<Employee> employeeList = action.getAllEntities();
+        List<?> employeeList = action.search(new EmployeeSO(), 1, 10).rows;
         Assert.assertEquals(0, employeeList.size());
 
         String code = "Employee001";
@@ -61,9 +61,6 @@ public class EmployeeTest extends TxTestSupport {
         employee = action.save(employee);
         Assert.assertEquals("员工001-update", employee.getName());
 
-        employeeList = action.getAllEntities();
-        Assert.assertEquals(1, employeeList.size());
-
         // 搜索
         EmployeeSO so = new EmployeeSO();
         so.setCode(code);
@@ -73,8 +70,8 @@ public class EmployeeTest extends TxTestSupport {
         // 删除
         action.delete(id);
 
-        employeeList = action.getAllEntities();
-        Assert.assertEquals(0, employeeList.size());
+        list2 = action.search(new EmployeeSO(), 1, 10).rows;
+        Assert.assertEquals(0, list2.size());
 
     }
 }
