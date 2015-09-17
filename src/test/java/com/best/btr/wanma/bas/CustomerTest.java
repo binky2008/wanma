@@ -47,7 +47,7 @@ public class CustomerTest extends TxTestSupport {
         customer.setSettleType(settleTypeList.get(0));
         customer.setState(stateList.get(0));
         customer.setPhone1("13558996822");
-        customer.setSsq("浙江省杭州市江干区");
+        customer.setRegion("浙江省杭州市江干区");
         customer.setAddress("2号大街");
         customer.setOwnerSite(new Site());
         customer.setSendMessage(true);

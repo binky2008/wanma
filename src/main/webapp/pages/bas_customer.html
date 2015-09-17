@@ -15,16 +15,38 @@
 
     <script src="js/common.js"></script>
 
+    <link rel="stylesheet" href="css/region.css" />
+    <script type="text/javascript" src="js/region.js"></script>
+
+    <style>
+        .panel {
+            overflow: visible;
+        }
+    </style>
+
     <script type="text/javascript">
 
         $(document).ready(function(){
             initCombobox('stateId', 'State');
             initCombobox('settleTypeId', 'SettleType');
             query();
+            /**
+             * 加载省市区
+             */
+            $("#aa").Address({
+                callback: function (infos, selected_ids) {
+                    var str = '';
+                    for (var i = 0; i < infos.length; i++) {
+                        str = str + infos[i];
+                    }
+                    $('#aa input').val(str);
+                }
+            });
         });
 
         function create(){
             $('#dlg').dialog('open').dialog('setTitle','新增客户').dialog('center');
+            $('#fm').form('clear');
             $('#lockVersion').val('0'); //給版本号设置默认值.
             $('#ownerSite').textbox('setValue', window.parent.ownerSite).textbox('readonly', true);
         }
@@ -37,6 +59,7 @@
                 $.get("../customer/" + row.id, {}, function(data){
                     data['state.id'] = data.state.id;
                     data['settleType.id'] = data.settleType.id;
+                    data['ownerSite.id'] = 1;
                     data['lockVersion'] = data.lockVersion;
                     $('#fm').form('load', data);
                 });
@@ -63,7 +86,6 @@
                         });
                     } else {
                         $('#dlg').dialog('close'); // close the dialog
-                        $('#fm').form('clear');
                         $('#t1').datagrid('reload'); // reload the customer data
                     }
                 }
@@ -98,13 +120,19 @@
          */
         var CUSTOMER_FIELDS_1 = [
             { field : 'id', title : 'ID', width : 90},
+            { field : 'typeName', title : '客户类型', width : 80 },
+            { field : 'original', title : '客户来源', width : 90 },
             { field : 'code', title : '客户编码', width : 90 },
             { field : 'name', title : '客户名称', width : 80 },
             { field : 'fullName', title : '客户全称', width : 80 },
-            { field : 'contacts', title : '联系人', width : 80 },
-            { field : 'phone1', title : '联系电话', width : 80 },
-            { field : 'ownerSite', title : '所属站点', width : 80 },
             { field : 'settleTypeName', title : '结算方式', width : 80 },
+            { field : 'contacts', title : '联系人', width : 80 },
+            { field : 'phone1', title : '联系电话1', width : 80 },
+            { field : 'phone2', title : '联系电话2', width : 80 },
+            { field : 'address', title : '寄件地址', width : 100 },
+            { field : 'ownerSiteName', title : '所属站点', width : 80 },
+            { field : 'industry', title : '所属行业', width : 80 },
+            { field : 'businessorName', title : '业务员', width : 80 },
             { field : 'stateName', title : '状态', width : 80 }
         ];
 
@@ -115,8 +143,8 @@
         function query(params) {
             params = params || {};
             $('#t1').datagrid({
-                url : "../customer/query",
-                queryParams : params,
+                url : "../customer/query", // 数据地址
+                queryParams : params, // 参数
                 fit : true,
                 fitColumns : true,
                 pagination : true,
@@ -124,10 +152,12 @@
                 singleSelect : true,
                 toolbar : "#toolbar",
                 columns : [CUSTOMER_FIELDS_1],
+                /* 返回的结果再处理 */
                 loadFilter : function(data) {
                     $.each(data.rows, function(i, item) {
-//                        item.stateName = item.state.text;
-//                        item.ownerSiteName = item.ownerSite.name;
+                        item.stateName = item.state.text;
+                        item.settleTypeName = null != item.settleType ? item.settleType.text : "";
+                        item.ownerSiteName = "柯桥一部";
                     });
                     return data;
                 }
@@ -169,7 +199,7 @@
         </div>
     </div>
 
-    <div id="dlg" class="easyui-dialog" style="width:800px;height:200px;" closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:330px;" closed="true" buttons="#dlg-buttons">
         <form id="fm" method="post" novalidate>
             <input name="id" type="hidden" />
             <input id="lockVersion" name="lockVersion" type="hidden" />
@@ -185,7 +215,7 @@
                     </td>
                     <td class="label">客户全称:</td>
                     <td>
-                        <input name="fullName" class="easyui-textbox" required="false" />
+                        <input name="fullName" class="easyui-textbox" />
                     </td>
                 </tr>
                 <tr>
@@ -193,13 +223,27 @@
                     <td>
                         <input name="contacts" class="easyui-textbox" required="true" />
                     </td>
-                    <td class="label">联系电话:</td>
+                    <td class="label">联系电话1:</td>
                     <td>
                         <input name="phone1" class="easyui-textbox" required="true" />
                     </td>
+                    <td class="label">联系电话2:</td>
+                    <td>
+                        <input name="phone2" class="easyui-textbox" />
+                    </td>
+                </tr>
+                <tr>
                     <td class="label">所属站点:</td>
                     <td>
-                        <input name="ownerSite" class="easyui-textbox" required="true" />
+                        <input name="ownerSite.id" id="ownerSiteId" class="easyui-textbox" required="true" />
+                    </td>
+                    <td class="label">客户类型:</td>
+                    <td>
+                        <input name="type.id" id="typeId" class="easyui-textbox" />
+                    </td>
+                    <td class="label">客户来源:</td>
+                    <td>
+                        <input name="original" id="original" class="easyui-textbox" required="true" />
                     </td>
                 </tr>
                 <tr>
@@ -211,8 +255,33 @@
                     <td>
                         <input name="state.id" id="stateId" class="easyui-textbox" required="true" />
                     </td>
-                    <td></td>
-                    <td></td>
+                    <td class="label">业务员:</td>
+                    <td>
+                        <input name="businessor.id" id="businessorId" class="easyui-textbox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">所在地区:</td>
+                    <td colspan="3">
+                        <div id="aa" class="cc"><input name="region" class="easyui-textbox" style="width: 420px;" value="" prompt="请选择省市区" ></div>
+                    </td>
+                    <td class="label">所属行业:</td>
+                    <td>
+                        <input name="industry" class="easyui-textbox" />
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">详细地址:</td>
+                    <td colspan="3">
+                        <input name="address" id="address" class="easyui-textbox" style="width: 420px;" required="true" />
+                    </td>
+                    <td class="label">发送消息:</td>
+                    <td>
+                        <input name="sendMessage" type="radio" value="1" checked />
+                        <label>是</label>
+                        <input name="sendMessage" type="radio" value="0" />
+                        <label>否</label>
+                    </td>
                 </tr>
             </table>
         </form>

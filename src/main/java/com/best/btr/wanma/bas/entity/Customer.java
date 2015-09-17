@@ -33,8 +33,12 @@ public class Customer extends OperateInfo {
     private String fullName;
 
     /** 客户来源 */
+    @Column(length = 128)
+    private String original;
+
+    /** 客户类型 项目客户 普通客户等 */
     @ManyToOne
-    private Param original;
+    private Param type;
 
     /** 结算类型 */
     @ManyToOne
@@ -54,7 +58,7 @@ public class Customer extends OperateInfo {
 
     /** 省市区 */
     @Column(length = 255)
-    private String ssq;//provinceCityDistrict
+    private String region;//provinceCityDistrict
 
     /** 详细地址 */
     @Column(length = 255)
@@ -69,8 +73,8 @@ public class Customer extends OperateInfo {
     private String industry;
 
     /** 业务员 */
-    @Column(length = 128)
-    private String businessor;
+    @ManyToOne
+    private Employee businessor;
 
     /** 是否短信通知 */
     private Boolean sendMessage;
@@ -82,14 +86,6 @@ public class Customer extends OperateInfo {
     @Override
     public Serializable getPK() {
         return this.getId();
-    }
-
-    public String getSettleTypeName() {
-        return null != settleType ? settleType.getText() : "";
-    }
-
-    public String getStateName() {
-        return state.getText();
     }
 
     public Long getId() {
@@ -124,12 +120,20 @@ public class Customer extends OperateInfo {
         this.fullName = fullName;
     }
 
-    public Param getOriginal() {
+    public String getOriginal() {
         return original;
     }
 
-    public void setOriginal(Param original) {
+    public void setOriginal(String original) {
         this.original = original;
+    }
+
+    public Param getType() {
+        return type;
+    }
+
+    public void setType(Param type) {
+        this.type = type;
     }
 
     public Param getSettleType() {
@@ -164,12 +168,16 @@ public class Customer extends OperateInfo {
         this.phone2 = phone2;
     }
 
-    public String getSsq() {
-        return ssq;
+    public String getRegion() {
+        return region;
     }
 
-    public void setSsq(String ssq) {
-        this.ssq = ssq;
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
+    public Boolean getSendMessage() {
+        return sendMessage;
     }
 
     public String getAddress() {
@@ -196,11 +204,11 @@ public class Customer extends OperateInfo {
         this.industry = industry;
     }
 
-    public String getBusinessor() {
+    public Employee getBusinessor() {
         return businessor;
     }
 
-    public void setBusinessor(String businessor) {
+    public void setBusinessor(Employee businessor) {
         this.businessor = businessor;
     }
 
