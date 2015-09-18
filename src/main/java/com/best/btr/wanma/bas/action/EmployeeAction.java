@@ -1,5 +1,6 @@
 package com.best.btr.wanma.bas.action;
 
+import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,7 @@ import com.jinhe.tss.framwork.EasyUIDataGrid;
 @RequestMapping("/employee")
 public class EmployeeAction {
 
-    @Autowired
-    private EmployeeService service;
+    @Autowired private EmployeeService service;
 
     /**
      * 根据Id获取客户信息
@@ -38,6 +38,12 @@ public class EmployeeAction {
         Employee entity = service.getEntityById(id);
         entity.setPassword("111111111111111111111111111111");
 		return entity;
+    }
+    
+    @RequestMapping(value = "/site/{siteId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<?> getEmployeesBySite(@PathVariable Long siteId) {
+    	return service.getEmployeesBySite(siteId);
     }
 
     /**

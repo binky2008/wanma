@@ -1,3 +1,4 @@
+
 function initCombobox(id, code, params, init) {
     var url = '/wanma/param/json/combo/' + code;
     $.get(url, params, function(data){
@@ -16,6 +17,64 @@ function initCombobox(id, code, params, init) {
         if(data[init]) {
             $('#' + id).combobox('setValue', data[init][0]);
         }
+    });
+}
+
+function save(){
+    $('#fm').form('submit',{
+        url: SAVE_URL,
+        onSubmit: function(){
+            return $(this).form('validate');
+        },
+        success: function(result){
+            checkException(result, function() {
+                closeDialog();
+                $('#t1').datagrid('reload'); // reload the employee data
+            });
+        }
+    });
+}
+
+function checkException(result, callback) {
+    result = eval('(' + result + ')');
+    if (result.errorMsg){
+        $.messager.show({
+            title: '异常信息提示',
+            msg: result.errorMsg
+        });
+    } else {
+        callback();
+    }
+}
+
+function closeDialog() {
+    $('#dlg').dialog('close'); // close the dialog
+    $('#fm').form('clear');
+}
+
+function getSelectedRow() {
+    var row = $('#t1').datagrid('getSelected');
+    if (!row) {
+        $.messager.alert({
+            title: '提示',
+            msg: '您没有选中任何行，请先点击选中需要操作的行。'
+        });
+    }
+    return row;
+}
+
+function _remove(){
+    var row = getSelectedRow();
+    row && $.messager.confirm('Confirm', '您确定要删除这行数据吗?', function(r){
+        $.ajax({
+             url: DELTE_URL + row.id,
+             type: 'DELETE',
+             success: function(result) {
+                checkException(result, function() {
+                    $('#t1').datagrid('reload'); // reload the grid data
+                });
+             }
+        });       
     });
 }
 

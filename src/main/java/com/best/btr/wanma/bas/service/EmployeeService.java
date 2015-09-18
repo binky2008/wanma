@@ -1,5 +1,7 @@
 package com.best.btr.wanma.bas.service;
 
+import java.util.List;
+
 import com.best.btr.wanma.bas.entity.Employee;
 import com.best.btr.wanma.bas.so.EmployeeSO;
 import com.jinhe.tss.framework.component.log.Logable;
@@ -16,6 +18,8 @@ public interface EmployeeService {
      * @return
      */
     Employee getEntityById(Long id);
+    
+    List<?> getEmployeesBySite(Long siteId);
 
     /**
      * 创建客户信息

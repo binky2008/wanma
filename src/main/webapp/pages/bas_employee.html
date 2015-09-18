@@ -23,6 +23,12 @@
 
 <script type="text/javascript">
 
+BASE_URL = '../employee/'; 
+GET_URL   = BASE_URL + '/';  //{id}
+SAVE_URL  = BASE_URL;
+DELTE_URL = BASE_URL + '/';  //{id}
+QUERY_URL = BASE_URL + 'query';
+
 $(document).ready(function(){
     query();
     
@@ -30,6 +36,7 @@ $(document).ready(function(){
     initCombobox('positionId', 'UserJob');
 
     initCombobox('param3', 'UserJob');
+    initCombobox('param4', 'EntityState');
 
     $('#positionId').combobox( {
         onChange : function(newValue, oldValue) {
@@ -67,11 +74,11 @@ function create(){
 }
 
 function update(){
-    var row = $('#t1').datagrid('getSelected');
+    var row = getSelectedRow();
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改员工信息').dialog('center');
 
-        $.get("../employee/" + row.id, {}, function(data){
+        $.get(GET_URL + row.id, {}, function(data){
             data['state.id'] = data.state.id;
             data['ownerSite.id'] = data.ownerSite.id;
             if(data.position) data['position.id'] = data.position.id;
@@ -81,62 +88,10 @@ function update(){
             $('#_code').textbox('readonly', true);
         });
     }
-    else {
-        $.messager.alert({
-            title: '提示',
-            msg: '您没有选中任何行，请先点击选中需要修改的行。'
-        });
-    }
-}
-
-function save(){
-    $('#fm').form('submit',{
-        url: '../employee',
-        onSubmit: function(){
-            return $(this).form('validate');
-        },
-        success: function(result){
-            result = eval('(' + result + ')');
-            if (result.errorMsg){
-                $.messager.show({
-                    title: '异常信息提示',
-                    msg: result.errorMsg
-                });
-            } else {
-                closeDialog();
-                $('#t1').datagrid('reload'); // reload the employee data
-            }
-        }
-    });
-}
-
-function closeDialog() {
-    $('#dlg').dialog('close'); // close the dialog
-    $('#fm').form('clear');
-}
-
-function _remove(){
-    var row = $('#t1').datagrid('getSelected');
-    if (row){
-        $.messager.confirm('Confirm', '您确定要删除这行数据吗?', function(r){
-            $.ajax({
-                 url: '../employee/' + row.id,
-                 type: 'DELETE',
-                 success: function(result) {
-                    $('#t1').datagrid('reload'); 
-                 }
-            });       
-        });
-    }
-    else {
-        $.messager.alert({
-            title: '提示',
-            msg: '您没有选中任何行，请先点击选中需要删除的行。'
-        });
-    }
 }
 
 var FIELDS_1 = [        
+        { field : 'ck', checkbox: true},
         { field : 'code', title : '员工编码', width : 80 },
         { field : 'name', title : '员工名称', width : 80 },
         { field : 'stateName', title : '状态', width : 80 },
@@ -152,13 +107,15 @@ function query(params) {
     params = params || {};
 
     $('#t1').datagrid({
-        url: '../employee/query',
+        url: QUERY_URL,
         queryParams: params,
         fit : true,
         fitColumns : true,
         pagination : true,
         rownumbers : true,
         singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
         toolbar: [ 
             { text: '新增', iconCls: 'icon-add', handler: create }, 
             '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
@@ -182,6 +139,7 @@ function beginQuery() {
     params.code = $('#param1').val();
     params.name = $('#param2').val();
     params.positionId = $('#param3').textbox("getValue");
+    params.stateId = $('#param4').textbox("getValue");
     query(params);
 }
 
@@ -192,9 +150,10 @@ function beginQuery() {
 
     <div id="main" class="easyui-layout" fit="true" >
         <div id="queryContainer" data-options="region:'north'" border="false">
-            <label>员工编码：</label><input id="param1" class="easyui-textbox"></input>&nbsp;
-            <label>员工姓名：</label><input id="param2" class="easyui-textbox"></input>&nbsp;
-            <label>员工岗位：</label><input id="param3" class="easyui-textbox"></input>&nbsp;
+            <label>员工编码：</label><input id="param1" class="easyui-textbox"></input>
+            <label>员工姓名：</label><input id="param2" class="easyui-textbox"></input>
+            <label>员工岗位：</label><input id="param3" class="easyui-textbox"></input>
+            <label>状态：</label><input id="param4" class="easyui-textbox"></input>
 
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
         </div>

@@ -23,6 +23,12 @@
 
 <script type="text/javascript">
 
+BASE_URL = "../../demo";
+GET_URL   = BASE_URL + '/';  //{id}
+SAVE_URL  = BASE_URL;
+DELTE_URL = BASE_URL + '/';  //{id}
+QUERY_URL = BASE_URL + 'query';
+
 $(document).ready(function(){
     query();
 
@@ -38,66 +44,17 @@ function create(){
 }
 
 function update(){
-    var row = $('#t1').datagrid('getSelected');
+    var row = getSelectedRow(); 
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改').dialog('center');
 
-        $.get("../../demo/" + row.id, {}, function(data){
+        $.get(GET_URL + row.id, {}, function(data){
             data['state.id'] = data.state.id;
 
             $('#fm').form('load', data);
         });
     }
-    else {
-        $.messager.alert({
-            title: '提示',
-            msg: '您没有选中任何行，请先点击选中需要修改的行。'
-        });
-    }
 }
-
-function saveUser(){
-    $('#fm').form('submit',{
-        url: '../../demo',
-        onSubmit: function(){
-            return $(this).form('validate');
-        },
-        success: function(result){
-            var result = eval('(' + result + ')');
-            if (result.errorMsg){
-                $.messager.show({
-                    title: 'Error',
-                    msg: result.errorMsg
-                });
-            } else {
-                $('#dlg').dialog('close'); // close the dialog
-                $('#t1').datagrid('reload'); // reload the grid data
-            }
-        }
-    });
-}
-
-function _remove(){
-    var row = $('#t1').datagrid('getSelected');
-    if (row){
-        $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
-            $.ajax({
-                 url: '../../demo/' + row.id,
-                 type: 'DELETE',
-                 success: function(result) {
-                    $('#t1').datagrid('reload'); // reload the user data
-                 }
-            });
-        });
-    }
-    else {
-        $.messager.alert({
-            title: '提示',
-            msg: '您没有选中任何行，请先点击选中需要删除的行。'
-        });
-    }
-}
-
 
 var FIELDS_1 = [
         { field : 'ck', checkbox: true},

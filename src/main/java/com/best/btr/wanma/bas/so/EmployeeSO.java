@@ -1,10 +1,9 @@
 package com.best.btr.wanma.bas.so;
 
-import com.jinhe.tss.framework.persistence.pagequery.MacrocodeQueryCondition;
-
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.jinhe.tss.framework.persistence.pagequery.MacrocodeQueryCondition;
 
 /**
  * 搜索客户信息的条件。
@@ -18,137 +17,73 @@ public class EmployeeSO extends MacrocodeQueryCondition {
     /** 名称 */
     private String name;
 
-    /**
-     * 岗位
-     * TODO 物流专员、客服、财务、经理，岗位可以多选
-     * 是不是相当于角色?
-     */
-    private String position;
-
-    /** 部门 */
-    private String department;
-
-    /** 电话 */
-    private String phone;
-
-    /** 性别 */
-    private String gender;
+    /** 岗位 */
+    private Long positionId;
 
     /** 所属站点 */
-    private String ownerSite;
-
-    /** 企业邮箱 */
-    private String email;
-
-    /** 注册来源 */
-    private String original;
-
-    /** 注册日期 */
-    private Date registerDate;
+    private Long ownerSiteId;
 
     /** 状态 停用 启用 */
-    private String stateCode;
+    private Long stateId;
 
     @Override
     public Map<String, Object> getConditionMacrocodes() {
         Map<String, Object> map = new HashMap<String, Object>() ;
-        map.put("${code}", " and o.code = :code");
-        map.put("${name}", " and o.name = :name");
-        map.put("${position}", " and o.position = :position");
-        map.put("${phone}", " and o.phone = :phone");
-        map.put("${gender}", " and o.gender = :gender");
-        map.put("${ownerSite}", " and o.ownerSite = :ownerSite");
-        map.put("${email}", " and o.email like :email");
-        map.put("${original}", " and o.original = :original");
 
+        map.put("${name}", " and o.name like :name");
+        map.put("${code}", " and o.code like :code");
+        
+        map.put("${stateId}", " and o.state.id = :stateId");
+        map.put("${positionId}", " and o.position.id = :positionId");
+        map.put("${ownerSiteId}", " and o.ownerSite.id = :ownerSiteId");
+        
         return map;
     }
 
-    public String getName() {
-        return name;
-    }
+	public String getCode() {
+		if(code != null){
+			code = "%" + code.trim() + "%";           
+        }
+		return code;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public String getName() {
+		if(name != null){
+			name = "%" + name.trim() + "%";           
+        }
+		return name;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getPosition() {
-        return position;
-    }
+	public Long getPositionId() {
+		return positionId;
+	}
 
-    public void setPosition(String position) {
-        this.position = position;
-    }
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
+	}
 
-    public String getDepartment() {
-        return department;
-    }
+	public Long getOwnerSiteId() {
+		return ownerSiteId;
+	}
 
-    public void setDepartment(String department) {
-        this.department = department;
-    }
+	public void setOwnerSiteId(Long ownerSiteId) {
+		this.ownerSiteId = ownerSiteId;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public Long getStateId() {
+		return stateId;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public String getOwnerSite() {
-        return ownerSite;
-    }
-
-    public void setOwnerSite(String ownerSite) {
-        this.ownerSite = ownerSite;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getOriginal() {
-        return original;
-    }
-
-    public void setOriginal(String original) {
-        this.original = original;
-    }
-
-    public Date getRegisterDate() {
-        return registerDate;
-    }
-
-    public void setRegisterDate(Date registerDate) {
-        this.registerDate = registerDate;
-    }
-
-    public String getStateCode() {
-        return stateCode;
-    }
-
-    public void setStateCode(String stateCode) {
-        this.stateCode = stateCode;
-    }
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
+ 
 }

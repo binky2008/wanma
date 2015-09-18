@@ -122,9 +122,9 @@ function InitLeftMenu() {
 	);
 }
 
-function addTab(subtitle,url,icon){
+function addTab(subtitle, url, icon){
 	if( !$('#tabs').tabs('exists',subtitle) ){
-		$('#tabs').tabs('add',{
+		$('#tabs').tabs('add', {
 			title:subtitle,
 			content: createFrame(url),
 			closable: true,
@@ -133,7 +133,7 @@ function addTab(subtitle,url,icon){
 	}
 	else {
 		$('#tabs').tabs('select', subtitle);
-		$('#tabupdate').click();
+		// $('#refresh').click();
 	}
 	attachTabCloseEnvet();
 }
@@ -239,7 +239,7 @@ function closeTab(action) {
   </div>
 
 	<div id="mm" class="easyui-menu">
-		<div id="tabupdate">刷新</div>
+		<div id="refresh">刷新</div>
 		<div class="menu-sep"></div>
 		<div id="close">关闭</div>
 		<div id="closeall">全部关闭</div>

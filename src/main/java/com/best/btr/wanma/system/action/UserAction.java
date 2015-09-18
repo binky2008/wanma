@@ -1,5 +1,7 @@
 package com.best.btr.wanma.system.action;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -45,9 +47,10 @@ public class UserAction {
     
     @RequestMapping("/query")
     @ResponseBody
-    public EasyUIDataGrid search(UserSO so, int page, int rows) {
+    public EasyUIDataGrid search(HttpServletRequest request, UserSO so, int page, int rows) {
     	so.getPage().setPageNum(page);
     	so.getPage().setPageSize(rows);
+    	so.getOrderByFields().add("o.id desc");
     	
         PageInfo pi = service.search(so);
         

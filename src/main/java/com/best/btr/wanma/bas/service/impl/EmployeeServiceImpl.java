@@ -30,6 +30,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee getEntityById(Long id) {
         return dao.getEntityById(id);
     }
+    
+    public List<?> getEmployeesBySite(Long siteId) {
+    	String hql = " from Employee o where o.ownerSite.id = ? ";
+        return dao.getEntities(hql, siteId);
+    }
   
     public Employee create(Employee entity) {
     	// 检查账号是否已经存在
@@ -93,7 +98,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public Employee delete(Long id) {
-    	// TODO User表有外键关联到本表，删除前需要先删除User表的记录。
+    	// User表有外键关联到本表，删除前需要先删除User表的记录。
     	String hql = "from User o where o.employee.id=?";
     	List<?> list = dao.getEntities(hql, id);
     	dao.deleteAll(list);
@@ -102,9 +107,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     public PageInfo search(EmployeeSO so) {
-        String hql = " from Employee o "
-                + " where 1=1 " + so.toConditionString()
-                + " order by o.id desc ";
+        String hql = " from Employee o where 1=1 " + so.toConditionString();
 
         PaginationQueryByHQL pageQuery = new PaginationQueryByHQL(dao.em(), hql, so);
         return pageQuery.getResultList();
