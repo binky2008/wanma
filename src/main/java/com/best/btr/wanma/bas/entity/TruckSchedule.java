@@ -2,6 +2,7 @@ package com.best.btr.wanma.bas.entity;
 
 import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
+import com.jinhe.tss.framwork.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,21 +14,21 @@ import java.util.Date;
  * @author Created by LU on 15/9/10.
  */
 @Entity
-@Table(name = "WM_BAS_VEHICLE_SCHEDULE")
-@SequenceGenerator(name = "vehicle_schedule_sequence", sequenceName = "vehicle_schedule_sequence", initialValue = 1000, allocationSize = 10)
-public class VehicleSchedule extends OperateInfo {
+@Table(name = "WM_BAS_TRUCK_SCHEDULE")
+@SequenceGenerator(name = "truck_schedule_sequence", sequenceName = "truck_schedule_sequence", initialValue = 1000, allocationSize = 10)
+public class TruckSchedule extends AbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "vehicle_schedule_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "truck_schedule_sequence")
     private Long id;
 
     /** 所属分拨 */
     @ManyToOne
-    private Centre centre;
+    private Center ownerCenter;
 
     /** 所属站点 */
     @ManyToOne
-    private Site site;
+    private Site ownerSite;
 
     /** 编码 */
     @Column(length = 128, unique = true, nullable = false)
@@ -39,7 +40,7 @@ public class VehicleSchedule extends OperateInfo {
 
     /** 车型 */
     @ManyToOne
-    private Param vehicleType;
+    private Param truckType;
 
     /** 班次类型 */
     @Column(length = 128)
@@ -66,22 +67,6 @@ public class VehicleSchedule extends OperateInfo {
         return this.getId();
     }
 
-    public String getCentreName() {
-        return null != this.getCentre() ? this.getCentre().getName() : "";
-    }
-
-    public String getSiteName() {
-        return null != this.getSite() ? this.getSite().getName() : "";
-    }
-
-    public String getVehicleTypeName() {
-        return null != this.getVehicleType() ? this.getVehicleType().getName() : "";
-    }
-
-    public String getStateName() {
-        return null != state ? state.getText() : "";
-    }
-
     public Long getId() {
         return id;
     }
@@ -90,20 +75,20 @@ public class VehicleSchedule extends OperateInfo {
         this.id = id;
     }
 
-    public Centre getCentre() {
-        return centre;
+    public Center getOwnerCenter() {
+        return ownerCenter;
     }
 
-    public void setCentre(Centre centre) {
-        this.centre = centre;
+    public void setOwnerCenter(Center ownerCenter) {
+        this.ownerCenter = ownerCenter;
     }
 
-    public Site getSite() {
-        return site;
+    public Site getOwnerSite() {
+        return ownerSite;
     }
 
-    public void setSite(Site site) {
-        this.site = site;
+    public void setOwnerSite(Site ownerSite) {
+        this.ownerSite = ownerSite;
     }
 
     public String getCode() {
@@ -122,12 +107,12 @@ public class VehicleSchedule extends OperateInfo {
         this.serialCode = serialCode;
     }
 
-    public Param getVehicleType() {
-        return vehicleType;
+    public Param getTruckType() {
+        return truckType;
     }
 
-    public void setVehicleType(Param vehicleType) {
-        this.vehicleType = vehicleType;
+    public void setTruckType(Param truckType) {
+        this.truckType = truckType;
     }
 
     public String getSerialType() {

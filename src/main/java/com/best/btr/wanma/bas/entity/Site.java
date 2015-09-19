@@ -28,7 +28,7 @@ public class Site {
 
     /** 所属分拨中心 */
     @ManyToOne
-    private Centre centre;
+    private Center center;
 
     /** 状态 */
     @ManyToOne
@@ -58,12 +58,12 @@ public class Site {
         this.name = name;
     }
 
-    public Centre getCentre() {
-        return centre;
+    public Center getCenter() {
+        return center;
     }
 
-    public void setCentre(Centre centre) {
-        this.centre = centre;
+    public void setCenter(Center center) {
+        this.center = center;
     }
 
     public Param getState() {

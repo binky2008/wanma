@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "WM_BAS_CENTRE")
 @SequenceGenerator(name = "centre_sequence", sequenceName = "centre_sequence", initialValue = 1000, allocationSize = 10)
-public class Centre {
+public class Center {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "centre_sequence")

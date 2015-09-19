@@ -47,6 +47,12 @@ public class SystemInit {
             addComboItem(param.getId(), "0", "现付");
             addComboItem(param.getId(), "1", "月结");
         }
+
+        if (null == paramService.getParam("TruckType")) {
+            Param param = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "TruckType", "车辆类型");
+            addComboItem(param.getId(), "1", "9.6");
+            addComboItem(param.getId(), "2", "6.4");
+        }
 		
 		return new Object[] { "Success" };
 	}

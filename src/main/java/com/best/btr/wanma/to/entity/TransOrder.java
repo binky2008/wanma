@@ -5,7 +5,7 @@ import java.util.Date;
 
 import javax.persistence.ManyToOne;
 
-import com.best.btr.wanma.bas.entity.Centre;
+import com.best.btr.wanma.bas.entity.Center;
 import com.best.btr.wanma.bas.entity.Customer;
 import com.best.btr.wanma.bas.entity.Site;
 import com.best.btr.wanma.system.entity.User;
@@ -61,7 +61,7 @@ public class TransOrder extends OperateInfo {
 	/**
 	 * 派件分拨	文本	Y	Y	根据地址得出
 	 */
-	private Centre sendCentre;
+	private Center sendCenter;
 	
 	/**
 	 * 派件网点	选择框	Y	Y	根据地址得出

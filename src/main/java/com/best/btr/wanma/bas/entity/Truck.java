@@ -1,32 +1,32 @@
 package com.best.btr.wanma.bas.entity;
 
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
+import com.jinhe.tss.framwork.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 车辆信息
- * TODO 有些字段需要其他的基础表的信息，后续维护
  * @author Created by LU on 15/9/10.
  */
 @Entity
-@Table(name = "WM_BAS_VEHICLE")
-@SequenceGenerator(name = "vehicle_sequence", sequenceName = "vehicle_sequence", initialValue = 1000, allocationSize = 10)
-public class Vehicle extends OperateInfo {
+@Table(name = "WM_BAS_TRUCK")
+@SequenceGenerator(name = "truck_sequence", sequenceName = "truck_sequence", initialValue = 1000, allocationSize = 10)
+public class Truck extends AbstractEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "vehicle_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "truck_sequence")
     private Long id;
 
     /** 所属分拨 */
     @ManyToOne
-    private Centre centre;
+    private Center ownerCenter;
 
     /** 所属站点 */
     @ManyToOne
-    private Site site;
+    private Site ownerSite;
 
     /** 班车卡卡号 */
     @Column(length = 128, unique = true, nullable = false)
@@ -42,11 +42,14 @@ public class Vehicle extends OperateInfo {
 
     /** 车牌号 */
     @Column(length = 128)
-    private String licensePlate;
+    private String code;
 
     /** 车品牌 */
     @Column(length = 128)
     private String brand;
+
+    /** 修订日期 */
+    private Date updateTime;
 
     /** 车辆状态 */
     @ManyToOne
@@ -57,22 +60,6 @@ public class Vehicle extends OperateInfo {
         return this.getId();
     }
 
-    public String getCentreName() {
-        return null != this.getCentre() ? this.getCentre().getName() : "";
-    }
-
-    public String getSiteName() {
-        return null != this.getSite() ? this.getSite().getName() : "";
-    }
-
-    public String getTypeName() {
-        return null != this.getType() ? this.getType().getName() : "";
-    }
-
-    public String getStateName() {
-        return null != state ? state.getText() : "";
-    }
-
     public Long getId() {
         return id;
     }
@@ -81,20 +68,20 @@ public class Vehicle extends OperateInfo {
         this.id = id;
     }
 
-    public Centre getCentre() {
-        return centre;
+    public Center getOwnerCenter() {
+        return ownerCenter;
     }
 
-    public void setCentre(Centre centre) {
-        this.centre = centre;
+    public void setOwnerCenter(Center ownerCenter) {
+        this.ownerCenter = ownerCenter;
     }
 
-    public Site getSite() {
-        return site;
+    public Site getOwnerSite() {
+        return ownerSite;
     }
 
-    public void setSite(Site site) {
-        this.site = site;
+    public void setOwnerSite(Site ownerSite) {
+        this.ownerSite = ownerSite;
     }
 
     public String getCardCode() {
@@ -121,12 +108,12 @@ public class Vehicle extends OperateInfo {
         this.type = type;
     }
 
-    public String getLicensePlate() {
-        return licensePlate;
+    public String getCode() {
+        return code;
     }
 
-    public void setLicensePlate(String licensePlate) {
-        this.licensePlate = licensePlate;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getBrand() {
@@ -137,6 +124,14 @@ public class Vehicle extends OperateInfo {
         this.brand = brand;
     }
 
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
     public Param getState() {
         return state;
     }
@@ -144,6 +139,5 @@ public class Vehicle extends OperateInfo {
     public void setState(Param state) {
         this.state = state;
     }
-
 
 }

@@ -37,12 +37,12 @@
 			{
 				"id": "23",
 				"name": "车辆管理",
-				"url": "../pages/bas_vehicle.html"
+				"url": "../pages/bas_truck.html"
 			},
 			{
 				"id": "24",
 				"name": "班次管理",
-				"url": "../pages/bas_vehicle_schedule.html"
+				"url": "../pages/bas_truck_schedule.html"
 			},
 			{
 				"id": "25",

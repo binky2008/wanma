@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Vehicle</title>
+    <title>VehicleSchedule</title>
     <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
     <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
 
@@ -42,9 +42,9 @@
 
 $(document).ready(function(){
     initCombobox('stateId', 'State');
-    initCombobox('typeId', 'VehicleType');
-    initCombobox('siteId', 'Site');
     initCombobox('centreId', 'Centre');
+    initCombobox('siteId', 'Site');
+    initCombobox('vehicleTypeId', 'VehicleType');
 });
 
 function initCombobox(id, code, params) {
@@ -74,11 +74,11 @@ function update(){
     if (row){
         $('#dlg').dialog('open').dialog('setTitle','修改').dialog('center');
 
-        $.get("../vehicle/" + row.id, {}, function(data){
+        $.get("../vehicleschedule/" + row.id, {}, function(data){
             data['state.id'] = data.state.id;
-            data['type.id'] = data.type.id;
+            data['center.id'] = data.center.id;
             data['site.id'] = data.site.id;
-            data['centre.id'] = data.centre.id;
+            data['vehicleType.id'] = data.vehicleType.id;
             data['lockVersion'] = data.lockVersion;
             $('#fm').form('load', data);
         });
@@ -93,7 +93,7 @@ function update(){
 
 function save(){
     $('#fm').form('submit',{
-        url: '../vehicle',
+        url: '../vehicleschedule',
         onSubmit: function(){
             return $(this).form('validate');
         },
@@ -107,7 +107,7 @@ function save(){
             } else {
                 $('#dlg').dialog('close'); // close the dialog
                 $('#fm').form('clear');
-                $('#dg').datagrid('reload'); // reload the vehicle data
+                $('#dg').datagrid('reload'); // reload the vehicleschedule data
             }
         }
     });
@@ -119,10 +119,10 @@ function _remove(){
         $.messager.confirm('Confirm','您确定要删除这行数据吗?', function(r){
             if (r) {
                 $.ajax({
-                     url: '../vehicle/' + row.id,
+                     url: '../vehicleschedule/' + row.id,
                      type: 'DELETE',
                      success: function(result) {
-                        $('#dg').datagrid('reload'); // reload the vehicle data
+                        $('#dg').datagrid('reload'); // reload the vehicleschedule data
                      }
                 });
             }
@@ -140,7 +140,7 @@ function _remove(){
 </head>
 <body>
     <table id="dg" title="数据列表" class="easyui-datagrid" border="false"
-        url="../vehicle/"
+        url="../vehicleschedule/"
         toolbar="#toolbar" pagination="true"
         rownumbers="true" fitColumns="true" fit="true" singleSelect="true">
         <thead>
@@ -148,12 +148,13 @@ function _remove(){
                 <th field="id" width="50">ID</th>
                 <th field="centreName" width="50">所属分拨</th>
                 <th field="siteName" width="50">所属网点</th>
-                <th field="cardCode" width="50">班车卡卡号</th>
-                <th field="barCode" width="50">车厢条码</th>
-                <th field="typeName" width="50">车型</th>
-                <th field="licensePlate" width="50">车牌号</th>
-                <th field="brand" width="50">车品牌</th>
-                <th field="updateTime" width="50">修订日期</th>
+                <th field="serialCode" width="50">班次号</th>
+                <th field="vehicleTypeName" width="50">车型</th>
+                <th field="serialType" width="50">班次类型</th>
+                <th field="arrivalTime" width="50">到岗时间</th>
+                <th field="leaveTime" width="50">离岗时间</th>
+                <th field="executeDate" width="50">执行日</th>
+                <th field="effectiveDate" width="50">生效日期</th>
                 <th field="stateName" width="50">状态</th>
             </tr>
         </thead>
@@ -172,35 +173,39 @@ function _remove(){
             <input id="lockVersion" name="lockVersion" type="hidden" />
             <div class="fitem">
                 <label>所属分拨:</label>
-                <input name="centre.id" class="centre.id" required />
+                <input name="center.id" class="center.id" required />
             </div>
             <div class="fitem">
                 <label>所属网点:</label>
                 <input name="site.id" id="siteId" required />
             </div>
             <div class="fitem">
-                <label>班车卡卡号:</label>
-                <input name="cardCode" class="easyui-textbox" required />
-            </div>
-            <div class="fitem">
-                <label>车厢条码:</label>
-                <input name="barCode" class="easyui-textbox" required />
+                <label>班次号:</label>
+                <input name="serialCode" class="easyui-textbox" required />
             </div>
             <div class="fitem">
                 <label>车型:</label>
-                <input name="type.id" id="typeId" required />
+                <input name="vehicleType.id" id="vehicleTypeId" required />
             </div>
             <div class="fitem">
-                <label>车牌号:</label>
-                <input name="licensePlate" class="easyui-textbox" required />
+                <label>班次类型:</label>
+                <input name="serialType" class="easyui-textbox" required />
             </div>
             <div class="fitem">
-                <label>车品牌:</label>
-                <input name="brand" class="easyui-textbox" required />
+                <label>到岗时间:</label>
+                <input name="arrivalTime" class="easyui-datetimebox" required />
             </div>
             <div class="fitem">
-                <label>修订日期:</label>
-                <input name="updateTime" class="easyui-datetimebox" required />
+                <label>离岗时间:</label>
+                <input name="leaveTime" class="easyui-datetimebox" required />
+            </div>
+            <div class="fitem">
+                <label>执行日:</label>
+                <input name="executeDate" class="easyui-textbox" required />
+            </div>
+            <div class="fitem">
+                <label>生效日期:</label>
+                <input name="effectiveDate" class="easyui-datetimebox" required />
             </div>
             <div class="fitem">
                 <label>状态:</label>

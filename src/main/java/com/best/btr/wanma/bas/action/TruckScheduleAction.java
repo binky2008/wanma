@@ -1,8 +1,8 @@
 package com.best.btr.wanma.bas.action;
 
-import com.best.btr.wanma.bas.entity.VehicleSchedule;
-import com.best.btr.wanma.bas.service.VehicleScheduleService;
-import com.best.btr.wanma.bas.so.VehicleScheduleSO;
+import com.best.btr.wanma.bas.entity.TruckSchedule;
+import com.best.btr.wanma.bas.service.TruckScheduleService;
+import com.best.btr.wanma.bas.so.TruckScheduleSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,12 +17,12 @@ import java.util.List;
 /**
  * @author Created by Hsian on 15/9/3.
  */
-@Controller("VehicleScheduleAction")
-@RequestMapping("/vehicleschedule")
-public class VehicleScheduleAction {
+@Controller("TruckScheduleAction")
+@RequestMapping("/truckschedule")
+public class TruckScheduleAction {
 
     @Autowired
-    private VehicleScheduleService service;
+    private TruckScheduleService service;
 
     /**
      * 获取所有的客户信息
@@ -30,7 +30,7 @@ public class VehicleScheduleAction {
      */
     @RequestMapping("/")
     @ResponseBody
-    public List<VehicleSchedule> getAllEntities() {
+    public List<TruckSchedule> getAllEntities() {
         return service.getAllEntities();
     }
 
@@ -41,7 +41,7 @@ public class VehicleScheduleAction {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public VehicleSchedule getEntityById(@PathVariable Long id) {
+    public TruckSchedule getEntityById(@PathVariable Long id) {
         return service.getEntityById(id);
     }
 
@@ -49,18 +49,18 @@ public class VehicleScheduleAction {
      * 更新客户信息，包括新增与修改。
      * 如果Id为空新增，否则修改。
      *
-     * @param vehicleSchedule 需要更新的客户
+     * @param truckSchedule 需要更新的客户
      * @return
      */
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public VehicleSchedule save(VehicleSchedule vehicleSchedule) {
-        if (null == vehicleSchedule.getId()) {
-            service.create(vehicleSchedule);
+    public TruckSchedule save(TruckSchedule truckSchedule) {
+        if (null == truckSchedule.getId()) {
+            service.create(truckSchedule);
         } else {
-            service.update(vehicleSchedule);
+            service.update(truckSchedule);
         }
-        return vehicleSchedule;
+        return truckSchedule;
     }
 
     /**
@@ -70,7 +70,7 @@ public class VehicleScheduleAction {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public VehicleSchedule delete(@PathVariable Long id) {
+    public TruckSchedule delete(@PathVariable Long id) {
         return service.delete(id);
     }
 
@@ -83,7 +83,7 @@ public class VehicleScheduleAction {
      */
     @RequestMapping(value = "/{page}")
     @ResponseBody
-    public List<?> search(HttpServletResponse response, VehicleScheduleSO so, @PathVariable int page) {
+    public List<?> search(HttpServletResponse response, TruckScheduleSO so, @PathVariable int page) {
         so.getPage().setPageNum(page);
         PageInfo pageInfo = service.search(so);
         return pageInfo.getItems();

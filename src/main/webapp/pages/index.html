@@ -59,7 +59,7 @@ a:hover{ color:red; text-decoration:underline; }
 
 var onlyOpenTitle="欢迎使用";
 
-var _menus, ownerSite;
+var _menus, ownerSite, ownerCenter;
 
 $(function(){
 	$.getJSON("menu.json", function(json){
@@ -71,6 +71,7 @@ $(function(){
 	attachTabCloseEnvet();
 	attachTabEnvet();
 
+	ownerCenter = {"id": 1, "name": "杭州分拨"};
 	ownerSite = {"id" : 1, "name": "柯桥一部"};
 });
 
