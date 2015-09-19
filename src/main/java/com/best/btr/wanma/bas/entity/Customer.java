@@ -1,7 +1,8 @@
 package com.best.btr.wanma.bas.entity;
 
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
+import com.jinhe.tss.framwork.AbstractEntity;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "WM_BAS_CUSTOMER")
 @SequenceGenerator(name = "customer_sequence", sequenceName = "customer_sequence", initialValue = 1000, allocationSize = 10)
-public class Customer extends OperateInfo {
+public class Customer extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "customer_sequence")
@@ -77,7 +78,7 @@ public class Customer extends OperateInfo {
     private Employee businessor;
 
     /** 是否短信通知 */
-    private Boolean sendMessage;
+    private Boolean isSendMessage;
 
     /** 状态 停用 启用 */
     @ManyToOne
@@ -176,10 +177,6 @@ public class Customer extends OperateInfo {
         this.region = region;
     }
 
-    public Boolean getSendMessage() {
-        return sendMessage;
-    }
-
     public String getAddress() {
         return address;
     }
@@ -212,12 +209,12 @@ public class Customer extends OperateInfo {
         this.businessor = businessor;
     }
 
-    public Boolean isSendMessage() {
-        return sendMessage;
+    public Boolean getIsSendMessage() {
+        return isSendMessage;
     }
 
-    public void setSendMessage(Boolean sendMessage) {
-        this.sendMessage = sendMessage;
+    public void setIsSendMessage(Boolean isSendMessage) {
+        this.isSendMessage = isSendMessage;
     }
 
     public Param getState() {

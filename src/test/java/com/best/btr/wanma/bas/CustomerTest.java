@@ -50,7 +50,7 @@ public class CustomerTest extends TxTestSupport {
         customer.setRegion("浙江省杭州市江干区");
         customer.setAddress("2号大街");
         customer.setOwnerSite(new Site());
-        customer.setSendMessage(true);
+        customer.setIsSendMessage(true);
         customer = action.save(customer);
 
         Long id = customer.getId();
