@@ -32,6 +32,10 @@ public class TruckScheduleServiceImpl implements TruckScheduleService {
 
     @Override
     public TruckSchedule create(TruckSchedule entity) {
+        // TODO 2 班次编码是唯一自动生成
+        // 暂时简单的生成
+        String code = "BC" + System.currentTimeMillis();
+        entity.setCode(code);
         return dao.create(entity);
     }
 

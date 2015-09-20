@@ -61,7 +61,7 @@
         function update() {
             var row = getSelectedRow();
             if (row) {
-                $('#dlg').dialog('open').dialog('setTitle', '修改').dialog('center');
+                $('#dlg').dialog('open').dialog('setTitle', '修改车辆').dialog('center');
 
                 $.get(GET_URL + row.id, {}, function (data) {
                     data['state.id'] = data.state.id;

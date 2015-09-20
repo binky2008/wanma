@@ -39,3 +39,7 @@ a:hover{ color:red; text-decoration:underline; }
 #fm table input.easyui-textbox {
     width:172px;
 }
+
+#fm table input.easyui-datetimebox {
+    width:172px;
+}

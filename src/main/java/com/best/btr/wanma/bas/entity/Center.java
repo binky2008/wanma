@@ -10,7 +10,7 @@ import javax.persistence.*;
  * @author Created by Hsian on 15/9/11.
  */
 @Entity
-@Table(name = "WM_BAS_CENTRE")
+@Table(name = "WM_BAS_CENTER")
 @SequenceGenerator(name = "centre_sequence", sequenceName = "centre_sequence", initialValue = 1000, allocationSize = 10)
 public class Center {
 
