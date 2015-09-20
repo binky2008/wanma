@@ -3,9 +3,9 @@ package com.best.btr.wanma.system;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jinhe.tss.framework.persistence.pagequery.MacrocodeQueryCondition;
+import com.jinhe.tss.framwork.AbstractSO;
 
-public class UserSO extends MacrocodeQueryCondition {
+public class UserSO extends AbstractSO {
     
     /** 用户名 */
     private String loginName;
@@ -18,9 +18,6 @@ public class UserSO extends MacrocodeQueryCondition {
 
     /** 岗位 */
     private Long positionId;
-
-    /** 所属站点 */
-    private Long ownerSiteId;
 
     /** 状态 停用 启用 */
     private Long stateId;
@@ -68,14 +65,6 @@ public class UserSO extends MacrocodeQueryCondition {
 
 	public void setPositionId(Long positionId) {
 		this.positionId = positionId;
-	}
-
-	public Long getOwnerSiteId() {
-		return ownerSiteId;
-	}
-
-	public void setOwnerSiteId(Long ownerSiteId) {
-		this.ownerSiteId = ownerSiteId;
 	}
 
 	public Long getStateId() {

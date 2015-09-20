@@ -24,7 +24,7 @@
         $(document).ready(function () {
             query();
 
-            initCombobox('stateId', 'EntityState');
+            initCombobox('stateId', 'TruckState');
             initCombobox('typeId', 'TruckType');
             /**
              * 暂时初始化一个默认站点
@@ -53,7 +53,8 @@
             $('#lockVersion').val('0'); //給版本号设置默认值.
             $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
             $('#ownerCenterId').combobox('setValue', window.parent.ownerCenter.id);
-            initCombobox('stateId', 'EntityState', {}, 1);
+            
+            initCombobox('stateId', 'TruckState', {}, 0);
             initCombobox('typeId', 'TruckType', {}, 1);
             $('#_code').textbox('readonly', false);
         }

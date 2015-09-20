@@ -52,16 +52,16 @@ public class SystemInit {
         addComboParam("SettleType", "结算方式", items);
 
         items = new String[][]{ 
-        		{ "0", "微型车"},
-                { "1", "4米2"},
-                { "2", "6米8"},
-                { "3", "7米6"},
-                { "4", "9米6"},
-                { "5", "12米5"},
-                { "6", "13米5"},
-                { "7", "58货柜"},
-                { "8", "61货柜"},
-                { "9", "其他"}
+        		{ "3.0", "微型车"},
+                { "4.2", "4米2"},
+                { "6.8", "6米8"},
+                { "7.6", "7米6"},
+                { "9.6", "9米6"},
+                { "12.5", "12米5"},
+                { "13.5", "13米5"},
+                { "58", "58货柜"},
+                { "61", "61货柜"},
+                { "other", "其他"}
         	};
         addComboParam("TruckType", "车辆类型", items);
         
@@ -80,7 +80,7 @@ public class SystemInit {
                 { "6", "淘宝"},
                 { "7", "天猫"}
         	};
-        addComboParam("CustomerFrom", "客户类型", items);
+        addComboParam("CustomerFrom", "客户来源", items);
   
         items = new String[][]{ 
         		{"1", "交件"}, 
@@ -105,7 +105,7 @@ public class SystemInit {
 		
 		L:for(String[] item : items) {
 			for(Param p : list) {
-				if(p.getCode().equals(item[0])) {
+				if(p.getValue().equals(item[0])) {
 					p.setText(item[1]);
 					paramService.saveParam(p);
 					continue L;
