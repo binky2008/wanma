@@ -34,9 +34,9 @@ public class UserServiceImpl implements UserService {
 	
 	public User update(User entity) {
 		// 判断是否修改了密码
-		String newPWD = InfoEncoder.string2MD5(entity.getPassword()) ;
 		User old = dao.getEntity(entity.getId());
-		if( !old.getPassword().equals(newPWD) ) {
+		if( !old.getPassword().equals(entity.getPassword()) ) {
+			String newPWD = InfoEncoder.string2MD5(entity.getPassword()) ;
 			entity.setPassword(newPWD);
 		}
 		

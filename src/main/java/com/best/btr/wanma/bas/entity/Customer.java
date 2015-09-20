@@ -1,11 +1,18 @@
 package com.best.btr.wanma.bas.entity;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
 import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framwork.AbstractEntity;
-import org.codehaus.jackson.annotate.JsonIgnore;
-
-import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * 客户实体
@@ -21,7 +28,7 @@ public class Customer extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "customer_sequence")
     private Long id;
 
-    /** 客户编码 */
+    /** 客户编码:  网点编号 + 3位有效数 */
     @Column(length = 128, unique = true, nullable = false)
     private String code;
 

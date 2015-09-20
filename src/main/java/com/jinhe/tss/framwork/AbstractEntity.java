@@ -5,6 +5,8 @@ import java.io.Serializable;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Version;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import com.jinhe.tss.framework.persistence.IEntity;
 
 @MappedSuperclass
@@ -14,8 +16,7 @@ public abstract class AbstractEntity implements IEntity {
 	private int lockVersion = 0;
 
 	public String toString() {
-		return org.apache.commons.lang.builder.ToStringBuilder
-				.reflectionToString(this);
+		return ToStringBuilder.reflectionToString(this);
 	}
 	
 	protected abstract Long getId();

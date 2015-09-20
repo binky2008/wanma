@@ -1,5 +1,8 @@
 package com.best.btr.wanma;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,42 +22,97 @@ public class SystemInit {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public Object init() {
-		if (null == paramService.getParam("EntityState")) {
-            Param cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "EntityState", "对象状态");
-            addComboItem(cp.getId(), "1", "停用");
-            addComboItem(cp.getId(), "0", "启用");
-        }
+		String[][] items = new String[][]{ 
+        		{"1", "停用"}, 
+        		{"0", "启用"} 
+        	};
+        addComboParam("EntityState", "对象状态", items);
+        
+        items = new String[][]{ 
+        		{"1", "客服"}, 
+        		{"2", "物流专员"},
+        		{"3", "财务"},
+        		{"4", "财务兼客服"},
+        		{"5", "职业经理人"}
+        	};
+        addComboParam("UserJob", "员工岗位", items);
 		
-		if(paramService.getParam("UserJob") == null) {
-        	Param cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "UserJob", "员工岗位");
-        	addComboItem( cp.getId(), "1", "客服" );
-        	addComboItem( cp.getId(), "2", "物流专员" );
-        	addComboItem( cp.getId(), "3", "财务" );
-        	addComboItem( cp.getId(), "4", "财务兼客服" );
-        	addComboItem( cp.getId(), "5", "职业经理人" );
-        }
+		items = new String[][]{ 
+				{ "1", "超级管理员"},
+	        	{ "2", "管理用户"},
+	        	{ "3", "实操用户"},
+	        	{ "4", "网点编号"}
+        	};
+        addComboParam("UserType", "用户类型", items);
 		
-		if(paramService.getParam("UserType") == null) {
-        	Param cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "UserType", "用户类型");
-        	addComboItem( cp.getId(), "1", "超级管理员" );
-        	addComboItem( cp.getId(), "2", "管理用户" );
-        	addComboItem( cp.getId(), "3", "实操用户" );
-        	addComboItem( cp.getId(), "4", "网点编号" );
-        }
-		
-        if (null == paramService.getParam("SettleType")) {
-            Param param = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "SettleType", "结算方式");
-            addComboItem(param.getId(), "0", "现付");
-            addComboItem(param.getId(), "1", "月结");
-        }
+		items = new String[][]{ 
+        		{"1", "现付"}, 
+        		{"0", "月结"} 
+        	};
+        addComboParam("SettleType", "结算方式", items);
 
-        if (null == paramService.getParam("TruckType")) {
-            Param param = addComboParam(ParamConstants.DEFAULT_PARENT_ID, "TruckType", "车辆类型");
-            addComboItem(param.getId(), "1", "9.6");
-            addComboItem(param.getId(), "2", "6.4");
-        }
-		
+        items = new String[][]{ 
+        		{ "0", "微型车"},
+                { "1", "4米2"},
+                { "2", "6米8"},
+                { "3", "7米6"},
+                { "4", "9米6"},
+                { "5", "12米5"},
+                { "6", "13米5"},
+                { "7", "58货柜"},
+                { "8", "61货柜"},
+                { "9", "其他"}
+        	};
+        addComboParam("TruckType", "车辆类型", items);
+        
+        items = new String[][]{ 
+        		{"1", "在用"}, 
+        		{"2", "报废"} 
+        	};
+        addComboParam("TruckState", "车辆状态", items);
+        
+        items = new String[][]{ 
+        		{ "1", "手动新增"},
+                { "2", "项目客户"},
+                { "3", "turbo"},
+                { "4", "阿里"},
+                { "5", "微信"},
+                { "6", "淘宝"},
+                { "7", "天猫"}
+        	};
+        addComboParam("CustomerFrom", "客户类型", items);
+  
+        items = new String[][]{ 
+        		{"1", "交件"}, 
+        		{"2", "取件"} 
+        	};
+        addComboParam("TruckScheduleType", "班次类型", items);
+        
 		return new Object[] { "Success" };
+	}
+	
+	void addComboParam(String code, String name, String[][] items) {
+		Param cp;
+		List<Param> list;
+		
+		if( (cp = paramService.getParam(code)) != null) {
+			list = paramService.getComboParam(code);
+		}
+		else {
+			cp = addComboParam(ParamConstants.DEFAULT_PARENT_ID, code, name);
+			list = new ArrayList<Param>();
+		}
+		
+		L:for(String[] item : items) {
+			for(Param p : list) {
+				if(p.getCode().equals(item[0])) {
+					p.setText(item[1]);
+					paramService.saveParam(p);
+					continue L;
+				}
+			}
+			addComboItem(cp.getId(), item[0], item[1]);
+		}
 	}
 	
 	
