@@ -167,6 +167,13 @@
             params.phone1 = $('#param3').val();
             query(params);
         }
+
+        function addAddress() {
+            $.messager.show({
+                title: "信息提示",
+                msg: "功能正在完善中!请耐心等待!",
+            });
+        }
     </script>
 
 </head>
@@ -188,6 +195,7 @@
                 <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
                 <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
+                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addAddress()">新增地址</a>
             </div>
         </div>
     </div>
