@@ -11,11 +11,11 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name = "WM_BAS_CENTER")
-@SequenceGenerator(name = "centre_sequence", sequenceName = "centre_sequence", initialValue = 1000, allocationSize = 10)
+@SequenceGenerator(name = "center_sequence", sequenceName = "center_sequence", initialValue = 1000, allocationSize = 10)
 public class Center {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO, generator = "centre_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO, generator = "center_sequence")
     private Long id;
 
     /** 编码 */

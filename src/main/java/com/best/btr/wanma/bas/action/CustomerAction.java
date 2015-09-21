@@ -46,6 +46,17 @@ public class CustomerAction {
     }
 
     /**
+     * 生成编码
+     * @param siteCode
+     * @return
+     */
+    @RequestMapping(value = "/getNewCode", method = RequestMethod.POST)
+    @ResponseBody
+    public String generateCode(String siteCode) {
+        return service.generateCode(siteCode);
+    }
+
+    /**
      * 更新客户信息，包括新增与修改。
      * 如果Id为空新增，否则修改。
      *

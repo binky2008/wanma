@@ -43,8 +43,8 @@ public class TruckSchedule extends AbstractEntity {
     private Param truckType;
 
     /** 班次类型 */
-    @Column(length = 128)
-    private String serialType;
+    @ManyToOne
+    private Param serialType;
 
     /** 到岗时间 */
     private Date arrivalTime;
@@ -115,11 +115,11 @@ public class TruckSchedule extends AbstractEntity {
         this.truckType = truckType;
     }
 
-    public String getSerialType() {
+    public Param getSerialType() {
         return serialType;
     }
 
-    public void setSerialType(String serialType) {
+    public void setSerialType(Param serialType) {
         this.serialType = serialType;
     }
 

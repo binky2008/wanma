@@ -54,4 +54,10 @@ public class CustomerServiceImpl implements CustomerService {
         PaginationQueryByHQL pageQuery = new PaginationQueryByHQL(dao.em(), hql, so);
         return pageQuery.getResultList();
     }
+
+    @Override
+    public String generateCode(String siteCode) {
+
+        return siteCode ;
+    }
 }

@@ -1,17 +1,16 @@
 package com.best.btr.wanma;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framework.component.param.ParamConstants;
+import com.jinhe.tss.framework.component.param.ParamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.component.param.ParamConstants;
-import com.jinhe.tss.framework.component.param.ParamService;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/init")
@@ -87,6 +86,13 @@ public class SystemInit {
         		{"2", "取件"} 
         	};
         addComboParam("TruckScheduleType", "班次类型", items);
+
+        items = new String[][]{
+        		{"1", "正常"},
+        		{"0", "待生效"},
+        		{"-1", "失效"}
+        	};
+        addComboParam("TruckScheduleState", "班次状态", items);
         
 		return new Object[] { "Success" };
 	}

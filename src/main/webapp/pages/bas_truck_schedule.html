@@ -24,7 +24,8 @@
         $(document).ready(function () {
             query();
 
-            initCombobox('stateId', 'EntityState');
+            initCombobox('stateId', 'TruckScheduleState');
+            initCombobox('serialTypeId', 'TruckScheduleType');
             initCombobox('truckTypeId', 'TruckType');
 
             /**
@@ -47,21 +48,14 @@
                 data: [window.parent.ownerCenter]
             }).textbox('readonly', true);
 
-            $('#executeDateId').combobox({
-                valueField: 'executeDate',
-                textField: 'name',
-                multiple: true,
-                data: [
-                    {"executeDate": "周一", "name": "周一"},
-                    {"executeDate": "周二", "name": "周二"},
-                    {"executeDate": "周三", "name": "周三"},
-                    {"executeDate": "周四", "name": "周四"},
-                    {"executeDate": "周五", "name": "周五"},
-                    {"executeDate": "周六", "name": "周六"},
-                    {"executeDate": "周日", "name": "周日"}
-                ]
-            });
         });
+
+        function fomatExecuteDate(){
+            var executeDate = $("input[name='executeDate']:checked").map(function () {
+                return $(this).val();
+            }).get().join(',');
+            return executeDate;
+        }
 
         function create() {
             $('#fm').form('clear');
@@ -69,7 +63,8 @@
             $('#lockVersion').val('0'); //給版本号设置默认值.
             $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
             $('#ownerCenterId').combobox('setValue', window.parent.ownerCenter.id);
-            initCombobox('stateId', 'EntityState', {}, 1);
+            initCombobox('stateId', 'TruckScheduleState', {}, 1);
+            initCombobox('serialTypeId', 'TruckScheduleType', {}, 0);
             initCombobox('truckTypeId', 'TruckType', {}, 1);
         }
 
@@ -193,17 +188,17 @@
                 </td>
                 <td class="label">班次类型:</td>
                 <td>
-                    <input name="serialType" class="easyui-textbox" required/>
+                    <input name="serialType.id" id="serialTypeId" class="easyui-textbox" required/>
                 </td>
             </tr>
             <tr>
                 <td class="label">到岗时间:</td>
                 <td>
-                    <input name="arrivalTime" class="easyui-datetimebox" required/>
+                    <input name="arrivalTime" id="arrivalTimeId" class="easyui-timespinner" data-options="min:'08:30',max:'18:00'" required />
                 </td>
                 <td class="label">离岗时间:</td>
                 <td>
-                    <input name="leaveTime" class="easyui-datetimebox" required/>
+                    <input name="leaveTime" class="easyui-timespinner" data-options="min:'08:30',max:'18:00'" required />
                 </td>
             </tr>
             <tr>
@@ -219,8 +214,15 @@
             <tr>
                 <td class="label">执行日:</td>
                 <td colspan="3">
-                    <input name="executeDate" id="executeDateId" class="easyui-textbox" style="width: 250px" required/>
-                    <li style="color:red">点击下拉框可以多选!</li>
+                    <!--<input name="executeDate" id="executeDateId" class="easyui-textbox" style="width: 250px" required/>-->
+                    <!--<li style="color:red">点击下拉框可以多选!</li>-->
+                    <input type="checkbox" name="executeDate" value="1"  />周一
+                    <input type="checkbox" name="executeDate" value="2"  />周二
+                    <input type="checkbox" name="executeDate" value="3"  />周三
+                    <input type="checkbox" name="executeDate" value="4"  />周四
+                    <input type="checkbox" name="executeDate" value="5"  />周五
+                    <input type="checkbox" name="executeDate" value="6"  />周六
+                    <input type="checkbox" name="executeDate" value="7"  />周日
                 </td>
             </tr>
             <tr>

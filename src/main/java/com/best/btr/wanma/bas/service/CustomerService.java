@@ -51,4 +51,11 @@ public interface CustomerService {
      * @return
      */
     PageInfo search(CustomerSO so);
+
+    /**
+     * 生成编码
+     * @param siteCode
+     * @return
+     */
+    String generateCode(String siteCode);
 }
