@@ -15,11 +15,12 @@ public class DemoServiceImpl implements DemoService {
     @Autowired private DemoDao dao;
 
 	public DemoEntity getEntityById(Long id) {
-		return dao.getEntityById(id);
+		return dao.getEntity(id);
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<DemoEntity> getAllEntities() {
-		return dao.getAllEntities();
+		return (List<DemoEntity>) dao.getEntities("from DemoEntity");
 	}
 
 	public DemoEntity create(DemoEntity entity) {

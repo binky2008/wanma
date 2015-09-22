@@ -8,11 +8,4 @@ import com.jinhe.tss.framework.persistence.IDao;
  */
 public interface EmployeeDao extends IDao<Employee> {
 
-    /**
-     * 根据Id获取客户信息
-     * @param id 唯一
-     * @return
-     */
-    Employee getEntityById(Long id);
-
 }

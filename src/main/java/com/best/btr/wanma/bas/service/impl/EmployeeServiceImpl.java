@@ -28,7 +28,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired private UserDao userDao;
 
     public Employee getEntityById(Long id) {
-        return dao.getEntityById(id);
+        return dao.getEntity(id);
     }
     
     public List<?> getEmployeesBySite(Long siteId) {

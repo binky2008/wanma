@@ -35,10 +35,11 @@ public class CustomerTest extends TxTestSupport {
     @Test
     public void testCRUD() {
         // 获取所有的实体
-        List<Customer> customerList = action.getAllEntities();
+        List<?> customerList = action.search(new CustomerSO(), 1, 20).rows;
         Assert.assertEquals(0, customerList.size());
 
         String code = "Cus001";
+        
         // 创建
         Customer customer = new Customer();
         customer.setCode(code);
@@ -50,7 +51,7 @@ public class CustomerTest extends TxTestSupport {
         customer.setRegion("浙江省杭州市江干区");
         customer.setAddress("2号大街");
         customer.setOwnerSite(new Site());
-        customer.setIsSendMessage(true);
+        customer.setNeedMessage(true);
         customer = action.save(customer);
 
         Long id = customer.getId();
@@ -65,9 +66,6 @@ public class CustomerTest extends TxTestSupport {
         customer = action.save(customer);
         Assert.assertEquals("kehu001", customer.getName());
 
-        customerList = action.getAllEntities();
-        Assert.assertEquals(1, customerList.size());
-
         // 搜索
         CustomerSO so = new CustomerSO();
         so.setCode(code);
@@ -77,7 +75,7 @@ public class CustomerTest extends TxTestSupport {
         // 删除
         action.delete(id);
 
-        customerList = action.getAllEntities();
+        customerList = action.search(new CustomerSO(), 1, 20).rows;
         Assert.assertEquals(0, customerList.size());
 
     }

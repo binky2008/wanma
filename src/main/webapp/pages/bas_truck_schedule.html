@@ -1,168 +1,168 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>TruckSchedule</title>
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+<meta charset="UTF-8">
+<title>班次管理</title>
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
 
-    <script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/wanma.css">
-    <script type="text/javascript" src="js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="css/wanma.css">
+<script type="text/javascript" src="js/common.js"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        BASE_URL = '../truckschedule';
-        GET_URL = BASE_URL + '/';  //{id}
-        SAVE_URL = BASE_URL;
-        DELTE_URL = BASE_URL + '/';  //{id}
-        QUERY_URL = BASE_URL + '/query';
+BASE_URL = '../truckschedule';
+GET_URL = BASE_URL + '/';  //{id}
+SAVE_URL = BASE_URL;
+DELTE_URL = BASE_URL + '/';  //{id}
+QUERY_URL = BASE_URL + '/query';
 
-        $(document).ready(function () {
-            query();
+$(document).ready(function () {
+    query();
 
-            initCombobox('stateId', 'TruckScheduleState');
-            initCombobox('serialTypeId', 'TruckScheduleType');
-            initCombobox('truckTypeId', 'TruckType');
+    initCombobox('stateId', 'TruckScheduleState');
+    initCombobox('serialTypeId', 'TruckScheduleType');
+    initCombobox('truckTypeId', 'TruckType');
 
-            /**
-             * 暂时初始化一个默认站点
-             */
-            $('#ownerSiteId').combobox({
-                panelHeight: '60px',
-                valueField: 'id',
-                textField: 'name',
-                data: [window.parent.ownerSite]
-            }).textbox('readonly', true);
+    /**
+     * 暂时初始化一个默认站点
+     */
+    $('#ownerSiteId').combobox({
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [window.parent.ownerSite]
+    }).textbox('readonly', true);
 
-            /**
-             * 暂时初始化一个默认分拨
-             */
-            $('#ownerCenterId').combobox({
-                panelHeight: '60px',
-                valueField: 'id',
-                textField: 'name',
-                data: [window.parent.ownerCenter]
-            }).textbox('readonly', true);
+    /**
+     * 暂时初始化一个默认分拨
+     */
+    $('#ownerCenterId').combobox({
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [window.parent.ownerCenter]
+    }).textbox('readonly', true);
 
+});
+
+function fomatExecuteDate(){
+    var executeDate = $("input[name='executeDate']:checked").map(function () {
+        return $(this).val();
+    }).get().join(',');
+    return executeDate;
+}
+
+function create() {
+    $('#fm').form('clear');
+    $('#dlg').dialog('open').dialog('setTitle', '新增').dialog('center');
+    $('#lockVersion').val('0'); //給版本号设置默认值.
+    $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
+    $('#ownerCenterId').combobox('setValue', window.parent.ownerCenter.id);
+    initCombobox('stateId', 'TruckScheduleState', {}, 1);
+    initCombobox('serialTypeId', 'TruckScheduleType', {}, 0);
+    initCombobox('truckTypeId', 'TruckType', {}, 1);
+}
+
+function update() {
+    var row = getSelectedRow();
+    if (row) {
+        $('#dlg').dialog('open').dialog('setTitle', '修改班次').dialog('center');
+
+        $.get(GET_URL + row.id, {}, function (data) {
+            data['state.id'] = data.state.id;
+            data['ownerSite.id'] = data.ownerSite.id;
+            data['ownerCenter.id'] = data.ownerCenter.id;
+            data['truckType.id'] = data.truckType.id;
+
+            $('#fm').form('load', data);
         });
+    }
+}
 
-        function fomatExecuteDate(){
-            var executeDate = $("input[name='executeDate']:checked").map(function () {
-                return $(this).val();
-            }).get().join(',');
-            return executeDate;
-        }
+/**
+ * 班次信息
+ * @type {*[]}
+ */
+var SCHEDULE_FIELDS = [
+    {field: 'ck', checkbox: true},
+    {field: "ownerCenterName", width: "80", title: "所属分拨"},
+    {field: "ownerSiteName", width: "80", title: "所属网点"},
+    {field: "serialCode", width: "80", title: "班次号"},
+    {field: "code", width: "80", title: "班次编码"},
+    {field: "truckTypeName", width: "80", title: "车型"},
+    {field: "serialType", width: "80", title: "班次类型"},
+    {field: "arrivalTime", width: "90", title: "到岗时间"},
+    {field: "leaveTime", width: "90", title: "离岗时间"},
+    {field: "executeDate", width: "90", title: "执行日"},
+    {field: "effectiveDate", width: "90", title: "生效日期"},
+    {field: "stateName", width: "80", title: "状态"}
+];
 
-        function create() {
-            $('#fm').form('clear');
-            $('#dlg').dialog('open').dialog('setTitle', '新增').dialog('center');
-            $('#lockVersion').val('0'); //給版本号设置默认值.
-            $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
-            $('#ownerCenterId').combobox('setValue', window.parent.ownerCenter.id);
-            initCombobox('stateId', 'TruckScheduleState', {}, 1);
-            initCombobox('serialTypeId', 'TruckScheduleType', {}, 0);
-            initCombobox('truckTypeId', 'TruckType', {}, 1);
-        }
-
-        function update() {
-            var row = getSelectedRow();
-            if (row) {
-                $('#dlg').dialog('open').dialog('setTitle', '修改班次').dialog('center');
-
-                $.get(GET_URL + row.id, {}, function (data) {
-                    data['state.id'] = data.state.id;
-                    data['ownerSite.id'] = data.ownerSite.id;
-                    data['ownerCenter.id'] = data.ownerCenter.id;
-                    data['truckType.id'] = data.truckType.id;
-
-                    $('#fm').form('load', data);
-                });
-            }
-        }
-
-        /**
-         * 班次信息
-         * @type {*[]}
-         */
-        var SCHEDULE_FIELDS = [
-            {field: 'ck', checkbox: true},
-            {field: "ownerCenterName", width: "80", title: "所属分拨"},
-            {field: "ownerSiteName", width: "80", title: "所属网点"},
-            {field: "serialCode", width: "80", title: "班次号"},
-            {field: "code", width: "80", title: "班次编码"},
-            {field: "truckTypeName", width: "80", title: "车型"},
-            {field: "serialType", width: "80", title: "班次类型"},
-            {field: "arrivalTime", width: "90", title: "到岗时间"},
-            {field: "leaveTime", width: "90", title: "离岗时间"},
-            {field: "executeDate", width: "90", title: "执行日"},
-            {field: "effectiveDate", width: "90", title: "生效日期"},
-            {field: "stateName", width: "80", title: "状态"}
-        ];
-
-        /**
-         * 可用于第一次加载数据,也可用于查询;
-         * 第一次加载数据页面时参数为空.
-         */
-        function query(params) {
-            params = params || {};
-            $('#t1').datagrid({
-                url: QUERY_URL, // 数据地址
-                queryParams: params, // 参数
-                fit: true,
-                fitColumns: true,
-                pagination: true,
-                rownumbers: true,
-                singleSelect: true,
-                checkOnSelect: true,
-                selectOnCheck: true,
-                toolbar: "#toolbar",
-                columns: [SCHEDULE_FIELDS],
-                /* 返回的结果再处理 */
-                loadFilter: function (data) {
-                    $.each(data.rows, function (i, item) {
-                        item.stateName = item.state.text;
-                        item.truckTypeName = item.truckType ? item.truckType.text : "";
-                        item.ownerSiteName = item.ownerSite ? item.ownerSite.name : "";
-                        item.ownerCenterName = item.ownerCenter ? item.ownerCenter.name : "";
-                    });
-                    return data;
-                }
+/**
+ * 可用于第一次加载数据,也可用于查询;
+ * 第一次加载数据页面时参数为空.
+ */
+function query(params) {
+    params = params || {};
+    $('#t1').datagrid({
+        url: QUERY_URL, // 数据地址
+        queryParams: params, // 参数
+        fit: true,
+        fitColumns: true,
+        pagination: true,
+        pageSize : 30,
+        rownumbers: true,
+        singleSelect: true,
+        checkOnSelect: true,
+        selectOnCheck: true,
+        toolbar: [ 
+            { text: '新增', iconCls: 'icon-add', handler: create }, 
+            '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
+            '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
+            '-', { text: '导出', handler : _export }
+        ] ,
+        columns: [SCHEDULE_FIELDS],
+        /* 返回的结果再处理 */
+        loadFilter: function (data) {
+            $.each(data.rows, function (i, item) {
+                item.stateName = item.state.text;
+                item.truckTypeName = item.truckType ? item.truckType.text : "";
+                item.ownerSiteName = item.ownerSite ? item.ownerSite.name : "";
+                item.ownerCenterName = item.ownerCenter ? item.ownerCenter.name : "";
             });
+            return data;
         }
+    });
+}
 
-        /**
-         * 收集查询的条件
-         */
-        function beginQuery() {
-            var params = {};
-            params.code = $('#param1').val();
-            params.serialCode = $('#param2').val();
-            query(params);
-        }
-    </script>
+/**
+ * 收集查询的条件
+ */
+function beginQuery() {
+    var params = {};
+    params.code = $('#param1').val();
+    params.serialCode = $('#param2').val();
+    query(params);
+}
+</script>
 
 </head>
 <body>
 
 <div id="main" class="easyui-layout" fit="true">
     <div id="queryContainer" data-options="region:'north'" border="false">
-        <label>班次编码:</label>
-        <input id="param1" class="easyui-textbox"/>&nbsp;
-        <label>班次号:</label>
-        <input id="param2" class="easyui-textbox"/>&nbsp;
+        <label>班次编码：</label><input id="param1" class="easyui-textbox"/>
+        <label>班次号：</label><input id="param2" class="easyui-textbox"/>
+
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
     </div>
     <div id="dataContainer" data-options="region:'center'" border="false" title="班次列表">
         <table id="t1" border="false"></table>
-        <div id="toolbar">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
-        </div>
     </div>
 </div>
 
@@ -214,8 +214,6 @@
             <tr>
                 <td class="label">执行日:</td>
                 <td colspan="3">
-                    <!--<input name="executeDate" id="executeDateId" class="easyui-textbox" style="width: 250px" required/>-->
-                    <!--<li style="color:red">点击下拉框可以多选!</li>-->
                     <input type="checkbox" name="executeDate" value="1"  />周一
                     <input type="checkbox" name="executeDate" value="2"  />周二
                     <input type="checkbox" name="executeDate" value="3"  />周三
@@ -226,7 +224,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4" style="color:red;font-size: large;">注:班次新增和修改将在48小时后生效!</td>
+                <td colspan="4" style="color:red;font-size: 16px;">注:班次新增和修改将在48小时后生效!</td>
             </tr>
         </table>
     </form>

@@ -1,202 +1,196 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Customer</title>
+<meta charset="UTF-8">
+<title>客户管理</title>
 
-    <link rel="stylesheet" type="text/css" href="css/wanma.css">
+<link rel="stylesheet" type="text/css" href="css/wanma.css">
 
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
 
-    <script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
 
-    <script src="js/common.js"></script>
+<script src="js/common.js"></script>
 
-    <link rel="stylesheet" href="css/region.css" />
-    <script type="text/javascript" src="js/region.js"></script>
+<link rel="stylesheet" href="css/region.css" />
+<script type="text/javascript" src="js/region.js"></script>
 
-    <style>
-        .panel {
-            overflow: visible;
-        }
-    </style>
+<style>
+.panel {
+    overflow: visible;
+}
+</style>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        BASE_URL = '../customer';
-        GET_URL   = BASE_URL + '/';  //{id}
-        SAVE_URL  = BASE_URL;
-        DELTE_URL = BASE_URL + '/';  //{id}
-        QUERY_URL = BASE_URL + '/query';
+BASE_URL = '../customer';
+GET_URL   = BASE_URL + '/';  //{id}
+SAVE_URL  = BASE_URL;
+DELTE_URL = BASE_URL + '/';  //{id}
+QUERY_URL = BASE_URL + '/query';
 
-        $(document).ready(function(){
-            query();
+$(document).ready(function(){
+    query();
 
-            initCombobox('stateId', 'EntityState', {}, 1);
-            initCombobox('settleTypeId', 'SettleType');
-            initCombobox('typeId', 'CustomerType', {}, 1);
+    initCombobox('stateId', 'EntityState', {}, 1);
+    initCombobox('settleTypeId', 'SettleType');
+    initCombobox('typeId', 'CustomerType', {}, 1);
 
-            /**
-             * 暂时初始化一个默认站点
-             */
-            $('#ownerSiteId').combobox( {
-                panelHeight: '60px',
-                valueField: 'id',
-                textField: 'name',
-                data: [window.parent.ownerSite]
-            }).textbox('readonly', true);
+    /**
+     * 暂时初始化一个默认站点
+     */
+    $('#ownerSiteId').combobox( {
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [window.parent.ownerSite]
+    }).textbox('readonly', true);
 
-            /**
-             * 暂时初始化一个默认登陆的员工
-             */
-            $('#businessorId').combobox( {
-                panelHeight: '60px',
-                valueField: 'id',
-                textField: 'name',
-                data: [
-                    {"id" : '1', "code" : "emp001", "name" : "员工001"},
-                    {"id" : '2', "code" : "emp002", "name" : "员工002"}
-                ]
-            });
+    /**
+     * 暂时初始化一个默认登陆的员工
+     */
+    $('#businessorId').combobox( {
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [
+            {"id" : '1', "code" : "emp001", "name" : "员工001"},
+            {"id" : '2', "code" : "emp002", "name" : "员工002"}
+        ]
+    });
 
-            /**
-             * 加载省市区
-             */
-            $("#aa").Address({
-                callback: function (infos, selected_ids) {
-                    var str = '';
-                    for (var i = 0; i < infos.length; i++) {
-                        str = str + infos[i];
-                    }
-                    $('#aa input').val(str);
-                }
-            });
-        });
-
-        function create(){
-            $('#fm').form('clear');
-            $('#dlg').dialog('open').dialog('setTitle','新增客户').dialog('center');
-            $('#lockVersion').val('0'); //給版本号设置默认值.
-            $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
-            initCombobox('stateId', 'EntityState', {}, 1);
-            initCombobox('typeId', 'CustomerType', {}, 1);
-            $('#_code').textbox('readonly', false);
-        }
-
-        function update(){
-            var row = getSelectedRow();
-            if (row){
-                $('#dlg').dialog('open').dialog('setTitle','修改客户信息').dialog('center');
-
-                $.get(GET_URL + row.id, {}, function(data){
-                    data['state.id'] = data.state.id;
-                    data['settleType.id'] = data.settleType.id;
-                    data['ownerSite.id'] = data.ownerSite.id;
-                    data['businessor.id'] = data.businessor.id;
-
-                    $('#fm').form('load', data);
-                    $('#_code').textbox('readonly', true);
-                });
+    /**
+     * 加载省市区
+     */
+    $("#aa").Address({
+        callback: function (infos, selected_ids) {
+            var str = '';
+            for (var i = 0; i < infos.length; i++) {
+                str = str + infos[i];
             }
+            $('#aa input').val(str);
         }
+    });
+});
 
-        /**
-         * 页面展示的字段
-         */
-        var CUSTOMER_FIELDS_1 = [
-            { field : 'ck', checkbox: true },
-            { field : 'typeName', title : '客户类型', width : 80 },
-            { field : 'original', title : '客户来源', width : 90 },
-            { field : 'code', title : '客户编码', width : 90 },
-            { field : 'name', title : '客户名称', width : 80 },
-            { field : 'fullName', title : '客户全称', width : 80 },
-            { field : 'settleTypeName', title : '结算方式', width : 80 },
-            { field : 'contacts', title : '联系人', width : 80 },
-            { field : 'phone1', title : '联系电话1', width : 80 },
-            { field : 'phone2', title : '联系电话2', width : 80 },
-            { field : 'address', title : '寄件地址', width : 100 },
-            { field : 'ownerSiteName', title : '所属站点', width : 80 },
-            { field : 'industry', title : '所属行业', width : 80 },
-            { field : 'businessorName', title : '业务员', width : 80 },
-            { field : 'isSendMessage', title : '是否发送消息', width : 80 },
-            { field : 'stateName', title : '状态', width : 80 }
-        ];
+function create(){
+    $('#fm').form('clear');
+    $('#dlg').dialog('open').dialog('setTitle','新增客户').dialog('center');
+    $('#lockVersion').val('0'); //給版本号设置默认值.
+    $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
+    initCombobox('stateId', 'EntityState', {}, 1);
+    initCombobox('typeId', 'CustomerType', {}, 1);
+    $('#_code').textbox('readonly', false);
+}
 
-        /**
-         * 可用于第一次加载数据,也可用于查询;
-         * 第一次加载数据页面时参数为空.
-         */
-        function query(params) {
-            params = params || {};
-            $('#t1').datagrid({
-                url : QUERY_URL, // 数据地址
-                queryParams : params, // 参数
-                fit : true,
-                fitColumns : true,
-                pagination : true,
-                rownumbers : true,
-                singleSelect : true,
-                checkOnSelect : true,
-                selectOnCheck : true,
-                toolbar : "#toolbar",
-                columns : [CUSTOMER_FIELDS_1],
-                /* 返回的结果再处理 */
-                loadFilter : function(data) {
-                    $.each(data.rows, function(i, item) {
-                        item.stateName = item.state.text;
-                        item.typeName = item.type ? item.type.text : "默认客户";
-                        item.settleTypeName = item.settleType ? item.settleType.text : "";
-                        item.ownerSiteName = item.ownerSite ? item.ownerSite.name : "";
-                        item.businessorName = item.businessor ? item.businessor.name : "";
-                    });
-                    return data;
-                }
+function update(){
+    var row = getSelectedRow();
+    if (row){
+        $('#dlg').dialog('open').dialog('setTitle','修改客户信息').dialog('center');
+
+        $.get(GET_URL + row.id, {}, function(data){
+            data['state.id'] = data.state.id;
+            data['settleType.id'] = data.settleType.id;
+            data['ownerSite.id'] = data.ownerSite.id;
+            data['businessor.id'] = data.businessor.id;
+
+            $('#fm').form('load', data);
+            $('#_code').textbox('readonly', true);
+        });
+    }
+}
+
+/**
+ * 页面展示的字段
+ */
+var CUSTOMER_FIELDS_1 = [
+    { field : 'ck', checkbox: true },
+    { field : 'typeName', title : '客户类型', width : 80 },
+    { field : 'original', title : '客户来源', width : 90 },
+    { field : 'code', title : '客户编码', width : 90 },
+    { field : 'name', title : '客户名称', width : 80 },
+    { field : 'fullName', title : '客户全称', width : 80 },
+    { field : 'settleTypeName', title : '结算方式', width : 80 },
+    { field : 'contacts', title : '联系人', width : 80 },
+    { field : 'phone1', title : '联系电话1', width : 80 },
+    { field : 'phone2', title : '联系电话2', width : 80 },
+    { field : 'address', title : '寄件地址', width : 100 },
+    { field : 'ownerSiteName', title : '所属站点', width : 80 },
+    { field : 'industry', title : '所属行业', width : 80 },
+    { field : 'businessorName', title : '业务员', width : 80 },
+    { field : 'needMessage', title : '是否发送消息', width : 80 },
+    { field : 'stateName', title : '状态', width : 80 }
+];
+
+/**
+ * 可用于第一次加载数据,也可用于查询;
+ * 第一次加载数据页面时参数为空.
+ */
+function query(params) {
+    params = params || {};
+    $('#t1').datagrid({
+        url : QUERY_URL, // 数据地址
+        queryParams : params, // 参数
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 30,
+        rownumbers : true,
+        singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
+        toolbar: [ 
+            { text: '新增', iconCls: 'icon-add', handler: create }, 
+            '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
+            '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
+            '-', { text: '导出', handler : _export }
+        ] ,
+        columns : [CUSTOMER_FIELDS_1],
+        /* 返回的结果再处理 */
+        loadFilter : function(data) {
+            $.each(data.rows, function(i, item) {
+                item.stateName = item.state.text;
+                item.typeName = item.type ? item.type.text : "默认客户";
+                item.settleTypeName = item.settleType ? item.settleType.text : "";
+                item.ownerSiteName = item.ownerSite ? item.ownerSite.name : "";
+                item.businessorName = item.businessor ? item.businessor.name : "";
             });
+            return data;
         }
+    });
+}
 
-        /**
-         * 收集查询的条件
-         */
-        function beginQuery() {
-            var params = {};
-            params.code = $('#param1').val();
-            params.name = $('#param2').val();
-            params.phone1 = $('#param3').val();
-            query(params);
-        }
+/**
+ * 收集查询的条件
+ */
+function beginQuery() {
+    var params = {};
+    params.code = $('#param1').val();
+    params.name = $('#param2').val();
+    params.phone1 = $('#param3').val();
+    query(params);
+}
 
-        function addAddress() {
-            $.messager.show({
-                title: "信息提示",
-                msg: "功能正在完善中!请耐心等待!",
-            });
-        }
-    </script>
+</script>
 
 </head>
 <body>
 
     <div id="main" class="easyui-layout" fit="true" >
         <div id="queryContainer" data-options="region:'north'" border="false">
-            <label>客户编码:</label>
-            <input id="param1" class="easyui-textbox" />&nbsp;
-            <label>客户名称:</label>
-            <input id="param2" class="easyui-textbox" />&nbsp;
-            <label>联系电话:</label>
-            <input id="param3" class="easyui-textbox" />
+            <label>客户编码:</label><input id="param1" class="easyui-textbox" />
+            <label>客户名称:</label><input id="param2" class="easyui-textbox" />
+            <label>联系电话:</label><input id="param3" class="easyui-textbox" />
+            <label>客户类型:</label><input id="param4" class="easyui-textbox" />
+            <label>业务员:</label><input id="param5" class="easyui-textbox" />
+
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
         </div>
         <div id="dataContainer" data-options="region:'center'" border="false" title="客户列表">
             <table id="t1" border="false"></table>
-            <div id="toolbar">
-                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
-                <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="addAddress()">新增地址</a>
-            </div>
         </div>
     </div>
 
@@ -278,9 +272,9 @@
                     </td>
                     <td class="label">发送消息:</td>
                     <td>
-                        <input name="isSendMessage" id="_isSendMessage" type="radio" value="1" checked />
+                        <input name="needMessage" id="_needMessage" type="radio" value="1" checked />
                         <label>是</label>
-                        <input name="isSendMessage" type="radio" value="0" />
+                        <input name="needMessage" type="radio" value="0" />
                         <label>否</label>
                     </td>
                 </tr>

@@ -1,158 +1,156 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Truck</title>
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
-    <link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+<meta charset="UTF-8">
+<title>车辆管理</title>
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
 
-    <script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
-    <script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="css/wanma.css">
-    <script type="text/javascript" src="js/common.js"></script>
+<link rel="stylesheet" type="text/css" href="css/wanma.css">
+<script type="text/javascript" src="js/common.js"></script>
 
-    <script type="text/javascript">
+<script type="text/javascript">
 
-        BASE_URL = '../truck';
-        GET_URL = BASE_URL + '/';  //{id}
-        SAVE_URL = BASE_URL;
-        DELTE_URL = BASE_URL + '/';  //{id}
-        QUERY_URL = BASE_URL + '/query';
+BASE_URL = '../truck';
+GET_URL = BASE_URL + '/';  //{id}
+SAVE_URL = BASE_URL;
+DELTE_URL = BASE_URL + '/';  //{id}
+QUERY_URL = BASE_URL + '/query';
 
-        $(document).ready(function () {
-            query();
+$(document).ready(function () {
+    query();
 
-            initCombobox('stateId', 'TruckState');
-            initCombobox('typeId', 'TruckType');
-            /**
-             * 暂时初始化一个默认站点
-             */
-            $('#ownerSiteId').combobox({
-                panelHeight: '60px',
-                valueField: 'id',
-                textField: 'name',
-                data: [window.parent.ownerSite]
-            }).textbox('readonly', true);
+    initCombobox('stateId', 'TruckState');
+    initCombobox('typeId', 'TruckType');
+    initCombobox('param2', 'TruckType');
 
-            /**
-             * 暂时初始化一个默认分拨
-             */
-            $('#ownerCenterId').combobox({
-                panelHeight: '60px',
-                valueField: 'id',
-                textField: 'name',
-                data: [window.parent.ownerCenter]
-            }).textbox('readonly', true);
+    /**
+     * 暂时初始化一个默认站点
+     */
+    $('#ownerSiteId').combobox({
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [window.parent.ownerSite]
+    }).textbox('readonly', true);
+
+    /**
+     * 暂时初始化一个默认分拨
+     */
+    $('#ownerCenterId').combobox({
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [window.parent.ownerCenter]
+    }).textbox('readonly', true);
+});
+
+function create() {
+    $('#fm').form('clear');
+    $('#dlg').dialog('open').dialog('setTitle', '新增车辆').dialog('center');
+    $('#lockVersion').val('0'); //給版本号设置默认值.
+    $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
+    $('#ownerCenterId').combobox('setValue', window.parent.ownerCenter.id);
+    
+    initCombobox('stateId', 'TruckState', {}, 0);
+    initCombobox('typeId', 'TruckType', {}, 1);
+
+    var cardCode = "DEX" + new Date().getTime();
+    $('#cardCode').textbox('setValue', cardCode).textbox('readonly', true);
+    $('#barCode').textbox('setValue', cardCode).textbox('readonly', true);
+}
+
+function update() {
+    var row = getSelectedRow();
+    if (row) {
+        $('#dlg').dialog('open').dialog('setTitle', '修改车辆').dialog('center');
+
+        $.get(GET_URL + row.id, {}, function (data) {
+            data['state.id'] = data.state.id;
+            data['type.id'] = data.type.id;
+            data['ownerSite.id'] = data.ownerSite.id;
+            data['ownerCenter.id'] = data.ownerCenter.id;
+
+            $('#fm').form('load', data);
+            $('#_code').textbox('readonly', true);
         });
+    }
+}
 
-        function create() {
-            $('#fm').form('clear');
-            $('#dlg').dialog('open').dialog('setTitle', '新增车辆').dialog('center');
-            $('#lockVersion').val('0'); //給版本号设置默认值.
-            $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
-            $('#ownerCenterId').combobox('setValue', window.parent.ownerCenter.id);
-            
-            initCombobox('stateId', 'TruckState', {}, 0);
-            initCombobox('typeId', 'TruckType', {}, 1);
-            $('#_code').textbox('readonly', false);
-        }
+var TRUCK_FIELDS = [
+    {field: 'ck', checkbox: true},
+    {field: "ownerCenterName", width: "100", title: "所属分拨"},
+    {field: "ownerSiteName", width: "100", title: "所属网点"},
+    {field: "cardCode", width: "100", title: "班车卡卡号"},
+    {field: "barCode", width: "100", title: "车厢条码"},
+    {field: "typeName", width: "100", title: "车型"},
+    {field: "code", width: "100", title: "车牌号"},
+    {field: "brand", width: "100", title: "车品牌"},
+    {field: "updateTime", width: "120", title: "修订日期"},
+    {field: "stateName", width: "80", title: "状态"}
+];
 
-        function update() {
-            var row = getSelectedRow();
-            if (row) {
-                $('#dlg').dialog('open').dialog('setTitle', '修改车辆').dialog('center');
 
-                $.get(GET_URL + row.id, {}, function (data) {
-                    data['state.id'] = data.state.id;
-                    data['type.id'] = data.type.id;
-                    data['ownerSite.id'] = data.ownerSite.id;
-                    data['ownerCenter.id'] = data.ownerCenter.id;
+function query(params) {
+    params = params || {};
 
-                    $('#fm').form('load', data);
-                    $('#_code').textbox('readonly', true);
-                });
-            }
-        }
-
-        /**
-         * 车辆信息
-         * @type {*[]}
-         */
-        var TRUCK_FIELDS = [
-            {field: 'ck', checkbox: true},
-            {field: "ownerCenterName", width: "80", title: "所属分拨"},
-            {field: "ownerSiteName", width: "80", title: "所属网点"},
-            {field: "cardCode", width: "90", title: "班车卡卡号"},
-            {field: "barCode", width: "90", title: "车厢条码"},
-            {field: "typeName", width: "80", title: "车型"},
-            {field: "code", width: "90", title: "车牌号"},
-            {field: "brand", width: "80", title: "车品牌"},
-            {field: "updateTime", width: "90", title: "修订日期"},
-            {field: "stateName", width: "80", title: "状态"}
-        ];
-
-        /**
-         * 可用于第一次加载数据,也可用于查询;
-         * 第一次加载数据页面时参数为空.
-         */
-        function query(params) {
-            params = params || {};
-            $('#t1').datagrid({
-                url: QUERY_URL, // 数据地址
-                queryParams: params, // 参数
-                fit: true,
-                fitColumns: true,
-                pagination: true,
-                rownumbers: true,
-                singleSelect: true,
-                checkOnSelect: true,
-                selectOnCheck: true,
-                toolbar: "#toolbar",
-                columns: [TRUCK_FIELDS],
-                /* 返回的结果再处理 */
-                loadFilter: function (data) {
-                    $.each(data.rows, function (i, item) {
-                        item.stateName = item.state.text;
-                        item.typeName = item.type ? item.type.text : "";
-                        item.ownerSiteName = item.ownerSite ? item.ownerSite.name : "";
-                        item.ownerCenterName = item.ownerCenter ? item.ownerCenter.name : "";
-                    });
-                    return data;
-                }
+    $('#t1').datagrid({
+        url: QUERY_URL, // 数据地址
+        queryParams: params, // 参数
+        fit: true,
+        fitColumns: true,
+        pagination: true,
+        rownumbers: true,
+        singleSelect: true,
+        checkOnSelect: true,
+        selectOnCheck: true,
+        toolbar: [ 
+            { text: '新增', iconCls: 'icon-add', handler: create }, 
+            '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
+            '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
+            '-', { text: '导出', handler : _export }
+        ] ,
+        columns: [TRUCK_FIELDS],
+        /* 返回的结果再处理 */
+        loadFilter: function (data) {
+            $.each(data.rows, function (i, item) {
+                item.stateName = item.state.text;
+                item.typeName = item.type ? item.type.text : "";
+                item.ownerSiteName = item.ownerSite ? item.ownerSite.name : "";
+                item.ownerCenterName = item.ownerCenter ? item.ownerCenter.name : "";
             });
+            return data;
         }
+    });
+}
 
-        /**
-         * 收集查询的条件
-         */
-        function beginQuery() {
-            var params = {};
-            params.code = $('#param1').val();
-            params.barCode = $('#param2').val();
-            query(params);
-        }
-    </script>
+function beginQuery() {
+    var params = {};
+    params.ownerSiteId = window.parent.ownerSite.id;
+    params.typeId = $('#param1').val();
+    params.typeId = $('#brand').val();
+
+    query(params);
+}
+</script>
 
 </head>
 <body>
 
 <div id="main" class="easyui-layout" fit="true">
     <div id="queryContainer" data-options="region:'north'" border="false">
-        <label>车牌号:</label>
-        <input id="param1" class="easyui-textbox"/>&nbsp;
-        <label>车厢条码:</label>
-        <input id="param2" class="easyui-textbox"/>&nbsp;
+        <label>车牌号:</label><input id="param1" class="easyui-textbox"/>
+        <label>车型:</label><input id="param2" class="easyui-textbox"/>
+        <label>品牌:</label><input id="param3" class="easyui-textbox"/>
+
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
     </div>
     <div id="dataContainer" data-options="region:'center'" border="false" title="车辆列表">
         <table id="t1" border="false"></table>
-        <div id="toolbar">
-            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="create()">新建</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="update()">修改</a>
-            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="_remove()">删除</a>
-        </div>
     </div>
 </div>
 
@@ -174,11 +172,11 @@
             <tr>
                 <td class="label">班车卡卡号:</td>
                 <td>
-                    <input name="cardCode" class="easyui-textbox" required/>
+                    <input name="cardCode" id="cardCode" class="easyui-textbox" readonly="true" required/>
                 </td>
                 <td class="label">车厢条码:</td>
                 <td>
-                    <input name="barCode" class="easyui-textbox" required/>
+                    <input name="barCode" id="barCode" class="easyui-textbox" readonly="true" required/>
                 </td>
             </tr>
             <tr>

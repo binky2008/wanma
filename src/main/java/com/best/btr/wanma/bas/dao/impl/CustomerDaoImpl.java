@@ -1,11 +1,13 @@
 package com.best.btr.wanma.bas.dao.impl;
 
-import com.best.btr.wanma.bas.dao.CustomerDao;
-import com.best.btr.wanma.bas.entity.Customer;
-import com.jinhe.tss.framework.persistence.BaseDao;
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.best.btr.wanma.bas.dao.CustomerDao;
+import com.best.btr.wanma.bas.entity.Customer;
+import com.best.btr.wanma.bas.entity.Site;
+import com.jinhe.tss.framework.persistence.BaseDao;
 
 /**
  * @author Created by Lu on 15/8/31.
@@ -16,15 +18,21 @@ public class CustomerDaoImpl extends BaseDao<Customer> implements CustomerDao {
     public CustomerDaoImpl() {
         super(Customer.class);
     }
-
-    @Override
-    public Customer getEntityById(Long id) {
-        return super.getEntity(id);
+    
+    public String getCustomerCode(Long siteId) {
+    	String siteCode = ((Site)getEntity(Site.class, siteId)).getCode();
+    	
+    	String hql = "select max(o.seqNo) from Customer o where o.ownerSite.id = ?";
+        List<?> list = getEntities(hql, siteId); 
+        Integer seqNo = (!list.isEmpty() && list.get(0) != null) ? (Integer) list.get(0) + 1 : 1;
+    
+        if(seqNo < 10) {
+        	return siteCode + "00" + seqNo;
+        }
+        if(seqNo < 100) {
+        	return siteCode + "0" + seqNo;
+        }
+        return siteCode + seqNo;
     }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<Customer> getAllEntities() {
-        return (List<Customer>) super.getEntities("from Customer");
-    }
+    
 }

@@ -1,10 +1,5 @@
 package com.best.btr.wanma.bas.action;
 
-import com.best.btr.wanma.bas.entity.Customer;
-import com.best.btr.wanma.bas.service.CustomerService;
-import com.best.btr.wanma.bas.so.CustomerSO;
-import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
-import com.jinhe.tss.framwork.EasyUIDataGrid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,7 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
+import com.best.btr.wanma.bas.entity.Customer;
+import com.best.btr.wanma.bas.service.CustomerService;
+import com.best.btr.wanma.bas.so.CustomerSO;
+import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
+import com.jinhe.tss.framwork.EasyUIDataGrid;
 
 /**
  * @author Created by Hsian on 15/8/31.
@@ -21,18 +20,7 @@ import java.util.List;
 @RequestMapping("/customer")
 public class CustomerAction {
 
-    @Autowired
-    private CustomerService service;
-
-    /**
-     * 获取所有的客户信息
-     * @return
-     */
-    @RequestMapping("/")
-    @ResponseBody
-    public List<Customer> getAllEntities() {
-        return service.getAllEntities();
-    }
+    @Autowired private CustomerService service;
 
     /**
      * 根据Id获取客户信息
@@ -52,8 +40,8 @@ public class CustomerAction {
      */
     @RequestMapping(value = "/getNewCode", method = RequestMethod.POST)
     @ResponseBody
-    public String generateCode(String siteCode) {
-        return service.generateCode(siteCode);
+    public String generateCustomerCode(Long siteId) {
+        return service.generateCode(siteId);
     }
 
     /**

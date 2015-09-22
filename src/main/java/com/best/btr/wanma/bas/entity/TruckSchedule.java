@@ -1,12 +1,18 @@
 package com.best.btr.wanma.bas.entity;
 
-import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
-import com.jinhe.tss.framwork.AbstractEntity;
-
-import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
  * 车辆班次信息
@@ -61,11 +67,6 @@ public class TruckSchedule extends AbstractEntity {
     /** 状态 */
     @ManyToOne
     private Param state;
-
-    @Override
-    public Serializable getPK() {
-        return this.getId();
-    }
 
     public Long getId() {
         return id;
@@ -162,5 +163,4 @@ public class TruckSchedule extends AbstractEntity {
     public void setState(Param state) {
         this.state = state;
     }
-
 }

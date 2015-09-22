@@ -1,7 +1,5 @@
 package com.best.btr.wanma.bas.entity;
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +14,6 @@ import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
  * 客户实体
- * TODO 有些字段需要其他的基础表的信息，后续维护
  * @author Created by LU on 15/8/31.
  */
 @Entity
@@ -66,7 +63,7 @@ public class Customer extends AbstractEntity {
 
     /** 省市区 */
     @Column(length = 255)
-    private String region;//provinceCityDistrict
+    private String region;
 
     /** 详细地址 */
     @Column(length = 255)
@@ -75,6 +72,8 @@ public class Customer extends AbstractEntity {
     /** 所属站点 */
     @ManyToOne
     private Site ownerSite;
+    
+    private Integer seqNo;
 
     /** 所属行业 */
     @Column(length = 128)
@@ -85,16 +84,11 @@ public class Customer extends AbstractEntity {
     private Employee businessor;
 
     /** 是否短信通知 */
-    private Boolean isSendMessage;
+    private Boolean needMessage;
 
     /** 状态 停用 启用 */
     @ManyToOne
     private Param state;
-
-    @Override
-    public Serializable getPK() {
-        return this.getId();
-    }
 
     public Long getId() {
         return id;
@@ -216,14 +210,6 @@ public class Customer extends AbstractEntity {
         this.businessor = businessor;
     }
 
-    public Boolean getIsSendMessage() {
-        return isSendMessage;
-    }
-
-    public void setIsSendMessage(Boolean isSendMessage) {
-        this.isSendMessage = isSendMessage;
-    }
-
     public Param getState() {
         return state;
     }
@@ -232,5 +218,20 @@ public class Customer extends AbstractEntity {
         this.state = state;
     }
 
+	public Boolean getNeedMessage() {
+		return needMessage;
+	}
+
+	public void setNeedMessage(Boolean needMessage) {
+		this.needMessage = needMessage;
+	}
+
+	public Integer getSeqNo() {
+		return seqNo;
+	}
+
+	public void setSeqNo(Integer seqNo) {
+		this.seqNo = seqNo;
+	}
 
 }

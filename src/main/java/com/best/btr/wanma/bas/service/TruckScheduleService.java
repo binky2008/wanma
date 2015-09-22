@@ -4,8 +4,6 @@ import com.best.btr.wanma.bas.entity.TruckSchedule;
 import com.best.btr.wanma.bas.so.TruckScheduleSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 
-import java.util.List;
-
 /**
  * @author Created by Lu on 15/9/3.
  */
@@ -17,12 +15,6 @@ public interface TruckScheduleService {
      * @return
      */
     TruckSchedule getEntityById(Long id);
-
-    /**
-     * 获取所有的信息
-     * @return
-     */
-    List<TruckSchedule> getAllEntities();
 
     /**
      * 创建信息

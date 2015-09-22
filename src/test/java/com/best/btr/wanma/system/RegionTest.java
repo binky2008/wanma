@@ -1,14 +1,15 @@
-package com.best.btr.wanma.bas;
+package com.best.btr.wanma.system;
 
-import com.best.btr.wanma.bas.action.RegionAction;
-import com.best.btr.wanma.bas.entity.Region;
-import com.jinhe.tss.demo.TxTestSupport;
+import java.util.List;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
+import com.best.btr.wanma.system.action.RegionAction;
+import com.best.btr.wanma.system.entity.Region;
+import com.jinhe.tss.demo.TxTestSupport;
 
 /**
  * @author Created by Lu on 15/8/31.

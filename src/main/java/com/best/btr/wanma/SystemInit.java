@@ -60,7 +60,7 @@ public class SystemInit {
                 { "13.5", "13米5"},
                 { "58", "58货柜"},
                 { "61", "61货柜"},
-                { "other", "其他"}
+                { "1.0", "其他"}
         	};
         addComboParam("TruckType", "车辆类型", items);
         

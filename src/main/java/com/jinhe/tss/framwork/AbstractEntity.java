@@ -19,7 +19,7 @@ public abstract class AbstractEntity implements IEntity {
 		return ToStringBuilder.reflectionToString(this);
 	}
 	
-	protected abstract Long getId();
+	public abstract Long getId();
 
 	public Serializable getPK() {
 		return this.getId();
@@ -31,5 +31,9 @@ public abstract class AbstractEntity implements IEntity {
 
 	public void setLockVersion(int lockVersion) {
 		this.lockVersion = lockVersion;
+	}
+	
+	public boolean equals(Object obj) {
+		return this.getPK().equals( ((IEntity)obj).getPK() );
 	}
 }

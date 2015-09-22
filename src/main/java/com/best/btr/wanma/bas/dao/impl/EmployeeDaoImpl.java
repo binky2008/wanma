@@ -15,8 +15,4 @@ public class EmployeeDaoImpl extends BaseDao<Employee> implements EmployeeDao {
     public EmployeeDaoImpl() {
         super(Employee.class);
     }
-
-    public Employee getEntityById(Long id) {
-        return super.getEntity(id);
-    }
 }

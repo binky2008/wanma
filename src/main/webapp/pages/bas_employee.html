@@ -113,6 +113,7 @@ function query(params) {
         fit : true,
         fitColumns : true,
         pagination : true,
+        pageSize : 30,
         rownumbers : true,
         singleSelect : true,
         checkOnSelect : true,
@@ -122,7 +123,7 @@ function query(params) {
             '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
             '-', { text: '导出', handler : _export }
-        ] ,
+        ],
         columns : [FIELDS_1],
         loadFilter: function(data){
             $.each(data.rows, function(i, item){
@@ -151,10 +152,10 @@ function beginQuery() {
 
     <div id="main" class="easyui-layout" fit="true" >
         <div id="queryContainer" data-options="region:'north'" border="false">
-            <label>员工编码：</label><input id="param1" class="easyui-textbox"></input>
-            <label>员工姓名：</label><input id="param2" class="easyui-textbox"></input>
-            <label>员工岗位：</label><input id="param3" class="easyui-textbox"></input>
-            <label>状态：</label><input id="param4" class="easyui-textbox"></input>
+            <label>员工编码:</label><input id="param1" class="easyui-textbox"></input>
+            <label>员工姓名:</label><input id="param2" class="easyui-textbox"></input>
+            <label>员工岗位:</label><input id="param3" class="easyui-textbox"></input>
+            <label>状态:</label><input id="param4" class="easyui-textbox"></input>
 
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
         </div>

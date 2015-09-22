@@ -1,5 +1,8 @@
 package com.jinhe.tss.framwork;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.jinhe.tss.framework.persistence.pagequery.MacrocodeQueryCondition;
 
 public abstract class AbstractSO extends MacrocodeQueryCondition {
@@ -18,5 +21,12 @@ public abstract class AbstractSO extends MacrocodeQueryCondition {
 	public void setOwnerSiteId(Long ownerSiteId) {
 		this.ownerSiteId = ownerSiteId;
 	}
+	
+	public Map<String, Object> getConditionMacrocodes() {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("${ownerSiteId}", " and o.ownerSite.id = :ownerSiteId");
+        
+        return map;
+    }
     
 }

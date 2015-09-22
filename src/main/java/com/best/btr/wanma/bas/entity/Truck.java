@@ -20,7 +20,7 @@ public class Truck extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "truck_sequence")
     private Long id;
 
-    /** 所属分拨 */
+    /** 所属分拨: 该班次接送货的分拨。一个站点可以往多个分拨开通班次 */
     @ManyToOne
     private Center ownerCenter;
 

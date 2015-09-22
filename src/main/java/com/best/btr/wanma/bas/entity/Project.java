@@ -1,20 +1,25 @@
 package com.best.btr.wanma.bas.entity;
 
-import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
  * 项目实体,其实是供应链里地项目的概念.
- * TODO 有些字段需要其他的基础表的信息，后续维护
  * @author Created by LU on 15/9/10.
  */
 @Entity
 @Table(name = "WM_BAS_PROJECT")
 @SequenceGenerator(name = "project_sequence", sequenceName = "project_sequence", initialValue = 1000, allocationSize = 10)
-public class Project extends OperateInfo {
+public class Project extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "project_sequence")
@@ -49,25 +54,18 @@ public class Project extends OperateInfo {
     private String phone2;
 
     /** 业务员 */
-    @Column(length = 128)
-    private String businessor;
+    @ManyToOne
+    private Employee businessor;
+    
+    /** 
+     * 项目要求：网点录单时自动带出项目要求 
+     */
+    @Column(length = 1000)
+    private String remark;
 
-    /** 状态 停用 启用 */
+    /** 状态: 在用、失效 */
     @ManyToOne
     private Param state;
-
-    @Override
-    public Serializable getPK() {
-        return this.getId();
-    }
-
-    public String getSettleTypeName() {
-        return null != settleType ? settleType.getText() : "";
-    }
-
-    public String getStateName() {
-        return state.getText();
-    }
 
     public Long getId() {
         return id;
@@ -133,11 +131,11 @@ public class Project extends OperateInfo {
         this.phone2 = phone2;
     }
 
-    public String getBusinessor() {
+    public Employee getBusinessor() {
         return businessor;
     }
 
-    public void setBusinessor(String businessor) {
+    public void setBusinessor(Employee businessor) {
         this.businessor = businessor;
     }
 
@@ -148,6 +146,4 @@ public class Project extends OperateInfo {
     public void setState(Param state) {
         this.state = state;
     }
-
-
 }

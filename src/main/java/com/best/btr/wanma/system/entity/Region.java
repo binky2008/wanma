@@ -1,4 +1,4 @@
-package com.best.btr.wanma.bas.entity;
+package com.best.btr.wanma.system.entity;
 
 import com.jinhe.tss.framework.persistence.IEntity;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -20,6 +20,7 @@ public class Region implements IEntity {
     private Long id;
     private Long code;
     private Long parentId;
+    
     @JsonProperty("n")
     private String name;
     private Integer level;

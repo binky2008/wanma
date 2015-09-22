@@ -76,6 +76,7 @@ function query(params) {
         fit : true,
         fitColumns : true,
         pagination : true,
+        pageSize : 10,
         rownumbers : true,
         singleSelect : true,
         checkOnSelect : true,
@@ -127,9 +128,9 @@ function beginQuery() {
 <body>
     <div id="main" class="easyui-layout" fit="true" >
         <div id="queryContainer" data-options="region:'north'" border="false">
-            <label>编码：</label><input id="param1" class="easyui-textbox"></input>&nbsp;
-            <label>名称：</label><input id="param2" class="easyui-textbox"></input>&nbsp;
-            <label>状态：</label><input id="param3" class="easyui-textbox"></input>&nbsp;
+            <label>编码:</label><input id="param1" class="easyui-textbox"></input>
+            <label>名称:</label><input id="param2" class="easyui-textbox"></input>
+            <label>状态:</label><input id="param3" class="easyui-textbox"></input>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" onclick='moreParams()'>更多条件</a>&nbsp;
             <a href="#" class="easyui-linkbutton" onclick='lessParams()'>收起条件</a>

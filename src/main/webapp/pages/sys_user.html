@@ -101,6 +101,7 @@ function query(params) {
         fit : true,
         fitColumns : false,
         pagination : true,
+        pageSize : 30,
         rownumbers : true,
         singleSelect : true,
         checkOnSelect : true,
@@ -157,11 +158,11 @@ function syncFromV5() {
 
 	<div id="cc" class="easyui-layout" fit="true" >
 		<div id="queryContainer" data-options="region:'north'" border="false">
-            <label>用户名：</label><input id="param1" class="easyui-textbox"></input>
-            <label>中文名称：</label><input id="param2" class="easyui-textbox"></input>
-            <label>用户类型：</label><input id="param3" class="easyui-textbox"></input>
-            <label>用户岗位：</label><input id="param4" class="easyui-textbox"></input>
-            <label>网点：</label><input id="param5" class="easyui-textbox"></input>
+            <label>用户名:</label><input id="param1" class="easyui-textbox"></input>
+            <label>中文名称:</label><input id="param2" class="easyui-textbox"></input>
+            <label>用户类型:</label><input id="param3" class="easyui-textbox"></input>
+            <label>用户岗位:</label><input id="param4" class="easyui-textbox"></input>
+            <label>网点:</label><input id="param5" class="easyui-textbox"></input>
 
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
         </div>

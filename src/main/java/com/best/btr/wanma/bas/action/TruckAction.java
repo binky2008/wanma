@@ -23,26 +23,13 @@ public class TruckAction {
 
     @Autowired
     private TruckService service;
-
-    /**
-     * 根据Id获取信息
-     *
-     * @param id
-     * @return
-     */
+ 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Truck getEntityById(@PathVariable Long id) {
         return service.getEntityById(id);
     }
-
-    /**
-     * 更新信息，包括新增与修改。
-     * 如果Id为空新增，否则修改。
-     *
-     * @param truck 需要更新的
-     * @return
-     */
+ 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Truck save(Truck truck) {
@@ -56,26 +43,13 @@ public class TruckAction {
         }
         return truck;
     }
-
-    /**
-     * 删除信息
-     *
-     * @param id
-     * @return
-     */
+ 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
     public Truck delete(@PathVariable Long id) {
         return service.delete(id);
     }
-
-    /**
-     * 搜索信息
-     *
-     * @param so
-     * @param page
-     * @return
-     */
+ 
     @RequestMapping(value = "/query")
     @ResponseBody
     public EasyUIDataGrid search(TruckSO so, int page, int rows) {

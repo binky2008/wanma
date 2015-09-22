@@ -1,154 +1,97 @@
 package com.best.btr.wanma.bas.so;
 
-import com.jinhe.tss.framework.persistence.pagequery.MacrocodeQueryCondition;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import com.jinhe.tss.framwork.AbstractSO;
 
 /**
  * 搜索客户信息的条件。
  * @author Created by Hsian on 15/8/31.
  */
-public class CustomerSO extends MacrocodeQueryCondition {
+public class CustomerSO extends AbstractSO {
 
     private String code;
+    
     private String name;
-    private String fullName;
 
     /** 联系电话1(默认此字段为联系电话) */
     private String phone1;
 
-    /** 联系电话2 */
-    private String phone2;
-
-    /** 省市区 */
-    private String ssq;
-
-    /** 详细地址 */
-    private String address;
-
     /** 所属站点 */
-    private String ownerSite;
-
-    /** 所属行业 */
-    private String industry;
+    private Long ownerSiteId;
 
     /** 业务员 */
-    private String businessor;
-
-    /** 是否短信通知 */
-    private Boolean sendMessage;
+    private Long businessorId;
 
     /** 状态 停用 启用 */
-    private String stateCode;
+    private Long stateId;
 
-    @Override
     public Map<String, Object> getConditionMacrocodes() {
         Map<String, Object> map = new HashMap<String, Object>() ;
-        map.put("${code}", " and o.code = :code");
-        map.put("${name}", " and o.name = :name");
-        map.put("${fullName}", " and o.fullName = :fullName");
+        
+        map.put("${name}", " and o.name like :name");
+        map.put("${code}", " and o.code like :code");
         map.put("${phone1}", " and o.phone1 = :phone1");
-        map.put("${phone2}", " and o.phone2 = :phone2");
-        map.put("${ssq}", " and o.ssq like :ssq");
-        map.put("${address}", " and o.address like :address");
+        
+        map.put("${stateId}", " and o.state.id = :stateId");
+        map.put("${businessorId}", " and o.businessor.id = :businessorId");
+        map.put("${ownerSiteId}", " and o.ownerSite.id = :ownerSiteId");
 
         return map;
     }
 
-    public String getName() {
-        return name;
-    }
+	public String getCode() {
+		if(code != null){
+			code = "%" + code.trim() + "%";           
+        }
+		return code;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public String getName() {
+		if(name != null){
+			name = "%" + name.trim() + "%";           
+        }
+		return name;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public String getFullName() {
-        return fullName;
-    }
+	public String getPhone1() {
+		return phone1;
+	}
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
 
-    public String getPhone1() {
-        return phone1;
-    }
+	public Long getOwnerSiteId() {
+		return ownerSiteId;
+	}
 
-    public void setPhone1(String phone1) {
-        this.phone1 = phone1;
-    }
+	public void setOwnerSiteId(Long ownerSiteId) {
+		this.ownerSiteId = ownerSiteId;
+	}
 
-    public String getPhone2() {
-        return phone2;
-    }
+	public Long getBusinessorId() {
+		return businessorId;
+	}
 
-    public void setPhone2(String phone2) {
-        this.phone2 = phone2;
-    }
+	public void setBusinessorId(Long businessorId) {
+		this.businessorId = businessorId;
+	}
 
-    public String getSsq() {
-        return ssq;
-    }
+	public Long getStateId() {
+		return stateId;
+	}
 
-    public void setSsq(String ssq) {
-        this.ssq = ssq;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getOwnerSite() {
-        return ownerSite;
-    }
-
-    public void setOwnerSite(String ownerSite) {
-        this.ownerSite = ownerSite;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public String getBusinessor() {
-        return businessor;
-    }
-
-    public void setBusinessor(String businessor) {
-        this.businessor = businessor;
-    }
-
-    public Boolean isSendMessage() {
-        return sendMessage;
-    }
-
-    public void setSendMessage(Boolean sendMessage) {
-        this.sendMessage = sendMessage;
-    }
-
-    public String getStateCode() {
-        return stateCode;
-    }
-
-    public void setStateCode(String stateCode) {
-        this.stateCode = stateCode;
-    }
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
+	}
 }

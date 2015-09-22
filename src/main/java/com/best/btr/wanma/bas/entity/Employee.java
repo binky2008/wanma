@@ -1,6 +1,5 @@
 package com.best.btr.wanma.bas.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -84,10 +83,6 @@ public class Employee extends AbstractEntity {
     
     @Transient
     private int ack; // 注册时六位手机验证码
-
-    public Serializable getPK() {
-        return this.getId();
-    }
 
     public Long getId() {
         return id;

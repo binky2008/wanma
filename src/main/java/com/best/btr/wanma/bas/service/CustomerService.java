@@ -4,8 +4,6 @@ import com.best.btr.wanma.bas.entity.Customer;
 import com.best.btr.wanma.bas.so.CustomerSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 
-import java.util.List;
-
 /**
  * @author Created by Lu on 15/8/31.
  */
@@ -17,12 +15,6 @@ public interface CustomerService {
      * @return
      */
     Customer getEntityById(Long id);
-
-    /**
-     * 获取所有的客户信息
-     * @return
-     */
-    List<Customer> getAllEntities();
 
     /**
      * 创建客户信息
@@ -57,5 +49,5 @@ public interface CustomerService {
      * @param siteCode
      * @return
      */
-    String generateCode(String siteCode);
+    String generateCode(Long siteId);
 }
