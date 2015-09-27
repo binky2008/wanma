@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framework.component.param.ParamConstants;
 import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
@@ -42,8 +43,7 @@ public class Customer extends AbstractEntity {
     private String original;
 
     /** 客户类型 项目客户 普通客户等 */
-    @ManyToOne
-    private Param type;
+    private String customerType;
 
     /** 结算类型 */
     @ManyToOne
@@ -87,8 +87,7 @@ public class Customer extends AbstractEntity {
     private Boolean needMessage;
 
     /** 状态 停用 启用 */
-    @ManyToOne
-    private Param state;
+    private Integer disabled = ParamConstants.FALSE;
 
     public Long getId() {
         return id;
@@ -128,14 +127,6 @@ public class Customer extends AbstractEntity {
 
     public void setOriginal(String original) {
         this.original = original;
-    }
-
-    public Param getType() {
-        return type;
-    }
-
-    public void setType(Param type) {
-        this.type = type;
     }
 
     public Param getSettleType() {
@@ -210,14 +201,6 @@ public class Customer extends AbstractEntity {
         this.businessor = businessor;
     }
 
-    public Param getState() {
-        return state;
-    }
-
-    public void setState(Param state) {
-        this.state = state;
-    }
-
 	public Boolean getNeedMessage() {
 		return needMessage;
 	}
@@ -234,4 +217,19 @@ public class Customer extends AbstractEntity {
 		this.seqNo = seqNo;
 	}
 
+	public Integer getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(Integer disabled) {
+		this.disabled = disabled;
+	}
+
+	public String getCustomerType() {
+		return customerType;
+	}
+
+	public void setCustomerType(String customerType) {
+		this.customerType = customerType;
+	}
 }

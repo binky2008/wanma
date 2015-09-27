@@ -1,9 +1,9 @@
-所需接口：
-1、短信网关接口
-2、邮箱注册（网点业务员注册时自动生成 1358888xxx@bestbtr.com，从IT要）
-3、运单判重接口、运单上传至V5接口
-4、客户判重接口、万马的客户同步至V5、同步V5里的客户
 
+mysqldump -u root -p wanma > /home/tss/temp/wanma.sql  
+mysql -u root -p wanma  < /home/tss/temp/wanma.sql
+
+mysqldump -u root -p wanma > /Users/jinpujun/Desktop/workspace/release/tss/wanma.sql 
+mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/tss/wanma.sql
 
 
 技术点：

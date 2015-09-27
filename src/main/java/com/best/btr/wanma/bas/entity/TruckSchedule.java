@@ -53,10 +53,10 @@ public class TruckSchedule extends AbstractEntity {
     private Param serialType;
 
     /** 到岗时间 */
-    private Date arrivalTime;
+    private String arrivalTime;
 
     /** 离岗时间 */
-    private Date leaveTime;
+    private String leaveTime;
 
     /** 执行日 */
     private String executeDate;
@@ -124,19 +124,19 @@ public class TruckSchedule extends AbstractEntity {
         this.serialType = serialType;
     }
 
-    public Date getArrivalTime() {
+    public String getArrivalTime() {
         return arrivalTime;
     }
 
-    public void setArrivalTime(Date arrivalTime) {
+    public void setArrivalTime(String arrivalTime) {
         this.arrivalTime = arrivalTime;
     }
 
-    public Date getLeaveTime() {
+    public String getLeaveTime() {
         return leaveTime;
     }
 
-    public void setLeaveTime(Date leaveTime) {
+    public void setLeaveTime(String leaveTime) {
         this.leaveTime = leaveTime;
     }
 

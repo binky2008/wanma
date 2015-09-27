@@ -25,7 +25,6 @@ public class Region implements IEntity {
     private String name;
     private Integer level;
 
-    @Override
     public Serializable getPK() {
         return this.getId();
     }

@@ -31,24 +31,19 @@ public class TruckScheduleAction {
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
-    public TruckSchedule save(TruckSchedule truckSchedule) {
-        /*
-         * TODO 1 根据车型和到岗时间生成班次号
-         * TODO 3 生效日期在保存或者修改是都要当前时间到48小时后生效.
-         */
-
-        if (null == truckSchedule.getId()) {
-            service.create(truckSchedule);
+    public TruckSchedule save(TruckSchedule entity) {
+        if (null == entity.getId()) {
+            service.create(entity);
         } else {
-            service.update(truckSchedule);
+            service.update(entity);
         }
-        return truckSchedule;
+        return entity;
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public TruckSchedule delete(@PathVariable Long id) {
-        return service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 
     @RequestMapping(value = "/query")

@@ -108,6 +108,7 @@ function query(params) {
         selectOnCheck : true,
         toolbar: [ 
             { text: '同步V5', handler: syncFromV5 }, 
+            '-', { text: '新增', iconCls: 'icon-add', handler: create }, 
             '-', { text: '修改', iconCls: 'icon-edit', handler: update, id: "btn2" }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove, id: "btn3" }, 
             '-', { text: '导出', handler : _export }

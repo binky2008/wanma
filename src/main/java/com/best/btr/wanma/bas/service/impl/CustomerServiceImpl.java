@@ -9,6 +9,7 @@ import com.best.btr.wanma.bas.dao.CustomerDao;
 import com.best.btr.wanma.bas.entity.Customer;
 import com.best.btr.wanma.bas.service.CustomerService;
 import com.best.btr.wanma.bas.so.CustomerSO;
+import com.jinhe.tss.framework.component.param.ParamConstants;
 import com.jinhe.tss.framework.exception.BusinessException;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
@@ -32,6 +33,11 @@ public class CustomerServiceImpl implements CustomerService {
     		throw new BusinessException("相同客户号的客户记录已经存在。");
     	}
     	
+    	String hql = "select max(o.seqNo) from Customer o where o.ownerSite.id = ?";
+        list = dao.getEntities(hql, entity.getOwnerSite().getId()); 
+        Integer seqNo = (!list.isEmpty() && list.get(0) != null) ? (Integer) list.get(0) + 1 : 1;
+        entity.setSeqNo(seqNo);
+        
         return dao.create(entity);
     }
 
@@ -53,4 +59,11 @@ public class CustomerServiceImpl implements CustomerService {
     public String generateCode(Long siteId) {
         return dao.getCustomerCode(siteId);
     }
+
+	public Customer disable(Long id) {
+		Customer customer = dao.getEntity(id);
+		customer.setDisabled(ParamConstants.TRUE);
+		
+		return update(customer);
+	}
 }

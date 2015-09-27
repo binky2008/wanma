@@ -49,4 +49,10 @@ public interface ProjectService {
 	ProjectAddress getAddressById(Long id);
 
 	List<ProjectAddress> getAddressList(Long projectId);
+
+	String generateCode(Long siteId);
+
+	void disable(Long id);
+
+	void disableAddress(Long id);
 }

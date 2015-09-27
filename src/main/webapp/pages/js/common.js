@@ -29,20 +29,21 @@ function save(){
         success: function(result){
             checkException(result, function() {
                 closeDialog();
-                $('#t1').datagrid('reload'); // reload the employee data
+                $('#t1').datagrid('reload'); // reload the grid data
             });
         }
     });
 }
 
 function checkException(result, callback) {
-    result = eval('(' + result + ')');
+    result = result ? eval('(' + result + ')') : "";
     if (result.errorMsg){
         $.messager.show({
             title: '异常信息提示',
             msg: result.errorMsg
         });
-    } else {
+    } 
+    else {
         callback();
     }
 }
@@ -65,8 +66,8 @@ function getSelectedRow() {
 
 function _remove(){
     var row = getSelectedRow();
-    row && $.messager.confirm('Confirm', '您确定要删除这行数据吗?', function(r){
-        $.ajax({
+    row && $.messager.confirm('Confirm', '您确定要删除这行数据吗?', function(result){
+        result && $.ajax({
              url: DELTE_URL + row.id,
              type: 'DELETE',
              success: function(result) {

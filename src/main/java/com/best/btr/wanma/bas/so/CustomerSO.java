@@ -17,6 +17,8 @@ public class CustomerSO extends AbstractSO {
 
     /** 联系电话1(默认此字段为联系电话) */
     private String phone1;
+    
+    private String original;
 
     /** 所属站点 */
     private Long ownerSiteId;
@@ -33,6 +35,8 @@ public class CustomerSO extends AbstractSO {
         map.put("${name}", " and o.name like :name");
         map.put("${code}", " and o.code like :code");
         map.put("${phone1}", " and o.phone1 = :phone1");
+        
+        map.put("${original}", " and o.original = :original");
         
         map.put("${stateId}", " and o.state.id = :stateId");
         map.put("${businessorId}", " and o.businessor.id = :businessorId");
@@ -93,5 +97,13 @@ public class CustomerSO extends AbstractSO {
 
 	public void setStateId(Long stateId) {
 		this.stateId = stateId;
+	}
+
+	public String getOriginal() {
+		return original;
+	}
+
+	public void setOriginal(String original) {
+		this.original = original;
 	}
 }

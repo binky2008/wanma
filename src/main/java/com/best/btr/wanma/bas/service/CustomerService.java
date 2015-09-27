@@ -50,4 +50,6 @@ public interface CustomerService {
      * @return
      */
     String generateCode(Long siteId);
+
+	Customer disable(Long id);
 }

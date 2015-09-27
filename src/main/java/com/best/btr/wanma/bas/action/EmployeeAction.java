@@ -90,8 +90,8 @@ public class EmployeeAction {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Employee delete(@PathVariable Long id) {
-        return service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
 
     /**

@@ -55,6 +55,7 @@ public class CustomerAction {
     @ResponseBody
     public Customer save(Customer customer) {
         if (null == customer.getId()) {
+        	customer.setCustomerType("普通客户");
             service.create(customer);
         } else {
             service.update(customer);
@@ -69,8 +70,14 @@ public class CustomerAction {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Customer delete(@PathVariable Long id) {
-        return service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+    
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public void disable(@PathVariable Long id) {
+        service.disable(id);
     }
 
     /**

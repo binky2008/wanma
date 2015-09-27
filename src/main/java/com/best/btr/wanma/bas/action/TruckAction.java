@@ -46,8 +46,8 @@ public class TruckAction {
  
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Truck delete(@PathVariable Long id) {
-        return service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
     }
  
     @RequestMapping(value = "/query")

@@ -85,8 +85,8 @@ var TRUCK_FIELDS = [
     {field: 'ck', checkbox: true},
     {field: "ownerCenterName", width: "100", title: "所属分拨"},
     {field: "ownerSiteName", width: "100", title: "所属网点"},
-    {field: "cardCode", width: "100", title: "班车卡卡号"},
-    {field: "barCode", width: "100", title: "车厢条码"},
+    {field: "cardCode", width: "120", title: "班车卡卡号"},
+    {field: "barCode", width: "120", title: "车厢条码"},
     {field: "typeName", width: "100", title: "车型"},
     {field: "code", width: "100", title: "车牌号"},
     {field: "brand", width: "100", title: "车品牌"},
@@ -112,7 +112,8 @@ function query(params) {
             { text: '新增', iconCls: 'icon-add', handler: create }, 
             '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
-            '-', { text: '导出', handler : _export }
+            '-', { text: '班车卡打印', iconCls : 'icon-print', handler : print1 },
+            '-', { text: '车厢条码打印', iconCls : 'icon-print', handler : print2 }
         ] ,
         columns: [TRUCK_FIELDS],
         /* 返回的结果再处理 */
@@ -136,13 +137,22 @@ function beginQuery() {
 
     query(params);
 }
+
+function print1() {
+
+}
+
+function print2() {
+    
+}
+
 </script>
 
 </head>
 <body>
 
 <div id="main" class="easyui-layout" fit="true">
-    <div id="queryContainer" data-options="region:'north'" border="false">
+    <div id="queryContainer" data-options="region:'north'" border="false" style="display:none">
         <label>车牌号:</label><input id="param1" class="easyui-textbox"/>
         <label>车型:</label><input id="param2" class="easyui-textbox"/>
         <label>品牌:</label><input id="param3" class="easyui-textbox"/>
@@ -169,7 +179,7 @@ function beginQuery() {
                     <input name="ownerSite.id" id="ownerSiteId" class="easyui-textbox" required="true"/>
                 </td>
             </tr>
-            <tr>
+            <tr style="display:none">
                 <td class="label">班车卡卡号:</td>
                 <td>
                     <input name="cardCode" id="cardCode" class="easyui-textbox" readonly="true" required/>

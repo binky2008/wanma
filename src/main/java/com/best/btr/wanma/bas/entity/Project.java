@@ -10,6 +10,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framework.component.param.ParamConstants;
 import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
@@ -52,6 +53,10 @@ public class Project extends AbstractEntity {
     /** 联系电话2 */
     @Column(length = 64)
     private String phone2;
+    
+    /** 所属站点 */
+    @ManyToOne
+    private Site ownerSite;
 
     /** 业务员 */
     @ManyToOne
@@ -63,9 +68,10 @@ public class Project extends AbstractEntity {
     @Column(length = 1000)
     private String remark;
 
+    private Integer seqNo;
+    
     /** 状态: 在用、失效 */
-    @ManyToOne
-    private Param state;
+    private Integer disabled = ParamConstants.FALSE;
 
     public Long getId() {
         return id;
@@ -139,11 +145,35 @@ public class Project extends AbstractEntity {
         this.businessor = businessor;
     }
 
-    public Param getState() {
-        return state;
-    }
+	public Site getOwnerSite() {
+		return ownerSite;
+	}
 
-    public void setState(Param state) {
-        this.state = state;
-    }
+	public void setOwnerSite(Site ownerSite) {
+		this.ownerSite = ownerSite;
+	}
+
+	public String getRemark() {
+		return remark;
+	}
+
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+
+	public Integer getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(Integer disabled) {
+		this.disabled = disabled;
+	}
+
+	public Integer getSeqNo() {
+		return seqNo;
+	}
+
+	public void setSeqNo(Integer seqNo) {
+		this.seqNo = seqNo;
+	}
 }

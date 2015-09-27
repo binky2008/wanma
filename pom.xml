@@ -450,8 +450,12 @@
 				<log.level>debug</log.level>
 				<db.username>root</db.username>
 				<db.password>800best@com</db.password>
+				<db.url>127.0.0.1:3306/wanma</db.url>
+				<tomcat.url>127.0.0.1</tomcat.url>
+				<!--
 				<db.url>www.boubei.com:3306/wanma</db.url>
 				<tomcat.url>www.boubei.com</tomcat.url>
+				-->
 			</properties>
 		</profile>
 		

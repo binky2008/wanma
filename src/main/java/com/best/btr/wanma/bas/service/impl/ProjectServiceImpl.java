@@ -13,6 +13,7 @@ import com.best.btr.wanma.bas.entity.ProjectAddress;
 import com.best.btr.wanma.bas.entity.Site;
 import com.best.btr.wanma.bas.service.ProjectService;
 import com.best.btr.wanma.bas.so.ProjectSO;
+import com.jinhe.tss.framework.component.param.ParamConstants;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
 
@@ -30,10 +31,18 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     public Project create(Project entity) {
+        Integer seqNo = dao.getMaxSeqNo(entity.getOwnerSite().getId());
+        entity.setSeqNo(seqNo);
+
         return dao.create(entity);
     }
 
     public Project update(Project entity) {
+    	if(entity.getSeqNo() == null) {
+    		Integer seqNo = dao.getMaxSeqNo(entity.getOwnerSite().getId());
+            entity.setSeqNo(seqNo);
+    	}
+        
         return (Project) dao.update(entity);
     }
 
@@ -84,17 +93,19 @@ public class ProjectServiceImpl implements ProjectService {
 		// 创建一条客户记录
 		Customer customer = new Customer();
 		customer.setAddress(entity.getAddress());
-		// customer.setBusinessor(project.getBusinessor());
 		Site ownerSite = entity.getOwnerSite();
 		customer.setOwnerSite(ownerSite);
 		customer.setCode(customerDao.getCustomerCode(ownerSite.getId()));
 		
 		customer.setPhone1(entity.getPhone());
-		customer.setName(project.getName());
+		customer.setName(entity.getCustomerName());
 		customer.setContacts(entity.getContacts());
 		
 		customer.setFullName(project.getFullName());
 		customer.setOriginal(ownerSite.getName()); // 来源为代取件网点
+		
+		customer.setSettleType(project.getSettleType());
+		customer.setCustomerType("项目客户");
 		
 		customer = customerDao.create(customer);
 		
@@ -110,5 +121,32 @@ public class ProjectServiceImpl implements ProjectService {
 	public List<ProjectAddress> getAddressList(Long projectId) {
 		String hql = "from ProjectAddress o where o.project.id = ?";
 		return (List<ProjectAddress>) dao.getEntities(hql, projectId);
+	}
+
+	public String generateCode(Long siteId) {
+		String siteCode = ((Site) dao.getEntity(Site.class, siteId)).getCode() + "-P";
+
+		Integer seqNo = dao.getMaxSeqNo(siteId);
+        if(seqNo < 10) {
+        	return siteCode + "00" + seqNo;
+        }
+        if(seqNo < 100) {
+        	return siteCode + "0" + seqNo;
+        }
+        return siteCode + seqNo;
+	}
+
+	public void disable(Long id) {
+		Project project = dao.getEntity(id);
+		project.setDisabled(ParamConstants.TRUE);
+		
+		dao.update(project);
+	}
+
+	public void disableAddress(Long id) {
+		ProjectAddress address = getAddressById(id);
+		address.setDisabled(ParamConstants.TRUE);
+		
+		dao.update(address);
 	}
 }

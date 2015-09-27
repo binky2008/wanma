@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framework.component.param.ParamConstants;
 import com.jinhe.tss.framwork.AbstractEntity;
 
 @Entity
@@ -39,14 +39,16 @@ public class ProjectAddress extends AbstractEntity {
     @Column(length = 128, nullable = false)
     private String phone;
     
+    private String region;
+    
     @Column(length = 256, nullable = false)
     private String address;
     
-    @ManyToOne
-    private Param state;
+    /** 状态: 在用、失效 */
+    private Integer disabled = ParamConstants.FALSE;
     
 	public Long getId() {
-		return this.getId();
+		return id;
 	}
 
 	public String getCustomerName() {
@@ -93,14 +95,6 @@ public class ProjectAddress extends AbstractEntity {
 		this.project = project;
 	}
 
-	public Param getState() {
-		return state;
-	}
-
-	public void setState(Param state) {
-		this.state = state;
-	}
-
 	public Customer getCustomer() {
 		return customer;
 	}
@@ -115,5 +109,21 @@ public class ProjectAddress extends AbstractEntity {
 
 	public void setOwnerSite(Site ownerSite) {
 		this.ownerSite = ownerSite;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public Integer getDisabled() {
+		return disabled;
+	}
+
+	public void setDisabled(Integer disabled) {
+		this.disabled = disabled;
 	}
 }

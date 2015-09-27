@@ -74,6 +74,11 @@
 				"id": 34,
 				"name": "缓存管理",
 				"url": "../modules/_cache/cache.htm"
+			},
+			{
+				"id": 35,
+				"name": "测试页面",
+				"url": "../modules/demo/crud.html"
 			}
 		]
 	},

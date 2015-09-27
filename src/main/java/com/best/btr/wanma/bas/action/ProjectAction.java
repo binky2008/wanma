@@ -30,10 +30,25 @@ public class ProjectAction {
     public Project getEntityById(@PathVariable Long id) {
         return service.getEntityById(id);
     }
+    
+    /**
+     * 生成编码
+     * @param siteCode
+     * @return
+     */
+    @RequestMapping(value = "/getNewCode", method = RequestMethod.POST)
+    @ResponseBody
+    public String generateCustomerCode(Long siteId) {
+        return service.generateCode(siteId);
+    }
  
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public Project save(Project project) {
+    	if(project.getBusinessor().getId() == null) {
+    		project.setBusinessor(null);
+    	}
+    	
         if (null == project.getId()) {
             service.create(project);
         } else {
@@ -47,8 +62,14 @@ public class ProjectAction {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public Project delete(@PathVariable Long id) {
-        return service.delete(id);
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+    
+    @RequestMapping(value = "/disable/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public void disable(@PathVariable Long id) {
+        service.disable(id);
     }
 
     @RequestMapping(value = "/query")
@@ -86,7 +107,13 @@ public class ProjectAction {
 
     @RequestMapping(value = "/address/{id}", method = RequestMethod.DELETE)
     @ResponseBody
-    public ProjectAddress deleteAddress(@PathVariable Long id) {
-        return service.deleteAddress(id);
+    public void deleteAddress(@PathVariable Long id) {
+        service.deleteAddress(id);
+    }
+    
+    @RequestMapping(value = "/address/disable/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public void disableAddress(@PathVariable Long id) {
+        service.disableAddress(id);
     }
 }

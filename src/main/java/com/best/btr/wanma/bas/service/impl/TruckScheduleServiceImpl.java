@@ -7,13 +7,14 @@ import com.best.btr.wanma.bas.dao.TruckScheduleDao;
 import com.best.btr.wanma.bas.entity.TruckSchedule;
 import com.best.btr.wanma.bas.service.TruckScheduleService;
 import com.best.btr.wanma.bas.so.TruckScheduleSO;
+import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
 
 /**
  * @author Created by Lu on 15/9/3.
  */
-@Service("VehicleScheduleService")
+@Service("TruckScheduleService")
 public class TruckScheduleServiceImpl implements TruckScheduleService {
 
     @Autowired private TruckScheduleDao dao;
@@ -23,10 +24,20 @@ public class TruckScheduleServiceImpl implements TruckScheduleService {
     }
 
     public TruckSchedule create(TruckSchedule entity) {
-        return dao.create(entity);
+    	// TODO 生成班次编码
+    	entity.setCode("BC" + System.currentTimeMillis());
+    	
+    	entity = dao.create(entity);
+    	
+    	update(entity);
+    	
+        return entity;
     }
 
     public TruckSchedule update(TruckSchedule entity) {
+    	Param truckType = (Param) dao.getEntity(Param.class, entity.getTruckType().getPK());
+    	entity.setSerialCode(entity.getArrivalTime() + "/" + truckType.getValue());
+    	
         return (TruckSchedule) dao.update(entity);
     }
 

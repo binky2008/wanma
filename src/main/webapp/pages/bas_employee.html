@@ -68,6 +68,7 @@ function create(){
     $('#fm').form('clear');
     $('#dlg').dialog('open').dialog('setTitle', '新增员工').dialog('center');
     $('#lockVersion').val('0'); //給版本号设置默认值.
+    $('#original').val('PC');
 
     $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
     initCombobox('stateId', 'EntityState', {}, 1);
@@ -101,7 +102,8 @@ var FIELDS_1 = [
         { field : 'ownerSiteName', title : '所属站点', width : 80 }, 
         { field : 'gender', title : '性别', width : 80 }, 
         { field : 'email', title : '邮箱', width : 100 }, 
-        { field : 'phone', title : '联系电话', width : 80 }
+        { field : 'phone', title : '联系电话', width : 80 }, 
+        { field : 'original', title : '注册来源', width : 80 }
     ];
 
 function query(params) {
@@ -168,6 +170,7 @@ function beginQuery() {
         <form id="fm" method="post" novalidate>
             <input name="id" type="hidden" />
             <input id="lockVersion" name="lockVersion" type="hidden" />
+            <input id="original" name="original" type="hidden" />
             <table>
                 <tr>
                     <td class="label">员工编码:</td>

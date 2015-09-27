@@ -35,13 +35,8 @@ QUERY_URL = BASE_URL + '/query';
 $(document).ready(function(){
     query();
 
-    initCombobox('stateId', 'EntityState', {}, 1);
     initCombobox('settleTypeId', 'SettleType');
-    initCombobox('typeId', 'CustomerType', {}, 1);
 
-    /**
-     * 暂时初始化一个默认站点
-     */
     $('#ownerSiteId').combobox( {
         panelHeight: '60px',
         valueField: 'id',
@@ -49,22 +44,23 @@ $(document).ready(function(){
         data: [window.parent.ownerSite]
     }).textbox('readonly', true);
 
-    /**
-     * 暂时初始化一个默认登陆的员工
-     */
     $('#businessorId').combobox( {
+        url: '../employee/site/' + window.parent.ownerSite.id,
+        method : 'get',
         panelHeight: '60px',
         valueField: 'id',
-        textField: 'name',
-        data: [
-            {"id" : '1', "code" : "emp001", "name" : "员工001"},
-            {"id" : '2', "code" : "emp002", "name" : "员工002"}
-        ]
+        textField: 'name' 
     });
 
-    /**
-     * 加载省市区
-     */
+    $('#param5').combobox( {
+        url: '../employee/site/' + window.parent.ownerSite.id,
+        method : 'get',
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name' 
+    });
+
+    /** 加载省市区 */
     $("#aa").Address({
         callback: function (infos, selected_ids) {
             var str = '';
@@ -80,10 +76,15 @@ function create(){
     $('#fm').form('clear');
     $('#dlg').dialog('open').dialog('setTitle','新增客户').dialog('center');
     $('#lockVersion').val('0'); //給版本号设置默认值.
+    $('#original').val('手动新增'); 
+
     $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
-    initCombobox('stateId', 'EntityState', {}, 1);
-    initCombobox('typeId', 'CustomerType', {}, 1);
-    $('#_code').textbox('readonly', false);
+    
+    $('#_code').textbox('readonly', true);
+
+    $.post('../customer/getNewCode', {'siteId': window.parent.ownerSite.id}, function (data) {
+        $('#_code').textbox("setValue", data).textbox('readonly', true);
+    });
 }
 
 function update(){
@@ -92,10 +93,11 @@ function update(){
         $('#dlg').dialog('open').dialog('setTitle','修改客户信息').dialog('center');
 
         $.get(GET_URL + row.id, {}, function(data){
-            data['state.id'] = data.state.id;
-            data['settleType.id'] = data.settleType.id;
+            if(data.settleType) data['settleType.id'] = data.settleType.id;
             data['ownerSite.id'] = data.ownerSite.id;
-            data['businessor.id'] = data.businessor.id;
+            if(data.businessor) data['businessor.id'] = data.businessor.id;
+
+            data.needMessage = data.needMessage ? "1" : "0";
 
             $('#fm').form('load', data);
             $('#_code').textbox('readonly', true);
@@ -103,26 +105,22 @@ function update(){
     }
 }
 
-/**
- * 页面展示的字段
- */
-var CUSTOMER_FIELDS_1 = [
+var CUSTOMER_FIELDS = [
     { field : 'ck', checkbox: true },
-    { field : 'typeName', title : '客户类型', width : 80 },
-    { field : 'original', title : '客户来源', width : 90 },
     { field : 'code', title : '客户编码', width : 90 },
+    { field : 'original', title : '客户来源', width : 70 },
     { field : 'name', title : '客户名称', width : 80 },
     { field : 'fullName', title : '客户全称', width : 80 },
-    { field : 'settleTypeName', title : '结算方式', width : 80 },
+    { field : 'settleTypeName', title : '结算方式', width : 60 },
     { field : 'contacts', title : '联系人', width : 80 },
     { field : 'phone1', title : '联系电话1', width : 80 },
     { field : 'phone2', title : '联系电话2', width : 80 },
-    { field : 'address', title : '寄件地址', width : 100 },
+    { field : 'address', title : '寄件地址', width : 130 },
     { field : 'ownerSiteName', title : '所属站点', width : 80 },
     { field : 'industry', title : '所属行业', width : 80 },
-    { field : 'businessorName', title : '业务员', width : 80 },
+    { field : 'businessorName', title : '业务员', width : 60 },
     { field : 'needMessage', title : '是否发送消息', width : 80 },
-    { field : 'stateName', title : '状态', width : 80 }
+    { field : 'stateName', title : '状态', width : 60 }
 ];
 
 /**
@@ -143,19 +141,22 @@ function query(params) {
         checkOnSelect : true,
         selectOnCheck : true,
         toolbar: [ 
-            { text: '新增', iconCls: 'icon-add', handler: create }, 
+            { text: '同步V5', handler: syncV5 }, 
+            '-', { text: '新增', iconCls: 'icon-add', handler: create }, 
             '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
-            '-', { text: '导出', handler : _export }
+            '-', { text: '停用客户', handler : disable }, 
+            //'-', { text: '导出', handler : _export }
         ] ,
-        columns : [CUSTOMER_FIELDS_1],
+        columns : [CUSTOMER_FIELDS],
         /* 返回的结果再处理 */
         loadFilter : function(data) {
             $.each(data.rows, function(i, item) {
-                item.stateName = item.state.text;
-                item.typeName = item.type ? item.type.text : "默认客户";
+                item.needMessage = item.needMessage ? "是" : "否";
+                item.stateName = item.disabled == 1 ? "停用" : "启用";
+                item.typeName = item.type ? item.type.text : "普通客户";
                 item.settleTypeName = item.settleType ? item.settleType.text : "";
-                item.ownerSiteName = item.ownerSite ? item.ownerSite.name : "";
+                item.ownerSiteName  = item.ownerSite ? item.ownerSite.name : "";
                 item.businessorName = item.businessor ? item.businessor.name : "";
             });
             return data;
@@ -171,7 +172,27 @@ function beginQuery() {
     params.code = $('#param1').val();
     params.name = $('#param2').val();
     params.phone1 = $('#param3').val();
+    params.original = $('#param4').val();
+    params.businessorId = $('#param5').textbox("getValue");;
+
     query(params);
+}
+
+// 网点登陆的时候自动同步V5的用户；同时支持手动同步
+function syncV5() {
+
+}
+
+function disable() {
+    var row = getSelectedRow();
+    row && $.messager.confirm('Confirm', '您确定要停用该客户吗?', function(result){
+        result && $.post('../customer/disable/' + row.id, {}, function (result) {
+            checkException(result, function() {
+                $.messager.show({ title: '操作结果', msg: '停用成功' });
+                $('#t1').datagrid('reload'); // reload the employee data
+            });
+        });
+    });
 }
 
 </script>
@@ -184,7 +205,7 @@ function beginQuery() {
             <label>客户编码:</label><input id="param1" class="easyui-textbox" />
             <label>客户名称:</label><input id="param2" class="easyui-textbox" />
             <label>联系电话:</label><input id="param3" class="easyui-textbox" />
-            <label>客户类型:</label><input id="param4" class="easyui-textbox" />
+            <label>客户来源:</label><input id="param4" class="easyui-textbox" />
             <label>业务员:</label><input id="param5" class="easyui-textbox" />
 
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
@@ -194,10 +215,13 @@ function beginQuery() {
         </div>
     </div>
 
-    <div id="dlg" class="easyui-dialog" style="width:800px;height:330px;" closed="true" buttons="#dlg-buttons">
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:290px;" closed="true" buttons="#dlg-buttons">
         <form id="fm" method="post" novalidate>
             <input name="id" type="hidden" />
             <input id="lockVersion" name="lockVersion" type="hidden" />
+            <input id="disabled" name="disabled" type="hidden" />
+            <input id="original" name="original" type="hidden" />
+            <input id="seqNo" name="seqNo" type="hidden" />
             <table>
                 <tr>
                     <td class="label">客户编码:</td>
@@ -232,33 +256,19 @@ function beginQuery() {
                     <td>
                         <input name="ownerSite.id" id="ownerSiteId" class="easyui-textbox" required="true" />
                     </td>
-                    <td class="label">客户类型:</td>
-                    <td>
-                        <input name="type.id" id="typeId" class="easyui-textbox" />
-                    </td>
-                    <td class="label">客户来源:</td>
-                    <td>
-                        <input name="original" id="original" class="easyui-textbox" required="true" />
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label">结算类型:</td>
-                    <td>
-                        <input name="settleType.id" id="settleTypeId" class="easyui-textbox" required="true" />
-                    </td>
-                    <td class="label">状态:</td>
-                    <td>
-                        <input name="state.id" id="stateId" class="easyui-textbox" required="true" />
-                    </td>
                     <td class="label">业务员:</td>
                     <td>
                         <input name="businessor.id" id="businessorId" class="easyui-textbox" />
+                    </td>
+                    <td class="label">结算类型:</td>
+                    <td>
+                        <input name="settleType.id" id="settleTypeId" class="easyui-textbox" required="true" />
                     </td>
                 </tr>
                 <tr>
                     <td class="label">所在地区:</td>
                     <td colspan="3">
-                        <div id="aa" class="cc"><input name="region" class="easyui-textbox" style="width: 420px;" value="" prompt="请选择省市区" ></div>
+                        <div id="aa" class="cc"><input name="region" class="easyui-textbox" style="width: 300px;" value="" prompt="请选择省市区" ></div>
                     </td>
                     <td class="label">所属行业:</td>
                     <td>

@@ -1,8 +1,18 @@
 package com.best.btr.wanma.bas.entity;
 
-import com.jinhe.tss.framework.component.param.Param;
+import java.io.Serializable;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+import com.jinhe.tss.framework.component.param.Param;
+import com.jinhe.tss.framework.persistence.IEntity;
 
 /**
  * <p>分拨实体</p>
@@ -12,7 +22,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "WM_BAS_CENTER")
 @SequenceGenerator(name = "center_sequence", sequenceName = "center_sequence", initialValue = 1000, allocationSize = 10)
-public class Center {
+public class Center implements IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO, generator = "center_sequence")
@@ -61,4 +71,8 @@ public class Center {
     public void setState(Param state) {
         this.state = state;
     }
+
+	public Serializable getPK() {
+		return this.getId();
+	}
 }
