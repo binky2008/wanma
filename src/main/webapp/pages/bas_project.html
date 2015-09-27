@@ -34,6 +34,7 @@ QUERY_URL = BASE_URL + '/query';
 
 $(document).ready(function(){
     query();
+    queryAddress(0);
 
     initCombobox('settleTypeId', 'SettleType');
 
@@ -237,7 +238,18 @@ function createAddress() {
 }
 
 function updateAddress() {
-    
+    var row = getSelectedRow("t2");
+    if (row){
+        $('#dlg2').dialog('open').dialog('setTitle','修改项目地址').dialog('center');
+
+        $.get(BASE_URL + "/address/" + row.id, {}, function(data){
+            data['ownerSite.id'] = data.ownerSite.id;
+            data['project.id'] = data.project.id;
+            data['customer.id'] = data.customer.id;
+
+            $('#fm2').form('load', data);
+        });
+    }
 }
 
 function saveAddress() {
@@ -256,7 +268,15 @@ function saveAddress() {
 }
 
 function disableAddress() {
-    
+    var row = getSelectedRow("t2");
+    row && $.messager.confirm('Confirm', '您确定要停用该项目地址吗?', function(result){
+        result && $.post('../project/address/disable/' + row.id, {}, function (result) {
+            checkException(result, function() {
+                $.messager.show({ title: '操作结果', msg: '停用成功' });
+                $('#t2').datagrid('reload'); // reload the employee data
+            });
+        });
+    });
 }
 
 
@@ -348,11 +368,12 @@ function disableAddress() {
             <input id="lockVersion2" name="lockVersion" type="hidden" />
             <input id="disabled" name="disabled" type="hidden" />
             <input id="projectId" name="project.id" type="hidden" />
+            <input id="customerId" name="customer.id" type="hidden" />
             <table>
                 <tr>
                     <td class="label">客户名称:</td>
                     <td>
-                        <input name="customerName" id="customerName" class="easyui-textbox" required="true" />
+                        <input name="customerName" id="customerName" class="easyui-textbox" required="true" readonly="true" />
                     </td>
                     <td class="label">联系人:</td>
                     <td>

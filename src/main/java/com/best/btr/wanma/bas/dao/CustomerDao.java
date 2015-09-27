@@ -10,4 +10,6 @@ public interface CustomerDao extends IDao<Customer> {
 
 	String getCustomerCode(Long siteId);
 	
+	Integer getMaxSeqNo(Long siteId);
+	
 }

@@ -108,6 +108,7 @@ function update(){
 var CUSTOMER_FIELDS = [
     { field : 'ck', checkbox: true },
     { field : 'code', title : '客户编码', width : 90 },
+    { field : 'customerType', title : '客户类型', width : 70 },
     { field : 'original', title : '客户来源', width : 70 },
     { field : 'name', title : '客户名称', width : 80 },
     { field : 'fullName', title : '客户全称', width : 80 },
@@ -143,8 +144,8 @@ function query(params) {
         toolbar: [ 
             { text: '同步V5', handler: syncV5 }, 
             '-', { text: '新增', iconCls: 'icon-add', handler: create }, 
-            '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
-            '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
+            '-', { text: '修改', iconCls: 'icon-edit', handler: update, id: "btn2" }, 
+            '-', { text: '删除', iconCls : 'icon-remove', handler : _remove, id: "btn3" }, 
             '-', { text: '停用客户', handler : disable }, 
             //'-', { text: '导出', handler : _export }
         ] ,
@@ -160,13 +161,20 @@ function query(params) {
                 item.businessorName = item.businessor ? item.businessor.name : "";
             });
             return data;
+        },
+        onSelect: function(index, row) {
+            if(row.customerType && row.customerType.trim() == '项目客户') {
+                $('#btn2').linkbutton("disable");
+                $('#btn3').linkbutton("disable");
+            }
+            else {
+                $('#btn2').linkbutton("enable");
+                $('#btn3').linkbutton("enable");
+            }
         }
     });
 }
 
-/**
- * 收集查询的条件
- */
 function beginQuery() {
     var params = {};
     params.code = $('#param1').val();
@@ -268,7 +276,8 @@ function disable() {
                 <tr>
                     <td class="label">所在地区:</td>
                     <td colspan="3">
-                        <div id="aa" class="cc"><input name="region" class="easyui-textbox" style="width: 300px;" value="" prompt="请选择省市区" ></div>
+                        <div id="aa" class="cc">
+                        <input name="region" id="region" class="easyui-textbox" style="width: 300px;" prompt="请选择省市区" ></div>
                     </td>
                     <td class="label">所属行业:</td>
                     <td>

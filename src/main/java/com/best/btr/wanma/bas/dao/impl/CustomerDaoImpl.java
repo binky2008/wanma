@@ -21,11 +21,7 @@ public class CustomerDaoImpl extends BaseDao<Customer> implements CustomerDao {
     
     public String getCustomerCode(Long siteId) {
     	String siteCode = ((Site)getEntity(Site.class, siteId)).getCode();
-    	
-    	String hql = "select max(o.seqNo) from Customer o where o.ownerSite.id = ?";
-        List<?> list = getEntities(hql, siteId); 
-        Integer seqNo = (!list.isEmpty() && list.get(0) != null) ? (Integer) list.get(0) + 1 : 1;
-    
+        Integer seqNo = getMaxSeqNo(siteId);
         if(seqNo < 10) {
         	return siteCode + "00" + seqNo;
         }
@@ -35,4 +31,11 @@ public class CustomerDaoImpl extends BaseDao<Customer> implements CustomerDao {
         return siteCode + seqNo;
     }
     
+    public Integer getMaxSeqNo(Long siteId) {
+    	String hql = "select max(o.seqNo) from Customer o where o.ownerSite.id = ?";
+        List<?> list = getEntities(hql, siteId); 
+        Integer seqNo = (!list.isEmpty() && list.get(0) != null) ? (Integer) list.get(0) + 1 : 1;
+    
+        return seqNo;
+    }
 }

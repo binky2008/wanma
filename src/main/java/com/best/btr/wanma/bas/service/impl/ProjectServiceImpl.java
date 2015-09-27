@@ -69,7 +69,7 @@ public class ProjectServiceImpl implements ProjectService {
 		entity = (ProjectAddress) dao.update(entity);
 		
 		// 同时修改对应该地址客户记录
-		Customer customer = entity.getCustomer();
+		Customer customer = customerDao.getEntity( entity.getCustomer().getId() );
 		customer.setAddress(entity.getAddress());
 		customer.setPhone1(entity.getPhone());
 		customer.setContacts(entity.getContacts());
@@ -107,6 +107,9 @@ public class ProjectServiceImpl implements ProjectService {
 		customer.setSettleType(project.getSettleType());
 		customer.setCustomerType("项目客户");
 		
+		Integer seqNo = customerDao.getMaxSeqNo(entity.getOwnerSite().getId());
+		customer.setSeqNo(seqNo);
+        
 		customer = customerDao.create(customer);
 		
 		entity.setCustomer(customer);
@@ -148,5 +151,10 @@ public class ProjectServiceImpl implements ProjectService {
 		address.setDisabled(ParamConstants.TRUE);
 		
 		dao.update(address);
+		
+		Customer customer = address.getCustomer();
+		customer.setDisabled(ParamConstants.TRUE);
+		
+		customerDao.update(customer);
 	}
 }

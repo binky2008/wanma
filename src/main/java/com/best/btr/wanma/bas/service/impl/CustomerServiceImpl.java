@@ -33,9 +33,7 @@ public class CustomerServiceImpl implements CustomerService {
     		throw new BusinessException("相同客户号的客户记录已经存在。");
     	}
     	
-    	String hql = "select max(o.seqNo) from Customer o where o.ownerSite.id = ?";
-        list = dao.getEntities(hql, entity.getOwnerSite().getId()); 
-        Integer seqNo = (!list.isEmpty() && list.get(0) != null) ? (Integer) list.get(0) + 1 : 1;
+        Integer seqNo = dao.getMaxSeqNo(entity.getOwnerSite().getId());
         entity.setSeqNo(seqNo);
         
         return dao.create(entity);

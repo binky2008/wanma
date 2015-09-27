@@ -53,8 +53,9 @@ function closeDialog() {
     $('#fm').form('clear');
 }
 
-function getSelectedRow() {
-    var row = $('#t1').datagrid('getSelected');
+function getSelectedRow(tblID) {
+    tblID = tblID || 't1';
+    var row = $('#' + tblID).datagrid('getSelected');
     if (!row) {
         $.messager.alert({
             title: '提示',

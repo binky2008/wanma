@@ -68,6 +68,7 @@ public class Project extends AbstractEntity {
     @Column(length = 1000)
     private String remark;
 
+    @Column(nullable = false)
     private Integer seqNo;
     
     /** 状态: 在用、失效 */

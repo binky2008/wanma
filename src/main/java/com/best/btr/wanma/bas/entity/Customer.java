@@ -73,6 +73,7 @@ public class Customer extends AbstractEntity {
     @ManyToOne
     private Site ownerSite;
     
+    @Column(nullable = false)
     private Integer seqNo;
 
     /** 所属行业 */

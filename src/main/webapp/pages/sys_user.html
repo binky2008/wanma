@@ -34,7 +34,7 @@ $(document).ready(function(){
     query();
     
     initCombobox('stateId', 'EntityState', {}, 1);
-    initCombobox('userTypeId', 'UserType');
+    initCombobox('userTypeId', 'UserType', {}, 1);
 
     initCombobox('param3', 'UserType');
     initCombobox('param4', 'UserJob');
@@ -46,6 +46,8 @@ function create(){
     $('#lockVersion').val('0'); //給版本号设置默认值.
 
     initCombobox('stateId', 'EntityState', {}, 1);
+    initCombobox('userTypeId', 'UserType', {}, 1);
+
     $('#loginName').textbox('readonly', false);
 }
 
@@ -57,12 +59,6 @@ function update(){
         $.get(GET_URL + row.id, {}, function(data){
             if(data.state) data['state.id'] = data.state.id;
             if(data.userType) data['userType.id'] = data.userType.id;
-            if(data.employee) {
-                data['employee.id'] = data.employee.id;
-                data['ownerSiteName'] = data.employee.ownerSite.name;
-                data['positionName'] = data.employee.position.text;
-                data['department'] = data['department'] || data.employee.department;
-            }
  
             $('#fm').form('load', data);
 
@@ -111,7 +107,7 @@ function query(params) {
             '-', { text: '新增', iconCls: 'icon-add', handler: create }, 
             '-', { text: '修改', iconCls: 'icon-edit', handler: update, id: "btn2" }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove, id: "btn3" }, 
-            '-', { text: '导出', handler : _export }
+            // '-', { text: '导出', handler : _export }
         ] ,
         frozenColumns: [FIELDS_1], 
         columns : [FIELDS_2],
@@ -129,9 +125,13 @@ function query(params) {
             return data;
         },
         onSelect: function(index, row) {
-            if(row.userType == '实操用户') {
+            if(row.userType != '管理用户') {
                 $('#btn2').linkbutton("disable");
                 $('#btn3').linkbutton("disable");
+            }
+            else {
+                $('#btn2').linkbutton("enable");
+                $('#btn3').linkbutton("enable");
             }
         }
     });
@@ -142,10 +142,10 @@ function beginQuery() {
     params.loginName = $('#param1').val();
     params.userName  = $('#param2').val();
     params.userTypeId = $('#param3').textbox("getValue");
-    params.positionId = $('#param4').textbox("getValue");
     query(params);
 }
 
+// 同步网点编号
 function syncFromV5() {
 
 }
@@ -162,8 +162,6 @@ function syncFromV5() {
             <label>用户名:</label><input id="param1" class="easyui-textbox"></input>
             <label>中文名称:</label><input id="param2" class="easyui-textbox"></input>
             <label>用户类型:</label><input id="param3" class="easyui-textbox"></input>
-            <label>用户岗位:</label><input id="param4" class="easyui-textbox"></input>
-            <label>网点:</label><input id="param5" class="easyui-textbox"></input>
 
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
         </div>
@@ -172,11 +170,10 @@ function syncFromV5() {
         </div>
     </div>
 
-    <div id="dlg" title="用户信息" class="easyui-dialog" style="width:800px;height:320px;" closed="true" buttons="#dlg-buttons">
+    <div id="dlg" title="用户信息" class="easyui-dialog" style="width:800px;height:250px;" closed="true" buttons="#dlg-buttons">
         <form id="fm" method="post" novalidate>
             <input name="id" type="hidden">
             <input id="lockVersion" name="lockVersion" type="hidden" />
-            <input id="employeeId" name="employee.id" type="hidden" />
             <table>
             	<tr>
             		<td class="label"><label>用户名:</td>
@@ -189,27 +186,13 @@ function syncFromV5() {
             		</td>
             		<td class="label">用户类型:</td>
             		<td>
-                		<input name="userType.id" id="userTypeId" class="easyui-textbox" required="true">
+                		<input name="userType.id" id="userTypeId" class="easyui-textbox" required="true" readonly="true">
             		</td>
             	</tr>
                 <tr>
-                    <td class="label"><label>所属组织:</td>
-                    <td>
-                        <input name="org" class="easyui-textbox" required="true">
-                    </td>
-                    <td class="label">加盟方:</td>
-                    <td>
-                        <input name="franchisee" class="easyui-textbox" required="true">
-                    </td>
                     <td class="label">用户密码:</td>
                     <td>
                         <input name="password" type="password" class="easyui-textbox" required="true">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label"><label>操作站点:</td>
-                    <td>
-                        <input name="ownerSiteName" class="easyui-textbox" readonly="true">
                     </td>
                     <td class="label">手机号:</td>
                     <td>
@@ -221,37 +204,13 @@ function syncFromV5() {
                     </td>
                 </tr>
                 <tr>
-                    <td class="label"><label>联系电话:</td>
-                    <td>
-                        <input name="telephone" class="easyui-textbox">
-                    </td>
-                    <td class="label">角色:</td>
-                    <td>
-                        <input name="role" class="easyui-textbox" readonly="true">
-                    </td>
-                    <td class="label">岗位类型:</td>
-                    <td>
-                        <input name="positionName" class="easyui-textbox" readonly="true">
-                    </td>
-                </tr>
-                <tr>
-                    <td class="label"><label>身份证:</td>
-                    <td>
-                        <input name="idCardNo" class="easyui-textbox">
-                    </td>
                     <td class="label">Email:</td>
-                    <td colspan="3">
-                        <input name="email" class="easyui-textbox" style="width:300px;">
+                    <td>
+                        <input name="email" class="easyui-textbox">
                     </td>
-                </tr>
-                <tr>
-                    <td class="label">状态:</td>
+                    <td class="label" colspan="3">状态:</td>
                     <td>
                         <input name="state.id" id="stateId" class="easyui-textbox" style="width:80px;" required="true">
-                    </td>
-                    <td class="label">地址:</td>
-                    <td colspan="3">
-                        <input name="address" class="easyui-textbox" style="width:400px;">
                     </td>
                 </tr>
             </table>
