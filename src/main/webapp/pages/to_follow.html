@@ -5,14 +5,16 @@
 <meta charset="UTF-8">
 <title>快件跟踪查询</title>
 
-<link rel="stylesheet" type="text/css" href="css/wanma.css">
+<link rel="stylesheet" href="css/wanma.css">
 
-<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/default/easyui.css">
-<link rel="stylesheet" type="text/css" href="../tools/easyui/themes/icon.css">
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
 
-<script type="text/javascript" src="../tools/easyui/jquery.min.js"></script>
-<script type="text/javascript" src="../tools/easyui/jquery.easyui.min.js"></script>
-<script type="text/javascript" src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
 
 <STYLE type="text/css">
 
@@ -22,8 +24,16 @@
 
 <script type="text/javascript">
 
+// TODO 
+// 1、查出的主单信息中，点击寄件站点或派件站点，自动进行拨号，拨通网点电话；
+// 2、异常子单扫描信息怎么定义？
+// 3、录入查询情况，需要V5提供写入接口
+// 4、所需取数据接口是走BI还是V5？
+
 
 $(function(){
+
+    query("not exist", 1);
 	 
 });
 
@@ -34,10 +44,12 @@ var FIELDS_1 = [
             { field : 'f3', title : '客户名称', width : 80 },
             { field : 'f4', title : '客户单号', width : 80 },
             { field : 'f5', title : '运单编号', width : 100 }, 
+            { field : 'f52', title : '订单号', width : 100 }, 
             { field : 'f6', title : '回单号', width : 80 },
             { field : 'f7', title : '货物数量', width : 60 },
             { field : 'f8', title : '货物体积（立方）', width : 90 },
             { field : 'f9', title : '货物重量（KG）', width : 80 },
+            { field : 'f92', title : '折扣', width : 80 },
             { field : 'fa', title : '计费重量（KG）', width : 80 },
             { field : 'fb', title : '目的站点', width : 80 },
             { field : 'fc', title : '收件客户', width : 80 },
@@ -54,17 +66,33 @@ var FIELDS_1 = [
             { field : 'f6', title : '重量', width : 80 },
             { field : 'f7', title : '来源', width : 60 },
             { field : 'f8', title : '跟踪记录', width : 300 }
-        ];
+        ],
+    FIELDS_3 = [
+            { field : 'f1', title : '扫描时间', width : 90, type : 'date' },
+            { field : 'f2', title : '上传时间', width : 90 },
+            { field : 'f3', title : '班车号', width : 80 },
+            { field : 'f4', title : '目的地', width : 80 },
+            { field : 'f5', title : '件数', width : 80 }, 
+            { field : 'f6', title : '重量', width : 80 },
+            { field : 'f7', title : '来源', width : 60 },
+            { field : 'f8', title : '跟踪记录', width : 300 }
+        ],
+    // 问题件
+    FIELDS_4 = [
+            { field : 'f1', title : '登记网点', width : 90, type : 'date' },
+            { field : 'f2', title : '登记时间', width : 90 },
+            { field : 'f3', title : '问题件类型', width : 80 },
+            { field : 'f4', title : '问题描述', width : 80 },
+            { field : 'f5', title : '处理内容', width : 80 }, 
+            { field : 'f6', title : '处理时间', width : 80 }
+        ]; 
 
-function query() { 
-    var trans_order_no = $("#trans_order_no").val();
-    // if(!trans_order_no) return;
+function query(docNo, docType){    
+    // if(!docNo) return;
 
     $('#t1').datagrid({
         url : 'data/to_follow_1.json',
         method : 'get',
-        pagination: true,
-        pageSize: 10,
         fit : true,
         fitColumns : true,
         rownumbers : true,
@@ -72,6 +100,13 @@ function query() {
         columns : [FIELDS_1],
         onClickRow: function(index, row) {
             queryDetails(row.id);
+        },
+        onLoadSuccess : function(data) {
+            $.each(data.rows, function(i, item) {
+                // 默认打开第一行的明细
+                queryDetails(item.id); console.log(i);
+                return false; // break
+            });
         }
     });
 }
@@ -83,19 +118,35 @@ function queryDetails(headerId) {
         fit : true,
         fitColumns : true,
         rownumbers : true,
-        singleSelect : true,
         columns : [FIELDS_2]
     });
 
-    // $('#t3').datagrid({
-    //     url : 'data/to_follow_3.json',
-    //     method : 'get',
-    //     fit : true,
-    //     fitColumns : true,
-    //     rownumbers : true,
-    //     singleSelect : true,
-    //     columns : [FIELDS_2]
-    // });
+    $('#t3').datagrid({
+        url : 'data/to_follow_3.json',
+        method : 'get',
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        columns : [FIELDS_3]
+    });
+
+    $('#t4').datagrid({
+        url : 'data/to_follow_4.json',
+        method : 'get',
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        columns : [FIELDS_4]
+    });
+}
+
+// 录入需要被其他网点或中心知道的信息
+function record() {
+    $('#dlg').dialog('open').dialog('setTitle','录入查询情况').dialog('center');
+}
+
+function save() {
+
 }
 	
 </script>
@@ -104,25 +155,60 @@ function queryDetails(headerId) {
 </head>
 
 <body>
-   
-    <div id="cc" class="easyui-layout" fit="true" >
-        <div data-options="region:'north', title:'快件跟踪查询'" style="height:100px;padding:6px 12px;">
-            <label>运单号：</label><input id="trans_order_no" required="true" style="height:50px; width:180px;"></input>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='query()'>查询</a>
+
+    <div id="main" class="easyui-layout" fit="true" >
+        <div id="queryContainer" data-options="region:'north'" style="height:40px;" border="false">
+            <input id="param1" class="easyui-searchbox" data-options="prompt:'请输入单号，一次查询多个单号以空格分开',menu:'#mm',searcher:query" style="width:600px"></input>
+            <div id="mm">
+                <div data-options="name:'1'">运单号</div>
+                <div data-options="name:'2'">客户单号</div>
+                <div data-options="name:'3'">订单号</div>
+                <div data-options="name:'4'">回单号</div>
+            </div>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="record()">录入查询情况</a>
         </div>
-        <div data-options="region:'center'" border="false">
-        	<table id="t1" title="运单基本信息"></table>
+        <div id="dataContainer" data-options="region:'center'" border="false" title="运单基本信息">
+            <table id="t1" border="false"></table>
         </div>
-        <div data-options="region:'south'" style="height:50%" border="false">
-			<div class="easyui-tabs" fit="true" border="false">
-				<div title="主单扫描信息">
-					<table id="t2"></table>
-				</div>
-				<div title="子单扫描信息">
-					<table id="t3"></table>
-				</div>        		
-        	</div>
+        <div data-options="region:'south'" style="height:60%" border="false" title="项目地址列表">
+            <div class="easyui-tabs" fit="true" border="false">
+                <div title="主单扫描信息">
+                    <table id="t2"></table>
+                </div>
+                <div title="异常子单扫描信息">
+                    <table id="t3"></table>
+                </div>  
+                <div title="问题件信息">  <!-- 还要能查看问题件处理结果 -->
+                    <table id="t4"></table>
+                </div>              
+            </div>
         </div>
+    </div>
+
+    <div id="dlg" class="easyui-dialog" style="width:800px;height:220px;" closed="true" buttons="#dlg-buttons">
+        <form id="fm" method="post" novalidate>
+            <input name="id" type="hidden" />
+            <input id="lockVersion" name="lockVersion" type="hidden"/>
+            <table>
+                <tr>
+                    <td class="label">处理单号:</td>
+                    <td>
+                        <input id="cldh" class="easyui-textbox" style="width:400px;" required="true"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label">处理结果:</td>
+                    <td>
+                        <textarea id="cljg" class="easyui-validatebox" style="width:600px;height:80px;" ></textarea>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    <div id="dlg-buttons">
+        <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">保存</a>
+        <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="$('#dlg').dialog('close')">取消</a>
     </div>
 
 </body>

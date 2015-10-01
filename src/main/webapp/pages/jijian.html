@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>寄件排车管理</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+
+$(function(){
+	 showGL();
+});
+
+function showGL() {
+	var rows = [
+        { "name": "日期", "group": "今日录单", "value": "2015-10-01" },
+        { "name": "票数", "group": "今日录单", "value": "30" },
+        { "name": "实际重量", "group": "今日录单", "value": "3000kg" },
+        { "name": "实际体积", "group": "今日录单", "value": "8立方" },
+
+        { "name": "票数", "group": "未完成班次管理货物", "value": "10" },
+        { "name": "实际重量", "group": "未完成班次管理货物", "value": "1000kg" },
+        { "name": "实际体积", "group": "未完成班次管理货物", "value": "3立方" },
+
+        { "name": "班次号：20:00/9.6", "group": "班次关联情况", "value": "已关联" },
+        { "name": "班次号：23:00/9.6", "group": "班次关联情况", "value": "未关联" }
+    ];
+
+	$('#tt').propertygrid({
+        width: 298,
+        height: 'auto',
+        showGroup: true,
+        scrollbarSize: 0,
+        columns: [[
+                { field: 'name', title: '名称', width: 100, resizable: true },
+                { field: 'value', title: '值', width: 100, resizable: false }
+        ]]
+    });
+    $('#tt').propertygrid('loadData', rows);
+}
+	
+</script>
+
+
+</head>
+
+<body>
+
+	<div id="main" class="easyui-layout" fit="true" >
+    	<div data-options="region:'west'" style="width:22%" border="true" title="概览">
+            <table id="tt" border="false"></table>
+        </div>
+
+        <div id="dataContainer" data-options="region:'center'" border="false">
+            <div id="main" class="easyui-layout" fit="true" >
+		        <div id="queryContainer" data-options="region:'north'" border="false">
+		            <label>班次:</label><input id="param1" class="easyui-textbox" />
+		            <label>车辆:</label><input id="param2" class="easyui-textbox" />
+		            &nbsp;&nbsp;&nbsp;&nbsp;
+		            <a href="#" class="easyui-linkbutton" onclick="beginQuery()">进行班次关联</a>
+		        </div>
+		        <div id="dataContainer" data-options="region:'center'" border="false" title="待关联货量信息">
+		            <table id="t1" border="false"></table>
+		        </div>
+		        <div data-options="region:'south'" style="height:40%" border="false" title="已关联班次列表">
+		            <table id="t2" border="false"></table>
+		        </div>
+		    </div>
+        </div>
+    </div>
+   
+    
+
+</body>
+</html>

@@ -1,3 +1,3 @@
 mvn clean install -Pdev -Dmaven.test.skip=true
 
-#cp target/tss.war /Users/jinpujun/Desktop/workspace/release/btrbi/
+cp target/wanma.war /Users/jinpujun/Desktop/workspace/release/tss/

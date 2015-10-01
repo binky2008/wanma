@@ -76,16 +76,16 @@ public class ProjectServiceImpl implements ProjectService {
 		
 		// TODO 如果修改时，代取件网点变了，是新增一条客户信息？还是直接修改对应之前网点的客户信息
 		Site ownerSite = entity.getOwnerSite();
-		if( !ownerSite.equals(customer.getOwnerSite()) ) {
+		if( !ownerSite.equals( customer.getOwnerSite()) ) {
 			customer.setOwnerSite(ownerSite);
 			customer.setCode(customerDao.getCustomerCode(ownerSite.getId()));
-			customer.setOriginal(ownerSite.getName()); // 来源为代取件网点
 		}
 		
 		customerDao.update(customer);
 	}
 
 	public void createAddress(ProjectAddress entity) {
+		entity.setCustomer(null);
 		dao.createObject(entity);
 		
 		Project project = entity.getProject();
