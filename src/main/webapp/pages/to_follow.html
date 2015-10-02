@@ -104,7 +104,7 @@ function query(docNo, docType){
         onLoadSuccess : function(data) {
             $.each(data.rows, function(i, item) {
                 // 默认打开第一行的明细
-                queryDetails(item.id); console.log(i);
+                queryDetails(item.id);
                 return false; // break
             });
         }

@@ -26,7 +26,32 @@
 
 
 $(function(){
-	 showGL();
+	showGL();
+	showGrid1();
+	showGrid2();
+
+	$('#param1').combobox( {
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [ 
+        	{"id": 1, "name": "20:00/7.2"}, 
+        	{"id": 2, "name": "22:00/7.2"}, 
+        	{"id": 3, "name": "23:00/9.6"}
+        ]
+    });
+
+	$('#param2').combobox( {
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [ 
+        	{"id": 1, "name": "浙A-99999/7.2"}, 
+        	{"id": 2, "name": "浙A-1212D/7.2"}, 
+        	{"id": 3, "name": "浙A-21312/9.6"}
+        ]
+    });
+
 });
 
 function showGL() {
@@ -36,9 +61,9 @@ function showGL() {
         { "name": "实际重量", "group": "今日录单", "value": "3000kg" },
         { "name": "实际体积", "group": "今日录单", "value": "8立方" },
 
-        { "name": "票数", "group": "未完成班次管理货物", "value": "10" },
-        { "name": "实际重量", "group": "未完成班次管理货物", "value": "1000kg" },
-        { "name": "实际体积", "group": "未完成班次管理货物", "value": "3立方" },
+        { "name": "票数", "group": "未完成班次关联货物", "value": "10" },
+        { "name": "实际重量", "group": "未完成班次关联货物", "value": "1000kg" },
+        { "name": "实际体积", "group": "未完成班次关联货物", "value": "3立方" },
 
         { "name": "班次号：20:00/9.6", "group": "班次关联情况", "value": "已关联" },
         { "name": "班次号：23:00/9.6", "group": "班次关联情况", "value": "未关联" }
@@ -56,6 +81,112 @@ function showGL() {
     });
     $('#tt').propertygrid('loadData', rows);
 }
+
+
+var FIELDS_1 = [
+	    { field : 'ck', checkbox: true },
+	    { field : 'f1', title : '客户名称', width : 80 },
+	    { field : 'f2', title : '客户单号', width : 90 },
+	    { field : 'f3', title : '运单号', width : 100 },
+	    { field : 'f4', title : '目的地', width : 80 },
+	    { field : 'f5', title : '货物数量', width : 80 },
+	    { field : 'f6', title : '货物体积（立方）', width : 120 },
+	    { field : 'f7', title : '货物重量（kg）', width : 100 },
+	    { field : 'f8', title : '计费重量（kg）', width : 100 },
+	    { field : 'f9', title : '目的站点', width : 80 },
+	    { field : 'fa', title : '付款方式', width : 80 },
+	    { field : 'fb', title : '取件员', width : 80 },
+	    { field : 'fc', title : '提货车辆', width : 80 },
+	    // { field : 'fd', title : '班次', width : 100 }
+	],
+	FIELDS_2 = [
+	    { field : 'f1', title : '寄件班次', width : 90 },
+	    { field : 'f2', title : '车牌号', width : 80 },
+	    { field : 'f3', title : '车型', width : 80 },
+	    { field : 'f4', title : '业务员', width : 80 },
+	    { field : 'f5', title : '重量', width : 80 },
+	    { field : 'f6', title : '体积', width : 80 },
+	    { field : 'f7', title : '件数', width : 80 },
+	    { field : 'f8', title : '编辑', width : 100 }
+	];
+
+function showGrid1(bcID){    
+
+	if(bcID) {
+		$('#param1').combobox("setValue", 2);
+		$('#param2').combobox("setValue", 3);
+	}
+
+    $('#t1').datagrid({
+        url : 'data/jijian_0.json',
+        method : 'get',
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        singleSelect : false,
+        columns : [FIELDS_1],
+        onLoadSuccess: function(data) {
+            $.each(data.rows, function(i, item) {
+                // 默认全部选中
+                // $('#t1').datagrid("selectRecord", id);
+                if(bcID) {
+                	if( i % Math.floor(Math.random()*5) + 1 > 2 ) $('#t1').datagrid("selectRow", i);
+                } 
+                else {
+                	// $('#t1').datagrid("selectRow", i);
+                }              
+            });
+        }
+    }); 
+
+}
+
+function showGrid2(){    
+	var data = [
+    	{"id": 5, "f1": "20:00/7.2", "f2": "浙A-99999", "f3": "7.2", "f4": "张三", "f5": "100", "f6": "4", "f7": "15"},
+    	{"id": 9, "f1": "22:00/4.2", "f2": "浙A-21312", "f3": "4.2", "f4": "王五", "f5": "60", "f6": "2", "f7": "9"},
+    	{"id": 11, "f1": "23:00/9.6", "f2": "浙J-825CM", "f3": "9.6", "f4": "李四", "f5": "120", "f6": "5", "f7": "18"}
+    ];
+    $.each(data, function(i, item) {
+    	item['f8'] = '<a href="javascript:void(0)" onclick="showGrid1('+ item.id +')">重新选择货量</a>';
+    });
+
+    $('#t2').datagrid({
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        singleSelect : true,
+        columns : [FIELDS_2],
+        data: data
+    });
+}
+
+function combine() {
+	var truckSchedule = $('#param1').combobox("getValue");
+	if( !truckSchedule ) {
+		$.messager.show({ title: '提示', msg: '请选择班次。'});
+	    return;
+	}
+
+	var truck = $('#param2').combobox("getValue");
+	if( !truck ) {
+		$.messager.show({ title: '提示', msg: '请选择车辆。'});
+	    return;
+	}
+
+	var selectedRows = $('#t1').datagrid("getSelections");
+	if(selectedRows.length == 0) {
+		$.messager.show({ title: '提示', msg: '您还没有选中任何货量。' });
+	    return;
+	}
+
+	$.messager.show({
+        title: '提示',
+        msg: '已经成功关联本次选择的货量，共有'+ selectedRows.length +'票货.您可以继续对剩余的货量进行排班关联。'
+    });
+
+    // TODO 刷新货量Grid列表，隐藏已经关联的货量
+}
 	
 </script>
 
@@ -72,22 +203,20 @@ function showGL() {
         <div id="dataContainer" data-options="region:'center'" border="false">
             <div id="main" class="easyui-layout" fit="true" >
 		        <div id="queryContainer" data-options="region:'north'" border="false">
-		            <label>班次:</label><input id="param1" class="easyui-textbox" />
-		            <label>车辆:</label><input id="param2" class="easyui-textbox" />
+		            <label>班次:</label><input id="param1" class="easyui-textbox" style="width: 180px;" />
+		            <label>车辆:</label><input id="param2" class="easyui-textbox" style="width: 180px;" />
 		            &nbsp;&nbsp;&nbsp;&nbsp;
-		            <a href="#" class="easyui-linkbutton" onclick="beginQuery()">进行班次关联</a>
+		            <a href="#" class="easyui-linkbutton" onclick="combine()">进行班次关联</a>
 		        </div>
 		        <div id="dataContainer" data-options="region:'center'" border="false" title="待关联货量信息">
 		            <table id="t1" border="false"></table>
 		        </div>
-		        <div data-options="region:'south'" style="height:40%" border="false" title="已关联班次列表">
+		        <div data-options="region:'south'" style="height:30%" border="false" title="已关联班次列表">
 		            <table id="t2" border="false"></table>
 		        </div>
 		    </div>
         </div>
     </div>
-   
-    
 
 </body>
 </html>
