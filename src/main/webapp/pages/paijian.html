@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
 <meta charset="UTF-8">
-<title>寄件排车管理</title>
+<title>接件排车管理</title>
 
 <link rel="stylesheet" href="css/wanma.css">
 
@@ -23,6 +23,8 @@
 </STYLE>
 
 <script type="text/javascript">
+
+// 接件排车，可以依据寄件日期先后来决定优先排车，或者可以按照送货路径来提前通知分拨摆好装货顺序，先送的放靠近车门，后送的往里放。
 
 
 $(function(){
@@ -56,17 +58,10 @@ $(function(){
 
 function showGL() {
 	var rows = [
-        { "name": "日期", "group": "今日录单", "value": "2015-10-01" },
-        { "name": "票数", "group": "今日录单", "value": "30" },
-        { "name": "实际重量", "group": "今日录单", "value": "3000kg" },
-        { "name": "实际体积", "group": "今日录单", "value": "8立方" },
-
-        { "name": "票数", "group": "未完成班次关联货物", "value": "10" },
-        { "name": "实际重量", "group": "未完成班次关联货物", "value": "1000kg" },
-        { "name": "实际体积", "group": "未完成班次关联货物", "value": "3立方" },
-
-        { "name": "班次号：20:00/9.6", "group": "班次关联情况", "value": "已关联" },
-        { "name": "班次号：23:00/9.6", "group": "班次关联情况", "value": "未关联" }
+        { "name": "日期", "group": "明日派件预报", "value": "2015-10-01" },
+        { "name": "票数", "group": "明日派件预报", "value": "30" },
+        { "name": "实际重量", "group": "明日派件预报", "value": "3000kg" },
+        { "name": "实际体积", "group": "明日派件预报", "value": "8立方" }
     ];
 
 	$('#tt').propertygrid({
@@ -85,19 +80,21 @@ function showGL() {
 
 var FIELDS_1 = [
 	    { field : 'ck', checkbox: true },
-	    { field : 'f1', title : '客户名称', width : 80 },
-	    { field : 'f2', title : '客户单号', width : 90 },
-	    { field : 'f3', title : '运单号', width : 100 },
-	    { field : 'f4', title : '目的地', width : 80 },
-	    { field : 'f5', title : '货物数量', width : 80 },
-	    { field : 'f6', title : '货物体积（立方）', width : 120 },
-	    { field : 'f7', title : '货物重量（kg）', width : 100 },
-	    { field : 'f8', title : '计费重量（kg）', width : 100 },
-	    { field : 'f9', title : '目的站点', width : 80 },
-	    { field : 'fa', title : '付款方式', width : 80 },
-	    { field : 'fb', title : '取件员', width : 80 },
-	    { field : 'fc', title : '提货车辆', width : 80 },
-	    // { field : 'fd', title : '班次', width : 100 }
+	    { field : 'f1', title : '派件网点', width : 80 },
+	    { field : 'f2', title : '运单号', width : 90 },
+	    { field : 'f3', title : '货物名称', width : 80 },
+	    { field : 'f4', title : '重量（kg）', width : 80 },
+	    { field : 'f5', title : '体积（立方）', width : 80 },
+	    { field : 'f6', title : '件数', width : 60 },
+	    { field : 'f7', title : '收件人', width : 80 },
+	    { field : 'f8', title : '收件人手机', width : 100 },
+	    { field : 'f9', title : '收货地址', width : 120 },
+	    { field : 'fa', title : '是否代收货款', width : 80 },
+	    { field : 'fb', title : '代收货款金额', width : 80 },
+	    { field : 'fc', title : '是否到付', width : 80 },
+	    { field : 'fd', title : '到付金额', width : 80 },
+	    { field : 'fe', title : '寄件网点', width : 80 },
+	    { field : 'ff', title : '寄件日期', width : 100 }
 	];
 
 function showGrid1(row){   
@@ -105,11 +102,10 @@ function showGrid1(row){
 	if(row) {
 		// TODO 重新排班时，把已经做关联的货量查出来，自动勾选上
 		params.bcID = row.id;
-	}
- 
+	} 
 
     $('#t1').datagrid({
-        url : 'data/jijian_0.json',
+        url : 'data/paijian_0.json',
         method : 'get',
         queryParams : params, // 参数 "bcID": 12
         fit : true,
@@ -133,7 +129,7 @@ function showGrid1(row){
 }
 
 var FIELDS_2 = [
-	    { field : 'truckScheduleCode', title : '寄件班次', width : 90 },
+	    { field : 'truckScheduleCode', title : '接件班次', width : 90 },
 	    { field : 'truckCode', title : '车牌号', width : 80 },
 	    { field : 'truckType', title : '车型', width : 80 },
 	    { field : 'businessorName', title : '业务员', width : 80 },
@@ -146,7 +142,7 @@ var FIELDS_2 = [
 function showGrid2(){    
     $.getJSON('data/jijian_1.json', {}, function(data){
         $.each(data, function(i, item){
-            item.f8 = '<a href="javascript:void(0)" onclick="recombine('+i+')">重新选择货量</a>';
+            item.f8 = '<a href="javascript:void(0)" onclick="recombine('+i+')">重新选择班次和车辆</a>';
             item.truckScheduleCode = item.truckSchedule.code;
             item.truckCode = item.truck.code;
             item.truckType = item.truck.type.text;
@@ -212,13 +208,15 @@ function combine() {
 	<div id="main" class="easyui-layout" fit="true" >
     	<div data-options="region:'west'" style="width:270px" border="true" title="概览">
             <table id="tt" border="false"></table>
-
+        	<div style="padding:10px; line-height:33px; text-align:center; color: red;">
+            	该数据动态更新，最晚截单时间为当日【22:00】，此数据仅供参考，请以截单后数据为准，请根据截单后数据合理安排车辆。
+            </div>
             <div style="padding:10px; line-height:33px; text-align:center;">
-	            <label>班次:&nbsp;&nbsp;</label><input id="param1" class="easyui-textbox" style="width: 180px;"/>
-	            <br>
-	            <label>车辆:&nbsp;&nbsp;</label><input id="param2" class="easyui-textbox" style="width: 180px;"/>
+	            <label>班次:&nbsp;&nbsp;</label><input id="param1" class="easyui-textbox" style="width: 180px;" />
+	            <br><label>车辆:&nbsp;&nbsp;</label><input id="param2" class="easyui-textbox" style="width: 180px;" />
 	            <div style="margin-top: 6px;">
-		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="combine()" >进行班次关联</a>&nbsp;&nbsp;
+		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="combine()">进行派车</a>
+		            &nbsp;&nbsp;
 		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="refresh()" >刷新</a>
 	            </div>
             </div>
@@ -226,18 +224,10 @@ function combine() {
 
         <div id="dataContainer" data-options="region:'center'" border="false">
             <div id="main" class="easyui-layout" fit="true" >
-            	<!--
-		        <div id="queryContainer" data-options="region:'north'" border="false">
-		            <label>班次:</label><input id="param1" class="easyui-textbox" style="width: 180px;" />
-		            <label>车辆:</label><input id="param2" class="easyui-textbox" style="width: 180px;" />
-		            &nbsp;&nbsp;&nbsp;&nbsp;
-		            <a href="#" class="easyui-linkbutton" onclick="combine()">进行班次关联</a>
-		        </div>
-		        -->
-		        <div id="dataContainer" data-options="region:'center'" border="false" title="待关联货量信息">
+		        <div id="dataContainer" data-options="region:'center'" border="false" title="派车运单明细">
 		            <table id="t1" border="false"></table>
 		        </div>
-		        <div data-options="region:'north'" style="height:200px" border="false" title="已关联班次列表">
+		        <div data-options="region:'north'" style="height:200px" border="false" title="已派车信息">
 		            <table id="t2" border="false"></table>
 		        </div>
 		    </div>
