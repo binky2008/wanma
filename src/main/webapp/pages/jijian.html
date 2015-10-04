@@ -26,6 +26,11 @@
 
 
 $(function(){
+	init();
+
+});
+
+function init() {
 	showGL();
 	showGrid1();
 	showGrid2();
@@ -51,8 +56,7 @@ $(function(){
         	{"id": 3, "name": "浙A-21312/9.6"}
         ]
     });
-
-});
+}
 
 function showGL() {
 	var rows = [
@@ -219,7 +223,7 @@ function combine() {
 	            <label>车辆:&nbsp;&nbsp;</label><input id="param2" class="easyui-textbox" style="width: 180px;"/>
 	            <div style="margin-top: 6px;">
 		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="combine()" >进行班次关联</a>&nbsp;&nbsp;
-		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="refresh()" >刷新</a>
+		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="init()" >刷新</a>
 	            </div>
             </div>
         </div>

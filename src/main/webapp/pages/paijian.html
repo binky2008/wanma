@@ -28,6 +28,10 @@
 
 
 $(function(){
+	init();
+});
+
+function init() {
 	showGL();
 	showGrid1();
 	showGrid2();
@@ -53,8 +57,7 @@ $(function(){
         	{"id": 3, "name": "浙A-21312/9.6"}
         ]
     });
-
-});
+}
 
 function showGL() {
 	var rows = [
@@ -140,7 +143,7 @@ var FIELDS_2 = [
 	];
 
 function showGrid2(){    
-    $.getJSON('data/jijian_1.json', {}, function(data){
+    $.getJSON('data/paijian_1.json', {}, function(data){
         $.each(data, function(i, item){
             item.f8 = '<a href="javascript:void(0)" onclick="recombine('+i+')">重新选择班次和车辆</a>';
             item.truckScheduleCode = item.truckSchedule.code;
@@ -217,7 +220,7 @@ function combine() {
 	            <div style="margin-top: 6px;">
 		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="combine()">进行派车</a>
 		            &nbsp;&nbsp;
-		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="refresh()" >刷新</a>
+		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="init()" >刷新</a>
 	            </div>
             </div>
         </div>

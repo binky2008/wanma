@@ -1,0 +1,68 @@
+[
+    {
+        "id": 5,
+        "truckSchedule": {
+            "id": 1,
+            "code": "20:00/7.2"
+        },
+        "truck": {
+            "id": 1,
+            "code": "浙A-99999",
+            "type": {
+                "id": 1,
+                "text": "7米2"
+            }
+        },
+        "businessor": {
+            "id": 1,
+            "name": "张三"
+        },
+        "weight": "100",
+        "cubic": "4",
+        "num": "15"
+    },
+    {
+        "id": 9,
+        "truckSchedule": {
+            "id": 3,
+            "code": "22:00/4.2"
+        },
+        "truck": {
+            "id": 3,
+            "code": "浙A-12345",
+            "type": {
+                "id": 3,
+                "text": "4米2"
+            }
+        },
+        "businessor": {
+            "id": 3,
+            "name": "王五"
+        },
+        "weight": "80",
+        "cubic": "2",
+        "num": "9"
+    },
+    {
+        "id": 11,
+        "truckSchedule": {
+            "id": 2,
+            "code": "23:00/9.6"
+        },
+        "truck": {
+            "id": 2,
+            "code": "浙J-825CM",
+            "type": {
+                "id": 2,
+                "text": "9米6"
+            }
+        },
+        "businessor": {
+            "id": 2,
+            "name": "李四"
+        },
+        "weight": "120",
+        "cubic": "5",
+        "num": "18"
+    }
+]
