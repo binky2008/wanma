@@ -41,8 +41,8 @@ $(document).ready(function(){
 });
 
 function create(){
-    $('#fm').form('clear');
-    $('#dlg').dialog('open').dialog('setTitle', '新增用户').dialog('center');
+    openDialog('新增用户', true);
+
     $('#lockVersion').val('0'); //給版本号设置默认值.
 
     initCombobox('stateId', 'EntityState', {}, 1);
@@ -54,7 +54,7 @@ function create(){
 function update(){
     var row = getSelectedRow();
     if (row){
-        $('#dlg').dialog('open').dialog('setTitle', '修改用户信息').dialog('center');
+        openDialog('修改用户信息', true);
 
         $.get(GET_URL + row.id, {}, function(data){
             if(data.state) data['state.id'] = data.state.id;

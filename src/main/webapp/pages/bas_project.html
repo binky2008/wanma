@@ -74,8 +74,8 @@ $(document).ready(function(){
 });
 
 function create(){
-    $('#fm').form('clear');
-    $('#dlg').dialog('open').dialog('setTitle','新增项目').dialog('center');
+    openDialog('新增项目', true);
+
     $('#lockVersion').val('0'); //給版本号设置默认值.
 
     $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
@@ -88,7 +88,7 @@ function create(){
 function update(){
     var row = getSelectedRow();
     if (row){
-        $('#dlg').dialog('open').dialog('setTitle','修改项目信息').dialog('center');
+        openDialog('修改项目信息');
 
         $.get(GET_URL + row.id, {}, function(data){
             data['settleType.id'] = data.settleType.id;
@@ -227,6 +227,7 @@ function beginQuery() {
 function createAddress() {
     $('#fm2').form('clear');
     $('#dlg2').dialog('open').dialog('setTitle','新增项目地址').dialog('center');
+
     $('#lockVersion2').val('0'); // 給版本号设置默认值.
     $('#projectId').val(selectedProjectRow.id);
 
@@ -362,7 +363,7 @@ function disableAddress() {
         <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog()">取消</a>
     </div>
 
-    <div id="dlg2" class="easyui-dialog" style="width:800px;height:240px;" closed="true" buttons="#dlg-buttons2">
+    <div id="dlg2" class="easyui-dialog" style="width:800px;height:240px;" data-options="modal:true" closed="true" buttons="#dlg-buttons2">
         <form id="fm2" method="post" novalidate>
             <input name="id" type="hidden" />
             <input id="lockVersion2" name="lockVersion" type="hidden" />

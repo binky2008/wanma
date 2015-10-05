@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>问题件录入</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+
+BASE_URL = "../../demo";
+GET_URL   = BASE_URL + '/';  //{id}
+SAVE_URL  = BASE_URL;
+DELTE_URL = BASE_URL + '/';  //{id}
+QUERY_URL = BASE_URL + 'query';
+
+$(document).ready(function(){
+    query();
+
+    initCombobox('stateId', 'EntityState');
+    initCombobox('param3', 'EntityState');
+});
+
+function create(){
+    openDialog('新增问题件录入', true);
+
+    initCombobox('stateId', 'EntityState', {}, 1);
+}
+
+function update(){
+    var row = getSelectedRow(); 
+    if (row){
+    	openDialog('修改问题件录入信息');
+
+        $.get(GET_URL + row.id, {}, function(data){
+            data['state.id'] = data.state.id;
+
+            $('#fm').form('load', data);
+        });
+    }
+}
+
+var FIELDS_1 = [
+        { field : 'ck', checkbox: true},
+        { field : 'toCode', title : '运单号', width : 90 },
+        { field : 'wtTypeName', title : '问题类型', width : 80},
+        { field : 'stateName', title : '接受方', width : 80},
+        { field : 'descr', title : '问题描述', width : 300 }, 
+        { field : 'udf3', title : '查看附件', width : 80 }
+    ];
+
+function query(params) {
+    params = params || {};
+
+    var dg = $('#t1').datagrid({
+        url: '../wtj/query',
+        queryParams: params,
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 50,
+        rownumbers : true,
+        singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
+        // remoteSort : false,
+        multiSort : true,
+        toolbar: [ 
+            { text: '新增', iconCls: 'icon-add', handler: create }, 
+            '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
+            '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }
+        ] ,
+        columns : [FIELDS_1],
+        loadFilter: function(data){
+            $.each(data.rows, function(i, item){
+                item.stateName = item.state.text;
+            });
+            return data;
+        }
+    });
+}
+	
+</script>
+
+
+</head>
+
+<body>
+   
+<div id="main" class="easyui-layout" fit="true">
+    <div id="dataContainer" data-options="region:'center'" border="false" title="已登记问题件列表">
+        <table id="t1" border="false"></table>
+    </div>
+</div>
+
+<div id="dlg" class="easyui-dialog" style="width:800px;height: 320px;" closed="true" buttons="#dlg-buttons">
+    <form id="fm" method="post" novalidate>
+        <input name="id" type="hidden"/>
+        <input id="lockVersion" name="lockVersion" type="hidden"/>
+        <table>
+            <tr>
+                <td class="label">单号:</td>
+                <td colspan="5">
+                    <input name="docNO" class="easyui-textbox" readonly="true" style="width:300px;" required/>
+                    <span>（可填写运单号、子单号或回单号）</span>
+                </td>
+                
+            </tr>
+            <tr>
+                <td class="label">运单号:</td>
+                <td>
+                    <input name="toCode" class="easyui-textbox" required/>
+                </td>
+                <td class="label">问题类型:</td>
+                <td>
+                    <input name="wtType.id" id="wtTypeId" class="easyui-textbox" required/>
+                </td>
+                <td class="label">接受方:</td>
+                <td>
+                    <input name="brand" class="easyui-textbox" required/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">问题描述:</td>
+                <td colspan="5">
+                    <input name="descr" id="descr" class="easyui-textbox" data-options="multiline:true" style="width:660px;height:100px;"/>
+                </td>               
+            </tr>
+            <tr>
+            	<td class="label">紧急工单</td>
+                <td>
+                    <input name="gender" type="checkbox" value="1" checked><label>是</label>
+                </td>
+            	<td class="label">上传附件:</td>
+                <td colspan="3">
+                    <input class="easyui-filebox" name="file1" data-options="prompt:'选择附件'" style="width:100%">
+                </td>
+            </tr>
+
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog()">取消</a>
+</div>
+
+</body>
+</html>

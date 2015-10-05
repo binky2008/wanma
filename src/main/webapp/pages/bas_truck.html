@@ -50,8 +50,8 @@ $(document).ready(function () {
 });
 
 function create() {
-    $('#fm').form('clear');
-    $('#dlg').dialog('open').dialog('setTitle', '新增车辆').dialog('center');
+    openDialog('新增车辆', true);
+
     $('#lockVersion').val('0'); //給版本号设置默认值.
     $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
     $('#ownerCenterId').combobox('setValue', window.parent.ownerCenter.id);
@@ -67,7 +67,7 @@ function create() {
 function update() {
     var row = getSelectedRow();
     if (row) {
-        $('#dlg').dialog('open').dialog('setTitle', '修改车辆').dialog('center');
+        openDialog('修改车辆');
 
         $.get(GET_URL + row.id, {}, function (data) {
             data['state.id'] = data.state.id;

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>我的KPI</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+
+BASE_URL = "../../kpi";
+GET_URL   = BASE_URL + '/';  //{id}
+SAVE_URL  = BASE_URL;
+DELTE_URL = BASE_URL + '/';  //{id}
+QUERY_URL = BASE_URL + 'query';
+
+$(document).ready(function(){
+    query();
+
+    // initCombobox('param3', 'EntityState');
+});
+
+function create(){
+    openDialog('发起二次申诉', true);
+
+    // initCombobox('stateId', 'EntityState', {}, 1);
+}
+
+function viewDetail(){
+    var row = getSelectedRow(); 
+    if (row){
+        openDialog('查看KPI记录详情');
+
+        $.get(GET_URL + row.id, {}, function(data){
+            data['state.id'] = data.state.id;
+
+            $('#fm').form('load', data);
+        });
+    }
+}
+
+var FIELDS_1 = [
+        { field : 'ck', checkbox: true},
+        { field : 'f1', title : '奖罚时间', width : 80},
+        { field : 'f2', title : '扣款工单号', width : 80},
+        { field : 'f3', title : '运单号', width : 90 },
+        { field : 'f4', title : '奖罚金额', width : 80},
+        { field : 'f5', title : '奖罚原因', width : 80},
+        { field : 'f6', title : '奖罚网点', width : 80 }, 
+        { field : 'f7', title : '来源', width : 80 }, 
+        { field : 'f8', title : '状态', width : 80 }, 
+        { field : 'f9', title : '发起申诉时间', width : 80 }
+    ];
+
+function query(params) {
+    params = params || {};
+
+    var dg = $('#t1').datagrid({
+        url: 'data/kpi.json',
+        queryParams: params,
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 50,
+        rownumbers : true,
+        singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
+        // remoteSort : false,
+        multiSort : true,
+        toolbar: [ 
+            { text: '发起二次申诉', iconCls: 'icon-add', handler: create }, 
+            '-', { text: '查看详情', handler: viewDetail }
+        ] ,
+        columns : [FIELDS_1],
+        loadFilter: function(data){
+            $.each(data, function(i, item){
+                // item.stateName = item.state.text;
+            });
+            return {"rows": data};
+        }
+    });
+}
+	
+</script>
+
+
+</head>
+
+<body>
+   
+<div id="main" class="easyui-layout" fit="true">
+    <div id="queryContainer" data-options="region:'north'" border="false">
+        <label>运单号:</label><input id="param1" class="easyui-textbox"></input>
+        <label>来源:</label><input id="param2" class="easyui-textbox"></input>
+        <label>奖罚时间:</label><input id="param3" class="easyui-datebox"></input>
+        <label>扣款工单号:</label><input id="param4" class="easyui-textbox"></input>
+
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
+    </div>
+    <div id="dataContainer" data-options="region:'center'" border="false" title="我的奖罚记录">
+        <table id="t1" border="false"></table>
+    </div>
+</div>
+
+<div id="dlg" class="easyui-dialog" style="width:550px;height: 400px;" closed="true" buttons="#dlg-buttons">
+    <form id="fm" method="post" novalidate>
+        <input name="id" type="hidden"/>
+        <input id="lockVersion" name="lockVersion" type="hidden"/>
+        <table>
+            <tr>
+                <td class="label">运单号:</td>
+                <td>
+                    <input name="f1" class="easyui-textbox" readonly="true" required/>
+                </td>
+                <td class="label">寄件站:</td>
+                <td>
+                    <input name="f2" class="easyui-textbox" readonly="true" required/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">目的站:</td>
+                <td>
+                    <input name="f3" class="easyui-textbox" required/>
+                </td>
+                <td class="label">申诉站点:</td>
+                <td>
+                    <input name="f4" class="easyui-textbox" required/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">申诉人:</td>
+                <td>
+                    <input name="f5" class="easyui-textbox" required/>
+                </td>
+                <td class="label">申诉人联系电话:</td>
+                <td>
+                    <input name="f6" class="easyui-textbox" required/>
+                </td>             
+            </tr>
+            <tr>
+            	<td class="label">奖罚金额:</td>
+                <td>
+                    <input name="f7" class="easyui-textbox" required/>
+                </td>
+                <td class="label">减免金额:</td>
+                <td>
+                    <input name="f8" class="easyui-textbox" required/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">申诉内容:</td>
+                <td colspan="3">
+                    <input name="f9" class="easyui-textbox" data-options="multiline:true" style="width:440px;height:100px;" required/>
+                </td>               
+            </tr>
+            <tr>
+                <td class="label">申诉类型:</td>
+                <td>
+                    <input name="f10" class="easyui-textbox" required>
+                </td>
+                <td class="label">上传附件:</td>
+                <td colspan="3">
+                    <input class="easyui-filebox" name="file1" data-options="prompt:'选择附件'" style="width:100%">
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog()">取消</a>
+</div>
+
+</body>
+</html>

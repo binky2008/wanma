@@ -65,8 +65,8 @@ $(document).ready(function(){
 });
 
 function create(){
-    $('#fm').form('clear');
-    $('#dlg').dialog('open').dialog('setTitle', '新增员工').dialog('center');
+    openDialog('新增员工', true);
+
     $('#lockVersion').val('0'); //給版本号设置默认值.
     $('#original').val('PC');
 
@@ -78,7 +78,7 @@ function create(){
 function update(){
     var row = getSelectedRow();
     if (row){
-        $('#dlg').dialog('open').dialog('setTitle','修改员工信息').dialog('center');
+        openDialog('修改员工信息', true);
 
         $.get(GET_URL + row.id, {}, function(data){
             data['state.id'] = data.state.id;

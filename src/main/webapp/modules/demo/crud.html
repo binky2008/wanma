@@ -37,8 +37,7 @@ $(document).ready(function(){
 });
 
 function create(){
-    $('#dlg').dialog('open').dialog('setTitle','新增').dialog('center');
-    $('#fm').form('clear');
+    openDialog('新增', true);
 
     initCombobox('stateId', 'EntityState', {}, 1);
 }
@@ -46,7 +45,7 @@ function create(){
 function update(){
     var row = getSelectedRow(); 
     if (row){
-        $('#dlg').dialog('open').dialog('setTitle','修改').dialog('center');
+        openDialog('修改');
 
         $.get(GET_URL + row.id, {}, function(data){
             data['state.id'] = data.state.id;

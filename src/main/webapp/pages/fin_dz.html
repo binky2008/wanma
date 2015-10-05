@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>网点对账</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+#lQueryContainer {
+    height: 35px;
+    padding: 8px 0 0 10px;
+    background-color: #fff;
+}
+#lQueryContainer label { padding-left: 1px; padding-right: 1px; width: 60px; display: inline-block;}
+#lQueryContainer .easyui-textbox { width: 130px; } 
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+    $('#main').layout('collapse', 'east');
+    query();
+});
+
+var FIELDS_1 = [
+        { field : 'f1', title : '寄件时间', width : 80},
+        { field : 'f2', title : '运单号', width : 100},
+        { field : 'f3', title : '结算方式', width : 90 },
+        { field : 'f4', title : '金额', width : 80},
+        { field : 'f5', title : '是否支付', width : 80},
+        { field : 'f6', title : '支出', width : 80 }, 
+        { field : 'f7', title : '利润', width : 80 }, 
+        { field : 'f8', title : '收件员', width : 80 }, 
+        { field : 'f9', title : '签收日期', width : 80 },
+        { field : 'f10', title : '签收状态', width : 80 },
+        { field : 'f11', title : '账单日期', width : 80 }
+    ];
+
+function query(params) {
+    params = params || {};
+
+    var dg = $('#t1').datagrid({
+        url: 'data/fin_dz_1.json',
+        queryParams: params,
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 50,
+        rownumbers : true,
+        singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
+        // remoteSort : false,
+        multiSort : true,
+        columns : [FIELDS_1],
+        onClickRow: function(index, row) {
+            showGL(row.f2);
+        },
+        onLoadSuccess : function(data) {
+            $.each(data.rows, function(i, item) {
+                // 默认打开第一行的明细
+                showGL(item.f2);
+                return false; // break
+            });
+        }
+    });
+
+    // $('#main').layout('collapse', 'west');
+}
+
+
+function showGL(toNo) {
+    $('#main').layout('expand', 'east');
+
+    var rows = [
+        { "name": "寄件日期", "group": "运单信息", "value": "2015-10-01" },
+        { "name": "运单编号", "group": "运单信息", "value": toNo || "102242354353" },
+        { "name": "件数", "group": "运单信息", "value": 3 },
+        { "name": "重量", "group": "运单信息", "value": "3000kg" },
+        { "name": "体积", "group": "运单信息", "value": "8立方" },
+        { "name": "寄件站", "group": "运单信息", "value": "武汉一部" },
+        { "name": "派件站/目的站", "group": "运单信息", "value": "西湖一部" },
+        { "name": "收件员", "group": "运单信息", "value": "小毛" },
+        { "name": "签收状态", "group": "运单信息", "value": "已签收" },
+        { "name": "签收时间", "group": "运单信息", "value": "2015-10-01" },
+        { "name": "签收人", "group": "运单信息", "value": "小明" },
+        { "name": "收件员", "group": "运单信息", "value": "老王" },
+        { "name": "服务方式", "group": "运单信息", "value": "都有神马服务" },
+        { "name": "到付款", "group": "运单信息", "value": "3000" },
+        { "name": "到付税", "group": "运单信息", "value": "30" },
+
+        { "name": "结算中心", "group": "费用明细", "value": "百世结算" },
+        { "name": "账单时间", "group": "费用明细", "value": "2015-10-01" },
+        { "name": "燃油费", "group": "费用明细", "value": "10" },
+        { "name": "保险费", "group": "费用明细", "value": "20" },
+        { "name": "中转费", "group": "费用明细", "value": "30" },
+        { "name": "派件费", "group": "费用明细", "value": "40" },
+        { "name": "回单手续费", "group": "费用明细", "value": "40" },
+
+        { "name": "新子单打印费", "group": "其它费用", "value": "0" },
+        { "name": "网络管理费", "group": "其它费用", "value": "0" },
+        { "name": "包车费", "group": "其它费用", "value": "0" },
+        { "name": "超区费", "group": "其它费用", "value": "0" },
+        { "name": "超长超宽费", "group": "其它费用", "value": "0" },
+        { "name": "进仓费", "group": "其它费用", "value": "0" },
+        { "name": "清点费", "group": "其它费用", "value": "0" },
+        { "name": "上楼费", "group": "其它费用", "value": "0" },
+        { "name": "特殊区域费", "group": "其它费用", "value": "0" },
+        { "name": "录单费", "group": "其它费用", "value": "0" },
+        { "name": "短信费", "group": "其它费用", "value": "0" }
+    ];
+
+    $('#tt').propertygrid({
+        width: 220,
+        height: 'auto',
+        showGroup: true,
+        scrollbarSize: 0,
+        columns: [[
+                { field: 'name', title: '名称', width: 120, resizable: true },
+                { field: 'value', title: '值', width: 100, resizable: false }
+        ]]
+    });
+    $('#tt').propertygrid('loadData', rows);
+}
+
+	
+</script>
+
+
+</head>
+
+<body>
+   
+<div id="main" class="easyui-layout" fit="true" id="main">
+    <div data-options="region:'west'" style="width:230px" border="true" title="查询">
+        
+        <div id="lQueryContainer" style="padding:10px; line-height:33px; text-align:center;">
+            <div>
+                <label>运单号：</label>
+                <input id="param1" class="easyui-textbox" data-options="multiline:true" style="height:100px;"/>
+            </div>
+            <br>
+            <div>
+                <input name="dType" type="radio" value="1" checked>寄件日期
+                <input name="dType" type="radio" value="2">签收日期
+                <input name="dType" type="radio" value="2">账单日期
+                <br><label>时间从：</label><input id="param2" class="easyui-datebox"/>
+                <br><label>时间到：</label><input id="param2" class="easyui-datebox"/>
+            </div>
+            <br>
+            <div>
+                <label>签收状态：</label>
+                <input id="param1" class="easyui-textbox"/>
+            </div>
+
+            <div>
+                <label>收件员：</label>
+                <input id="param1" class="easyui-textbox"/>
+            </div>
+            
+            <div style="margin-top: 6px;">
+                <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="combine()" style="width:80px;" >查询</a>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="dataContainer" data-options="region:'center'" border="false" title="发件账单列表">
+        <table id="t1" border="false"></table>
+    </div>
+
+    <div data-options="region:'east'" style="width:220px" border="true" title="费用明细">
+        <table id="tt" border="false"></table>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -46,8 +46,7 @@ $(document).ready(function () {
 
 
 function create() {
-    $('#fm').form('clear');
-    $('#dlg').dialog('open').dialog('setTitle', '新增').dialog('center');
+    openDialog('新增班次', true);
 
     $('#lockVersion').val('0'); // 給版本号设置默认值.
     $('#ownerSiteId').combobox('setValue', window.parent.ownerSite.id);
@@ -66,7 +65,7 @@ function create() {
 function update() {
     var row = getSelectedRow();
     if (row) {
-        $('#dlg').dialog('open').dialog('setTitle', '修改班次').dialog('center');
+        openDialog('修改班次');
 
         $.get(GET_URL + row.id, {}, function (data) {
             data['state.id'] = data.state.id;

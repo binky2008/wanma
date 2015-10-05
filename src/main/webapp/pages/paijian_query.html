@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>寄件运单综合查询</title>
+<title>派件运单综合查询</title>
 
 <link rel="stylesheet" href="css/wanma.css">
 
@@ -23,6 +23,11 @@
 
 <script type="text/javascript">
 
+/* 
+ *  可查看有多少运单需要进行派件，多少完成派件，并且对需要派件的订单提前知道是否有代收货款等特殊要求。
+ *  网点只能查看自己作为派件站点的运单信息，网管能够查看到所管网点的所有派件运单信息.
+ */
+
 $(document).ready(function(){
 
     query();
@@ -30,40 +35,38 @@ $(document).ready(function(){
 });
 
 var FIELDS_1 = [
-        { field : 'f1', title : '寄件日期', width : 80, sortable: true},
-        { field : 'f2', title : '签收记录', width : 60 },
-        { field : 'f3', title : '客户名称', width : 80, sortable: true },
-        { field : 'f4', title : '客户单号', width : 70 },
-        { field : 'f5', title : '运单编号', width : 90, align: "center", styler: 
+        { field : 'f1', title : '到货日期', width : 80, sortable: true},
+        { field : 'f2', title : '寄件网点', width : 60 },
+        { field : 'f3', title : '运单编号', width : 90, align: "center", styler: 
             function(value, row, index){
                 if (value){
                     return 'cursor: pointer;';
                 }
             } 
         }, 
-        { field : 'f6', title : '在途信息', width : 160 }, 
-        { field : 'f7', title : '目的地', width : 50 }
+        { field : 'f4', title : '签收状态', width : 70 }
     ],
     FIELDS_2 = [
-        { field : 'f8', title : '目的站点', width : 70 },
-        { field : 'f9', title : '货物数量', width : 70 }, 
-        { field : 'fa', title : '货物体积', width : 70 }, 
-        { field : 'fb', title : '货物重量', width : 70 }, 
-        { field : 'fb1', title : '折扣', width : 70 }, 
-        { field : 'fc', title : '计费重量', width : 70 }, 
-        { field : 'fd', title : '电子面单', width : 70 }, 
-        { field : 'fe', title : '录单员', width : 70, sortable: true }, 
-        { field : 'ff', title : '付款方式', width : 60 }, 
-        { field : 'fg', title : '取件员', width : 60 }, 
-        { field : 'fh', title : '提货车辆', width : 70 }, 
-        { field : 'fi', title : '签收时间', width : 80 }
+        { field : 'f5', title : '货物数量', width : 70 }, 
+        { field : 'f6', title : '货物体积', width : 70 }, 
+        { field : 'f7', title : '货物重量', width : 70 }, 
+        { field : 'f8', title : '折扣', width : 70 }, 
+        { field : 'f9', title : '计费重量', width : 70 },
+
+        { field : 'fa', title : '收件客户地址', width : 150 }, 
+        { field : 'fb', title : '收件客户电话', width : 90 }, 
+        { field : 'fc', title : '代收货款金额', width : 80 }, 
+        { field : 'fd', title : '电子面单', width : 60 }, 
+        { field : 'fe', title : '派件员', width : 70, sortable: true }, 
+        { field : 'ff', title : '派件网点', width : 70 }, 
+        { field : 'fg', title : '签收时间', width : 80 }
     ];
 
 function query(params) {
     params = params || {};
 
     var dg = $('#t1').datagrid({
-        url: 'data/jijian_2.json',
+        url: 'data/paijian_2.json',
         queryParams: params,
         fit : true,
         fitColumns : false,
@@ -92,7 +95,7 @@ function query(params) {
             }
         },
         onDblClickCell: function(index, field, value) {
-            if(field !== 'f5') return;
+            if(field !== 'f3') return;
             $.messager.alert({
                 title: '提示',
                 msg: '打开运单【'+value+'】的《快件跟踪查询》和《问题件信息查询》'
@@ -122,8 +125,9 @@ function beginQuery() {
     <div id="main" class="easyui-layout" fit="true" >
         <div id="queryContainer" data-options="region:'north'" border="false">
             查询条件：
-            <input id="param1" class="easyui-textbox" data-options="prompt:'运单号/客户单号/客户名称'" style="width:400px"/>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>&nbsp;&nbsp;
+            <input id="param1" class="easyui-textbox" data-options="prompt:'运单号/寄件网点'" style="width:400px"/>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
+            &nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" onclick='moreParams()'>业务员关联</a>&nbsp;
         </div>
         <div id="dataContainer" data-options="region:'center'" border="false" title="寄件运单综合查询">

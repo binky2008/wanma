@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>网点对账</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+    query();
+
+});
+
+var FIELDS_1 = [
+        { field : 'ck', checkbox: true},
+        { field : 'f1', title : '物料编号', width : 80},
+        { field : 'f2', title : '物料名称', width : 80},
+        { field : 'f3', title : '类型', width : 90 },
+        { field : 'f4', title : '申领站点', width : 80},
+        { field : 'f5', title : '数量', width : 80},
+        { field : 'f6', title : '备注', width : 80 }, 
+        { field : 'f7', title : '金额', width : 80 }, 
+        { field : 'f8', title : '物料来源', width : 80 }, 
+        { field : 'f9', title : '申请/奖励时间', width : 80 },
+        { field : 'f10', title : '状态', width : 80 },
+        { field : 'f11', title : '操作人', width : 80 }
+    ];
+
+function query(params) {
+    params = params || {};
+
+    var dg = $('#t1').datagrid({
+        url: 'data/material.json',
+        queryParams: params,
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 50,
+        rownumbers : true,
+        singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
+        // remoteSort : false,
+        multiSort : true,
+        columns : [FIELDS_1],
+        loadFilter: function(data){
+            $.each(data, function(i, item){
+                // item.stateName = item.state.text;
+            });
+            return {"rows": data};
+        }
+    });
+}
+
+	
+</script>
+
+
+</head>
+
+<body>
+   
+<div id="main" class="easyui-layout" fit="true">
+    <div id="queryContainer" data-options="region:'north'" border="false">
+        <label>运单号:</label><input id="param1" class="easyui-textbox"></input>        
+        <label>申请/奖励时间:</label><input id="param2" class="easyui-datebox"></input>
+        <label>状态:</label><input id="param3" class="easyui-textbox"></input>
+        <label>物料来源:</label><input id="param4" class="easyui-textbox"></input>
+
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
+    </div>
+    <div id="dataContainer" data-options="region:'center'" border="false" title="物料申请记录">
+        <table id="t1" border="false"></table>
+    </div>
+</div>
+
+</body>
+</html>

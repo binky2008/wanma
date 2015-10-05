@@ -48,6 +48,12 @@ function checkException(result, callback) {
     }
 }
 
+function openDialog(title, clear) {
+    $('#dlg').dialog( {"modal": true} ).dialog('open').dialog('setTitle', title).dialog('center');
+
+    clear && $('#fm').form('clear');
+}
+
 function closeDialog() {
     $('#dlg').dialog('close'); // close the dialog
     $('#fm').form('clear');
