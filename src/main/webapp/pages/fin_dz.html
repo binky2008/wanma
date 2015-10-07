@@ -22,6 +22,7 @@
     height: 35px;
     padding: 8px 0 0 10px;
     background-color: #fff;
+    height: 100%;
 }
 #lQueryContainer label { padding-left: 1px; padding-right: 1px; width: 60px; display: inline-block;}
 #lQueryContainer .easyui-textbox { width: 130px; } 
@@ -75,6 +76,7 @@ function query(params) {
             $.each(data.rows, function(i, item) {
                 // 默认打开第一行的明细
                 showGL(item.f2);
+                $('#t1').datagrid("selectRow", i);
                 return false; // break
             });
         }
@@ -160,17 +162,17 @@ function showGL(toNo) {
                 <input name="dType" type="radio" value="2">签收日期
                 <input name="dType" type="radio" value="2">账单日期
                 <br><label>时间从：</label><input id="param2" class="easyui-datebox"/>
-                <br><label>时间到：</label><input id="param2" class="easyui-datebox"/>
+                <br><label>时间到：</label><input id="param3" class="easyui-datebox"/>
             </div>
             <br>
             <div>
                 <label>签收状态：</label>
-                <input id="param1" class="easyui-textbox"/>
+                <input id="param4" class="easyui-textbox"/>
             </div>
 
             <div>
                 <label>收件员：</label>
-                <input id="param1" class="easyui-textbox"/>
+                <input id="param5" class="easyui-textbox"/>
             </div>
             
             <div style="margin-top: 6px;">

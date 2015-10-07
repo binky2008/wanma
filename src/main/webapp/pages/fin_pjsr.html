@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
 <meta charset="UTF-8">
-<title>网点对账</title>
+<title>派件收入查询</title>
 
 <link rel="stylesheet" href="css/wanma.css">
 
@@ -28,28 +28,34 @@
 $(document).ready(function(){
     query();
 
+    $('#param4').combobox( {
+        method : 'get',
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [ {"id": "1", "name": "张三"}, {"id": "2", "name": "李四"} ]
+    });
 });
 
 var FIELDS_1 = [
         { field : 'ck', checkbox: true},
-        { field : 'f1', title : '物料编号', width : 80},
-        { field : 'f2', title : '物料名称', width : 80},
-        { field : 'f3', title : '类型', width : 90 },
-        { field : 'f4', title : '申领站点', width : 80},
-        { field : 'f5', title : '数量', width : 80},
-        { field : 'f6', title : '备注', width : 80 }, 
-        { field : 'f7', title : '金额', width : 80 }, 
-        { field : 'f8', title : '物料来源', width : 80 }, 
-        { field : 'f9', title : '申请/奖励时间', width : 80 },
-        { field : 'f10', title : '状态', width : 80 },
-        { field : 'f11', title : '操作人', width : 80 }
+        { field : 'f1', title : '签收日期', width : 80},
+        { field : 'f2', title : '运单号', width : 80},
+        { field : 'f3', title : '派件员', width : 90 },
+        { field : 'f4', title : '派件费', width : 80},
+        { field : 'f5', title : '回单手续费', width : 80},
+        { field : 'f6', title : '到付税', width : 80 }, 
+        { field : 'f7', title : 'COD手续费', width : 80 }, 
+        { field : 'f8', title : '其它费用', width : 80 }, 
+        { field : 'f9', title : '账单日期', width : 80 }, 
+        { field : 'f10', title : '费用登记状态', width : 80 }
     ];
 
 function query(params) {
     params = params || {};
 
     var dg = $('#t1').datagrid({
-        url: 'data/material.json',
+        url: 'data/fin_pjsr.json',
         queryParams: params,
         fit : true,
         fitColumns : true,
@@ -62,16 +68,22 @@ function query(params) {
         // remoteSort : false,
         multiSort : true,
         columns : [FIELDS_1],
+        toolbar: [ 
+            { text: '费用登记', iconCls: 'icon-add', handler: f1 }
+        ],
         loadFilter: function(data){
-            $.each(data, function(i, item){
+            $.each(data.rows, function(i, item){
                 // item.stateName = item.state.text;
             });
-            return {"rows": data};
+            return data;
         }
     });
 }
 
-	
+function f1() {
+    // TODO 打开费用登记页面，将选中运单上的信息默认设置到登记页面的Form表单里
+}
+
 </script>
 
 
@@ -81,11 +93,13 @@ function query(params) {
    
 <div id="main" class="easyui-layout" fit="true">
     <div id="queryContainer" data-options="region:'north'" border="false">
-        <label>运单号:</label><input id="param1" class="easyui-textbox"></input>        
-        <label>申请/奖励时间:</label><input id="param2" class="easyui-datebox"></input>
-        <label>状态:</label><input id="param3" class="easyui-textbox"></input>
-        <label>物料来源:</label><input id="param4" class="easyui-textbox"></input>
-
+        <label>运单号:</label><input id="param1" class="easyui-textbox"></input>&nbsp;&nbsp;&nbsp;&nbsp;      
+        <input name="dType" type="radio" value="2" style="width:20px" checked>签收日期
+        <input name="dType" type="radio" value="2" style="width:20px">账单日期
+        <label>从：</label><input id="param2" class="easyui-datebox"/>
+        <label>到：</label><input id="param3" class="easyui-datebox"/>
+        <label>派件员:</label><input id="param4" class="easyui-textbox"></input>
+        &nbsp;&nbsp;
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
     </div>
     <div id="dataContainer" data-options="region:'center'" border="false" title="物料申请记录">

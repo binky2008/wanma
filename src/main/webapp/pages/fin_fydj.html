@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
 <meta charset="UTF-8">
-<title>网点对账</title>
+<title>费用登记/确认</title>
 
 <link rel="stylesheet" href="css/wanma.css">
 
@@ -28,28 +28,49 @@
 $(document).ready(function(){
     query();
 
+    $('#f3').combobox( {
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [ {"id": "1", "name": "包车费"}, {"id": "2", "name": "上楼费"} ]
+    });
+
+    $('#f4').combobox( {
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [ {"id": "1", "name": "网点一"}, {"id": "2", "name": "网点二"} ]
+    });
 });
 
 var FIELDS_1 = [
         { field : 'ck', checkbox: true},
-        { field : 'f1', title : '物料编号', width : 80},
-        { field : 'f2', title : '物料名称', width : 80},
-        { field : 'f3', title : '类型', width : 90 },
-        { field : 'f4', title : '申领站点', width : 80},
-        { field : 'f5', title : '数量', width : 80},
-        { field : 'f6', title : '备注', width : 80 }, 
-        { field : 'f7', title : '金额', width : 80 }, 
-        { field : 'f8', title : '物料来源', width : 80 }, 
-        { field : 'f9', title : '申请/奖励时间', width : 80 },
-        { field : 'f10', title : '状态', width : 80 },
-        { field : 'f11', title : '操作人', width : 80 }
+        { field : 'f1', title : '运单号', width : 100},
+        { field : 'f2', title : '费用类型', width : 80},
+        { field : 'f3', title : '金额', width : 90 },
+        { field : 'f4', title : '描述', width : 80},
+        { field : 'f5', title : '审核状态', width : 80},
+        { field : 'f6', title : '是否入账', width : 80 }, 
+        { field : 'f7', title : '登记日期', width : 80 }, 
+        { field : 'f8', title : '登记人', width : 80 }, 
+        { field : 'f9', title : '登记网点', width : 80 },
+        { field : 'f10', title : '接收网点', width : 80 },
+        { field : 'f11', title : '网点审核日期', width : 80 },
+        { field : 'f12', title : '网点审核人', width : 80 },
+        { field : 'f13', title : '登记中心', width : 80 },
+        { field : 'f14', title : '登记中心审核日期', width : 80 },
+        { field : 'f15', title : '登记中心审核人', width : 80 },
+        { field : 'f16', title : '接收中心', width : 80 },
+        { field : 'f17', title : '接收中心审核人', width : 80 },
+        { field : 'f18', title : '是否中止', width : 80 },
+        { field : 'f19', title : '中止原因', width : 80 }
     ];
 
 function query(params) {
     params = params || {};
 
     var dg = $('#t1').datagrid({
-        url: 'data/material.json',
+        url: 'data/fin_fydj.json',
         queryParams: params,
         fit : true,
         fitColumns : true,
@@ -62,15 +83,29 @@ function query(params) {
         // remoteSort : false,
         multiSort : true,
         columns : [FIELDS_1],
-        loadFilter: function(data){
-            $.each(data, function(i, item){
-                // item.stateName = item.state.text;
-            });
-            return {"rows": data};
-        }
+        toolbar: [ 
+            { text: '费用登记', iconCls: 'icon-add', handler: f1 },
+            { text: '费用确认', iconCls: 'icon-remove', handler: f2 }
+        ],
+        // loadFilter: function(data){
+        //     $.each(data.rows, function(i, item){
+        //         // item.stateName = item.state.text;
+        //     });
+        //     return data;
+        // }
     });
 }
 
+function f1() {
+    openDialog('费用登记', true);
+}
+
+function f2() {
+    $.messager.show({
+            title: '操作结果提示',
+            msg: "费用登记确认成功"
+        });
+}
 	
 </script>
 
@@ -81,16 +116,54 @@ function query(params) {
    
 <div id="main" class="easyui-layout" fit="true">
     <div id="queryContainer" data-options="region:'north'" border="false">
-        <label>运单号:</label><input id="param1" class="easyui-textbox"></input>        
-        <label>申请/奖励时间:</label><input id="param2" class="easyui-datebox"></input>
-        <label>状态:</label><input id="param3" class="easyui-textbox"></input>
-        <label>物料来源:</label><input id="param4" class="easyui-textbox"></input>
-
+        <label>查询条件:</label><input id="param1" class="easyui-textbox" style="width:200px;" prompt="运单号/登记网点/接收网点"></input>        
+        <label>登记日期:</label><input id="param2" class="easyui-datebox"></input>
+        <label>接收日期:</label><input id="param3" class="easyui-datebox"></input>
+        &nbsp;&nbsp;
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
     </div>
     <div id="dataContainer" data-options="region:'center'" border="false" title="物料申请记录">
         <table id="t1" border="false"></table>
     </div>
+</div>
+
+<div id="dlg" class="easyui-dialog" style="width:550px;height: 250px;" closed="true" buttons="#dlg-buttons">
+    <form id="fm" method="post" novalidate>
+        <input name="id" type="hidden"/>
+        <input id="lockVersion" name="lockVersion" type="hidden"/>
+        <table>
+            <tr>
+                <td class="label">运单编号:</td>
+                <td>
+                    <input name="f1" class="easyui-textbox" required/>
+                </td>
+                <td class="label">金额:</td>
+                <td>
+                    <input name="f2" class="easyui-numberbox" required/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">费用类型:</td>
+                <td>
+                    <input name="f3" id="f3" class="easyui-textbox" required/>
+                </td>
+                <td class="label">接收网点:</td>
+                <td>
+                    <input name="f4" id="f4" class="easyui-textbox" required/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">描述:</td>
+                <td colspan="3">
+                    <input name="f9" class="easyui-textbox" data-options="multiline:true" style="width:440px;height:70px;"/>
+                </td>               
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog()">取消</a>
 </div>
 
 </body>

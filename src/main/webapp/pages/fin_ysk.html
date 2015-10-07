@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
 <meta charset="UTF-8">
-<title>网点对账</title>
+<title>应收款管理</title>
 
 <link rel="stylesheet" href="css/wanma.css">
 
@@ -12,6 +12,7 @@
 
 <script src="../tools/easyui/jquery.min.js"></script>
 <script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/datagrid-filter.js"></script>
 <script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
 
 <script src="js/common.js"></script>
@@ -24,42 +25,55 @@
 
 <script type="text/javascript">
 
-
 $(document).ready(function(){
     query();
+
+    $('#param3').combobox( {
+        method : 'get',
+        panelHeight: '60px',
+        valueField: 'id',
+        textField: 'name',
+        data: [ {"id": "1", "name": "已核销"}, {"id": "2", "name": "未核销"} ]
+    });
 
 });
 
 var FIELDS_1 = [
         { field : 'ck', checkbox: true},
-        { field : 'f1', title : '物料编号', width : 80},
-        { field : 'f2', title : '物料名称', width : 80},
-        { field : 'f3', title : '类型', width : 90 },
-        { field : 'f4', title : '申领站点', width : 80},
-        { field : 'f5', title : '数量', width : 80},
-        { field : 'f6', title : '备注', width : 80 }, 
-        { field : 'f7', title : '金额', width : 80 }, 
-        { field : 'f8', title : '物料来源', width : 80 }, 
-        { field : 'f9', title : '申请/奖励时间', width : 80 },
-        { field : 'f10', title : '状态', width : 80 },
-        { field : 'f11', title : '操作人', width : 80 }
+        { field : 'f1', title : '月份', width : 80},
+        { field : 'f2', title : '客户名称', width : 80},
+        { field : 'f3', title : '费用名称', width : 90 },
+        { field : 'f4', title : '应收金额', width : 80},
+        { field : 'f5', title : '未收费用', width : 80},
+        { field : 'f6', title : '支出', width : 80 }, 
+        { field : 'f7', title : '利润', width : 80 }, 
+        { field : 'f8', title : '费用核销状态', width : 80 }
+    ],
+    FIELDS_2 = [
+        { field : 'f1', title : '寄件时间', width : 80, sortable: true},
+        { field : 'f2', title : '运单号', width : 100},
+        { field : 'f3', title : '费用名称', width : 90, sortable: true},
+        { field : 'f4', title : '应收金额', width : 80, editor:'text'},
+        { field : 'f5', title : '未收费用', width : 80, editor:'text'},
+        { field : 'f6', title : '支出', width : 80 }, 
+        { field : 'f7', title : '利润', width : 80 }, 
+        { field : 'f8', title : '收款状态', width : 80, sortable: true}
     ];
 
 function query(params) {
     params = params || {};
 
     var dg = $('#t1').datagrid({
-        url: 'data/material.json',
+        url: 'data/fin_ysk_1.json',
         queryParams: params,
         fit : true,
         fitColumns : true,
-        pagination : true,
-        pageSize : 50,
+        pageSize : 1000,
         rownumbers : true,
         singleSelect : true,
         checkOnSelect : true,
         selectOnCheck : true,
-        // remoteSort : false,
+        remoteSort : false,
         multiSort : true,
         columns : [FIELDS_1],
         loadFilter: function(data){
@@ -67,8 +81,46 @@ function query(params) {
                 // item.stateName = item.state.text;
             });
             return {"rows": data};
+        },
+        onClickRow: function(index, row) {
+            queryDetails( row );
+        },
+        onLoadSuccess : function(data) {
+            $.each(data.rows, function(i, item) {
+                // 默认打开第一行的明细
+                $('#t1').datagrid("selectRow", i);
+                queryDetails( item );
+                return false; // break
+            });
         }
     });
+}
+
+function queryDetails(row) {
+    var params = {"month": row.f1, "customer": row.f2};
+
+    var dg = $('#t2').datagrid({
+        url: 'data/fin_ysk_2.json',
+        queryParams: params,
+        fit : true,
+        fitColumns : true,
+        pageSize : 1000,
+        rownumbers : true,
+        singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
+        remoteSort : false,
+        multiSort : true,
+        columns : [FIELDS_2],
+        toolbar: [ 
+            { text: '修改应收款', iconCls: 'icon-edit', handler: f1 }, 
+            '-', { text: '确定收款金额', iconCls: 'icon-edit', handler: f1 }
+        ] ,
+    });
+}
+
+function f1() {
+
 }
 
 	
@@ -81,17 +133,79 @@ function query(params) {
    
 <div id="main" class="easyui-layout" fit="true">
     <div id="queryContainer" data-options="region:'north'" border="false">
-        <label>运单号:</label><input id="param1" class="easyui-textbox"></input>        
-        <label>申请/奖励时间:</label><input id="param2" class="easyui-datebox"></input>
-        <label>状态:</label><input id="param3" class="easyui-textbox"></input>
-        <label>物料来源:</label><input id="param4" class="easyui-textbox"></input>
+        <label>月份:</label><input id="param1" class="easyui-datebox"></input>        
+        <label>客户名称:</label><input id="param2" class="easyui-textbox"></input>
+        <label>核销状态:</label><input id="param3" class="easyui-textbox"></input>
 
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
     </div>
-    <div id="dataContainer" data-options="region:'center'" border="false" title="物料申请记录">
+    
+    <div id="dataContainer" data-options="region:'center'" border="false" title="按月统计客户应收款">
         <table id="t1" border="false"></table>
     </div>
+    <div data-options="region:'south'" style="height:60%" border="false" title="应收款明细">
+        <table id="t2" border="false"></table>  
+    </div>
 </div>
+
+<script type="text/javascript">
+        $.extend($.fn.datagrid.methods, {
+            editCell: function(jq,param){
+                return jq.each(function(){
+                    var opts = $(this).datagrid('options');
+                    var fields = $(this).datagrid('getColumnFields',true).concat($(this).datagrid('getColumnFields'));
+                    for(var i=0; i<fields.length; i++){
+                        var col = $(this).datagrid('getColumnOption', fields[i]);
+                        col.editor1 = col.editor;
+                        if (fields[i] != param.field){
+                            col.editor = null;
+                        }
+                    }
+                    $(this).datagrid('beginEdit', param.index);
+                    var ed = $(this).datagrid('getEditor', param);
+                    if (ed){
+                        if ($(ed.target).hasClass('textbox-f')){
+                            $(ed.target).textbox('textbox').focus();
+                        } else {
+                            $(ed.target).focus();
+                        }
+                    }
+                    for(var i=0; i<fields.length; i++){
+                        var col = $(this).datagrid('getColumnOption', fields[i]);
+                        col.editor = col.editor1;
+                    }
+                });
+            },
+            enableCellEditing: function(jq){
+                return jq.each(function(){
+                    var dg = $(this);
+                    var opts = dg.datagrid('options');
+                    opts.oldOnClickCell = opts.onClickCell;
+                    opts.onClickCell = function(index, field){
+                        if (opts.editIndex != undefined){
+                            if (dg.datagrid('validateRow', opts.editIndex)){
+                                dg.datagrid('endEdit', opts.editIndex);
+                                opts.editIndex = undefined;
+                            } else {
+                                return;
+                            }
+                        }
+                        dg.datagrid('selectRow', index).datagrid('editCell', {
+                            index: index,
+                            field: field
+                        });
+                        opts.editIndex = index;
+                        opts.oldOnClickCell.call(this, index, field);
+                    }
+                });
+            }
+        });
+
+        $(function(){
+            $('#t2').datagrid().datagrid('enableCellEditing');
+        })
+    </script>
+
 
 </body>
 </html>
