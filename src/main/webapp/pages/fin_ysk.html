@@ -65,6 +65,7 @@ function query(params) {
 
     var dg = $('#t1').datagrid({
         url: 'data/fin_ysk_1.json',
+        method : 'get',
         queryParams: params,
         fit : true,
         fitColumns : true,
@@ -101,6 +102,7 @@ function queryDetails(row) {
 
     var dg = $('#t2').datagrid({
         url: 'data/fin_ysk_2.json',
+        method : 'get',
         queryParams: params,
         fit : true,
         fitColumns : true,

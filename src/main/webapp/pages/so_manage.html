@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>订单管理</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+// 待处理的订单15分钟将给出红色提醒
+
+
+$(document).ready(function(){
+    query();
+
+});
+
+var FIELDS_1 = [
+        { field : 'ck', checkbox: true},
+        { field : 'f1', title : '寄件信息', width : 250, align: "center"},
+        { field : 'f2', title : '订单信息', width : 120, align: "center"},
+        { field : 'f3', title : '下单时间', width : 100, align: "center"},
+        { field : 'f4', title : '收货信息', width : 250, align: "center"},
+        { field : 'f5', title : '订单状态', width : 80, align: "center"}
+    ];
+
+function query(params) {
+    params = params || {};
+
+    var dg = $('#t1').datagrid({
+        url: 'data/so_list.json',
+        method : 'get',
+        queryParams: params,
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 50,
+        rownumbers : true,
+        singleSelect : true,
+        checkOnSelect : true,
+        selectOnCheck : true,
+        remoteSort : false,
+        multiSort : true,
+        nowrap: false,
+        columns : [FIELDS_1],
+        toolbar: [ 
+            { text: '转成现场订单', handler: f1, id: "btn1" }, 
+            '-', { text: '转同行', handler: f2, id: "btn2" },  // turbo普通单可转同行
+            '-', { text: '拒绝', handler: f3, id: "btn3" }, 
+            '-', { text: '揽收失败', handler: f4, id: "btn4" }, 
+            '-', { text: '修改订单', handler: f1, id: "btn5" }, 
+            '-', { text: '子单打印', handler: f1, id: "btn6" }, 
+            '-', { text: '运单跟踪查询', handler: f1, id: "btn7"}
+        ],
+        loadFilter: function(data){
+            $.each(data.rows, function(i, item){
+                // item.stateName = item.state.text;
+            });
+            return data;
+        },
+        onSelect: function(index, row) {
+            for(var i=1; i <= 7; i++) {
+                $('#btn' + i).linkbutton("disable");
+            }
+
+            if(row.f5 == '待处理') {
+                $('#btn1').linkbutton("enable");
+                $('#btn2').linkbutton("enable");
+                $('#btn3').linkbutton("enable");
+            }
+            if(row.f5 == '已转现场订单') {
+                $('#btn4').linkbutton("enable");
+                $('#btn5').linkbutton("enable");
+                $('#btn6').linkbutton("enable");
+            }
+            if(row.f5 == '已转成运单') {
+                $('#btn7').linkbutton("enable");
+            }
+        }
+    });
+}
+
+function f1() {
+    // TODO 打开费用登记页面，将选中运单上的信息默认设置到登记页面的Form表单里
+}
+
+function f4() {
+    openDialog('揽收失败', true);
+}
+
+function f3() {
+    openDialog('拒绝', true);
+}
+
+function f2() {
+    openDialog('转同行', true);
+}
+
+
+</script>
+
+
+</head>
+
+<body>
+   
+<div id="main" class="easyui-layout" fit="true">
+    <div id="queryContainer" data-options="region:'north'" border="false">
+        <label>订单号:</label><input id="param1" class="easyui-textbox"></input>&nbsp;&nbsp;&nbsp;&nbsp;      
+        <label>下单时间从：</label><input id="param2" class="easyui-datetimebox"/>
+        <label>到：</label><input id="param3" class="easyui-datetimebox"/>
+        <label>订单状态:</label><input id="param4" class="easyui-textbox"></input>
+        &nbsp;&nbsp;
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>
+    </div>
+    <div id="dataContainer" data-options="region:'center'" border="false" title="订单列表">
+        <table id="t1" border="false"></table>
+    </div>
+</div>
+
+<div id="dlg" class="easyui-dialog" style="width:550px;height: 180px;" closed="true" buttons="#dlg-buttons">
+    <form id="fm" method="post" novalidate>
+        <input name="id" type="hidden"/>
+        <input id="lockVersion" name="lockVersion" type="hidden"/>
+        <table>
+            <tr>
+                <td class="label">原因:</td>
+                <td colspan="3">
+                    <input name="f9" class="easyui-textbox" data-options="multiline:true" style="width:440px;height:70px;"/>
+                </td>               
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="#" class="easyui-linkbutton" iconCls="icon-ok" onclick="save()">确定</a>
+    <a href="#" class="easyui-linkbutton" iconCls="icon-cancel" onclick="closeDialog()">取消</a>
+</div>
+
+</body>
+</html>

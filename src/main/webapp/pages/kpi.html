@@ -74,6 +74,7 @@ function query(params) {
 
     var dg = $('#t1').datagrid({
         url: 'data/kpi.json',
+        method : 'get',
         queryParams: params,
         fit : true,
         fitColumns : true,
