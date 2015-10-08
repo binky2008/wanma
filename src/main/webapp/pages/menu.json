@@ -6,17 +6,17 @@
 			{
 				"id": 11,
 				"name": "网络表查询",
-				"url": "../modules/demo/crud.html"
+				"url": ".html"
 			},
 			{
 				"id": 12,
 				"name": "路由表查询",
-				"url": "../modules/demo/crud.html"
+				"url": ".html"
 			},
 			{
 				"id": 13,
 				"name": "网内价格表查询",
-				"url": "../modules/demo/crud.html"
+				"url": ".html"
 			}
 		]
 	},
@@ -74,11 +74,6 @@
 				"id": 34,
 				"name": "缓存管理",
 				"url": "../modules/_cache/cache.htm"
-			},
-			{
-				"id": 35,
-				"name": "测试页面",
-				"url": "../modules/demo/crud.html"
 			}
 		]
 	},
@@ -94,12 +89,12 @@
 			{
 				"id": 42,
 				"name": "代取件",
-				"url": "../modules/demo/crud.html"
+				"url": ".html"
 			},
 			{
 				"id": 43,
 				"name": "代录单管理",
-				"url": "../modules/demo/crud.html"
+				"url": ".html"
 			}
 		]
 	},
@@ -110,7 +105,7 @@
 			{
 				"id": 51,
 				"name": "订单管理",
-				"url": "../modules/demo/crud.html"
+				"url": ".html"
 			}
 		]
 	},
@@ -121,12 +116,12 @@
 			{
 				"id": 61,
 				"name": "寄件排车管理",
-				"url": "../modules/demo/crud.html"
+				"url": "jijian.html"
 			},
 			{
 				"id": 62,
 				"name": "寄件运单综合查询",
-				"url": "../modules/demo/crud.html"
+				"url": "jijian_query.html"
 			}
 		]
 	},
@@ -137,12 +132,12 @@
 			{
 				"id": 71,
 				"name": "派件运单综合查询",
-				"url": "../modules/demo/crud.html"
+				"url": "paijian_query.html"
 			},
 			{
 				"id": 72,
-				"name": "派件预报",
-				"url": "../modules/demo/crud.html"
+				"name": "派件排车管理",
+				"url": "paijian.html"
 			}
 		]
 	},
@@ -153,7 +148,22 @@
 			{
 				"id": 81,
 				"name": "快件跟踪查询",
-				"url": "to_follow.html"
+				"url": "kf_to_follow.html"
+			},
+			{
+				"id": 82,
+				"name": "问题件录入",
+				"url": "kf_wtj.html"
+			},
+			{
+				"id": 83,
+				"name": "投诉",
+				"url": "kf_tousu.html"
+			},
+			{
+				"id": 84,
+				"name": "网点问题件处理",
+				"url": "kf_wtj2.html"
 			}
 		]
 	},
@@ -164,7 +174,7 @@
 			{
 				"id": 91,
 				"name": "我的奖罚记录查询",
-				"url": "../modules/demo/crud.html"
+				"url": "kpi.html"
 			}
 		]
 	},
@@ -175,12 +185,32 @@
 			{
 				"id": 101,
 				"name": "物料管理",
-				"url": "../modules/demo/crud.html"
+				"url": "fin_material.html"
 			},
 			{
 				"id": 102,
 				"name": "我的账户",
-				"url": "../modules/demo/crud.html"
+				"url": "fin_accout.html"
+			},
+			{
+				"id": 103,
+				"name": "网点对账",
+				"url": "fin_dz.html"
+			},
+			{
+				"id": 104,
+				"name": "应收款管理",
+				"url": "fin_ysk.html"
+			},
+			{
+				"id": 105,
+				"name": "派件收入查询",
+				"url": "fin_pjsr.html"
+			},
+			{
+				"id": 106,
+				"name": "费用登记/确认",
+				"url": "fin_fydj.html"
 			}
 		]
 	}
