@@ -126,15 +126,15 @@ var myloader = function(param, success, error){
       <table>
         <tr>
           <td>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add',disabled:true">新增</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit',disabled:true">修改</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove',disabled:true">删除</a>     
+            <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-add',disabled:true">新增</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-edit',disabled:true">修改</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-remove',disabled:true">删除</a>     
           </td>
           <td><div class="datagrid-btn-separator"></div></td>
           <td>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-save'">修改</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'">取消</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'">刷新</a>     
+            <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-save'">存为草稿</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-cancel'">取消</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-reload'">刷新</a>     
           </td>
           <td><div class="datagrid-btn-separator"></div></td>
           <td>
@@ -142,8 +142,8 @@ var myloader = function(param, success, error){
           </td>
           <td><div class="datagrid-btn-separator"></div></td>
           <td>
-            <a href="#" class="easyui-linkbutton">计算器</a>
-            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-help'">帮助</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain:true">计算器</a>
+            <a href="#" class="easyui-linkbutton" data-options="plain:true,iconCls:'icon-help'">帮助</a>
           </td>
         </tr>
       </table>     
@@ -185,7 +185,7 @@ var myloader = function(param, success, error){
         </div> 
         <div class="row">
           <label>派件分拨:</label><input style="width:150px" class="easyui-textbox" required="true"/>
-          <label>派件网点:</label><input style="width:150px" class="easyui-datetimebox" required="true"/>
+          <label>派件网点:</label><input style="width:150px" class="easyui-textbox" required="true"/>
           <label>服务方式:</label><input id="serviceType" required="true">
           <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" style="width:80px" onclick='getRoute()'>查看路由</a>
         </div>        
@@ -220,7 +220,7 @@ var myloader = function(param, success, error){
           <input type="radio"><span>T10</span>
         </div> 
         <div class="row">
-          <label>备注:</label><input style="width:635px" class="easyui-textbox" />
+          <label>特殊要求:</label><input style="width:635px" class="easyui-textbox" />
         </div> 
        </fieldset>
 
@@ -254,7 +254,8 @@ var myloader = function(param, success, error){
 
       <div style="text-align:center; margin:10px 0;">
         <a href="#" class="easyui-linkbutton" style="width:100px" onclick='query()'>打印子单</a>&nbsp;&nbsp;&nbsp;
-        <a href="#" class="easyui-linkbutton" style="width:100px" onclick='query()'>转现场订单</a>
+        <a href="#" class="easyui-linkbutton" style="width:100px" onclick='query()'>转现场订单</a>&nbsp;&nbsp;&nbsp;
+        <a href="#" class="easyui-linkbutton" style="width:100px" onclick='query()'>保存到草稿箱</a>
       </div>
       
     </form>
