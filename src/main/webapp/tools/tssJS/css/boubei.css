@@ -5,6 +5,8 @@
  * Copyright 2015 杭州卜贝软件有限公司
  * Licensed under the MIT License
  */
+/* =Mixins
+-----------------------------------------------------------------------------*/
 .text2 {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -202,6 +204,7 @@ select {
 .tssForm input,
 .tssForm select {
   height: 20px;
+  min-width: 50px;
 }
 .tssForm input[type='button'] {
   border: 0;
@@ -245,7 +248,7 @@ select {
 Tree {
   display: block;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
   padding: 5px;
 }
 Tree li {
@@ -347,7 +350,8 @@ Grid {
   width: 100%;
   height: 100%;
   overflow: auto;
-  padding-top: 0px;
+  padding-top: 0;
+  border-top: 1px solid #95B8E7;
   /* & div { position: relative; left: 0; top: 0; } */
 }
 Grid table {
@@ -397,10 +401,10 @@ Grid .sorting {
 /* grid列表标题栏 */
 #gridTitle {
   position: relative;
-  height: 21px;
+  height: 22px;
   padding-left: 8px;
   font-weight: bold;
-  background-color: #BEC6EE;
+  background-color: #E0ECFF;
   color: #555;
 }
 #gridTitle .icon {
@@ -412,7 +416,7 @@ Grid .sorting {
 }
 #gridTitle .buttonBox {
   position: absolute;
-  top: 0;
+  top: 2px;
   right: 0;
 }
 #gridTitle .buttonBox .button {
@@ -441,9 +445,10 @@ Grid .sorting {
 }
 #gridTitle .buttonBox select {
   position: relative;
-  top: -4px;
+  top: -6px;
   right: 1px;
-  font-size: 10px;
+  width: 40px;
+  font-size: 11px;
 }
 /* =Calendar
 -----------------------------------------------------------------------------*/
@@ -502,7 +507,7 @@ Grid .sorting {
   position: relative;
   width: 20px;
   height: 30px;
-  text-indent: 20px;
+  text-indent: -2000px;
   white-space: nowrap;
   opacity: .5;
   background-color: transparent;
@@ -527,8 +532,8 @@ Grid .sorting {
   width: 14.285714285714286%;
 }
 .pika-single .pika-table th {
-  color: #A6A6A6;
-  font-size: 12.5px;
+  color: #555;
+  font-size: 14px;
   font-weight: bold;
   line-height: 25px;
   text-align: center;
@@ -594,7 +599,8 @@ Grid .sorting {
   padding: 1px;
   border: 1px solid #95B8E7;
   background: #fff url(../img/menu_bg.gif) repeat-y;
-  box-shadow: #555 0px 0px 5px;
+  box-shadow: #555 0px 0px 20px;
+  border-radius: 5px;
 }
 .rmenu div {
   position: relative;
@@ -654,12 +660,15 @@ WorkSpace\:Box {
   overflow: hidden;
   vertical-align: top;
   box-sizing: content-box;
+  background-color: #fff;
+  /* tab/title/bar 等默认高度为23px */
 }
 WorkSpace\:Box WorkSpace\:TabBox {
   position: relative;
   display: inline-block;
   width: 100%;
-  height: 23px;
+  height: 22px;
+  max-height: 22px;
   padding-left: 3px;
 }
 WorkSpace\:Box WorkSpace\:TabBox.hasTab {
@@ -669,8 +678,8 @@ WorkSpace\:Box WorkSpace\:TabBox.hasTab {
 WorkSpace\:Box WorkSpace\:TabBox WorkSpace\:Tab {
   position: relative;
   display: inline-block;
-  height: 20px;
-  line-height: 18px;
+  height: 19px;
+  line-height: 16px;
   color: #555;
   cursor: pointer;
   margin: 2px 4px -1px 0;
@@ -735,7 +744,8 @@ WorkSpace\:Box WorkSpace\:PhaseBox WorkSpace\:Phase.active {
 WorkSpace\:Box WorkSpace\:Page {
   height: 100%;
   overflow: hidden;
-  padding: 20px;
+  padding: 15px 15px 23px 15px;
+  /* 底部内边距23px，冲抵掉tab的23px，因page的height为: ws.height的100% */
   margin-right: 0;
   background-color: #fff;
   border: 1px solid #95B8E7;
@@ -795,11 +805,14 @@ WorkSpace\:Box WorkSpace\:PageStep {
   font-size: 13px;
   color: #555;
   background-color: #fff;
+  box-shadow: #555 0px 0px 20px;
+  border-radius: 0 0 5px 5px;
 }
 #alert_box .title {
-  padding-left: 8px;
+  padding-left: 4px;
   font-weight: bold;
   font-size: 13px;
+  letter-spacing: 1px;
   line-height: 22px;
   color: #fff;
   background-color: #049cdb;
@@ -807,13 +820,31 @@ WorkSpace\:Box WorkSpace\:PageStep {
 }
 #alert_box .ok,
 #alert_box .cancel {
-  width: 58px;
-  height: 24px;
-  margin-right: 10px;
-  background: url(../img/alert/btn.gif) no-repeat;
-  border: none;
+  color: #fff;
+  border: solid 1px #049cdb;
+  background: #049cdb;
   cursor: pointer;
-  text-align: center;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  font-size: 1em;
+  padding: .15em .8em .2em;
+  margin-left: 1em;
+}
+#alert_box .ok:hover,
+#alert_box .cancel:hover {
+  background-color: #03719f;
+}
+#alert_box .ok:active,
+#alert_box .cancel:active {
+  color: #e8e8e8;
+}
+#alert_box .ok:hover,
+#alert_box .cancel:hover {
+  text-decoration: none;
+}
+#alert_box .ok:active,
+#alert_box .cancel:active {
+  position: relative;
+  top: 1px;
 }
 #alert_box .close {
   position: absolute;
@@ -847,6 +878,7 @@ WorkSpace\:Box WorkSpace\:PageStep {
 }
 #alert_box .message {
   max-height: 150px;
+  overflow: auto;
   padding-left: 50px;
   padding-bottom: 10px;
 }
@@ -858,7 +890,7 @@ WorkSpace\:Box WorkSpace\:PageStep {
   text-indent: 3px;
 }
 #tssTip {
-  position: absolute;
+  position: fixed;
   right: 1px;
   bottom: 1px;
   display: none;
@@ -905,52 +937,48 @@ WorkSpace\:Box WorkSpace\:PageStep {
 /* relogin相关 */
 #relogin_box {
   width: 300px;
+  box-sizing: border-box;
   border: solid 1px #95B8E7;
-  border-radius: 5px;
+  border-radius: 0 0 5px 5px;
   background-color: #fff;
   font-size: 14px;
 }
 #relogin_box h1 {
-  line-height: 30px;
+  line-height: 25px;
   padding: 0px 10px;
-  background-color: #0064cd;
+  background-color: #049cdb;
   color: #fff;
 }
 #relogin_box span {
   display: block;
   height: 30px;
-  margin: 15px 0px;
+  margin: 14px 0px;
   padding: 0px 10px;
 }
 #relogin_box span input {
   margin-left: 10px;
-  height: 25px;
+  height: 28px;
 }
 #relogin_box #loginName,
 #relogin_box #password {
   width: 250px;
 }
-#relogin_box .bottonBox input {
+#relogin_box .bottonBox button {
   width: 112px;
-  background-color: #049cdb;
-  color: #fff;
-  cursor: pointer;
-}
-#relogin_box .bottonBox input:hover {
-  background-color: #0064cd;
+  height: 24px;
+  font-size: 14px;
+  margin-left: 10px;
 }
 /* =Tool
 -----------------------------------------------------------------------------*/
 .tssbutton {
   display: inline-block;
   outline: none;
-  cursor: pointer;
   text-align: center;
   text-decoration: none;
-  font: 16px/100% Arial, Helvetica, '微软雅黑', sans-serif;
-  padding: .5em 2em .55em;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-  border-radius: .5em;
+  font: 1.4em/100% Arial, Helvetica, '微软雅黑', sans-serif;
+  padding: .5em 2em .5em;
+  border-radius: 3px;
   letter-spacing: 1px;
 }
 .tssbutton:hover {
@@ -966,17 +994,19 @@ WorkSpace\:Box WorkSpace\:PageStep {
   border-radius: 2em;
 }
 .medium {
-  font-size: 12px;
-  padding: .4em 1.5em .4em;
+  font-size: 1.2em;
+  padding: .4em 1em .4em;
 }
 .small {
-  font-size: 11px;
-  padding: .2em 1em .2em;
+  font-size: 1em;
+  padding: .15em .8em .2em;
 }
 .orange {
   color: #fff;
   border: solid 1px #f89406;
   background: #f89406;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 .orange:hover {
   background-color: #bc7005;
@@ -988,6 +1018,8 @@ WorkSpace\:Box WorkSpace\:PageStep {
   color: #fff;
   border: solid 1px #049cdb;
   background: #049cdb;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 .blue:hover {
   background-color: #03719f;
@@ -999,6 +1031,8 @@ WorkSpace\:Box WorkSpace\:PageStep {
   color: #fff;
   border: solid 1px #8bcf7b;
   background: #8bcf7b;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 .green:hover {
   background-color: #64bf4e;
@@ -1010,6 +1044,8 @@ WorkSpace\:Box WorkSpace\:PageStep {
   color: #fff;
   border: solid 1px #e36f5f;
   background: #e36f5f;
+  cursor: pointer;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 .red:hover {
   background-color: #da402b;
@@ -1021,19 +1057,18 @@ WorkSpace\:Box WorkSpace\:PageStep {
   position: absolute;
   vertical-align: top;
   box-sizing: border-box;
-  border: 1px solid #049cdb;
+  border: 1px solid #95B8E7;
   background-color: #fff;
-}
-.tss-panel-max {
-  top: 0;
-  left: 0;
-}
-.tss-panel-min {
-  height: 20px;
-  overflow: hidden;
+  box-shadow: #555 0px 0px 80px;
 }
 .tss-panel > .content {
-  height: 96%;
+  height: 100%;
+  padding-bottom: 21px;
+  /* 冲抵掉title的21px */
+}
+.tss-panel > .content iframe {
+  width: 100%;
+  height: 100%;
 }
 .tss-panel > .title {
   position: relative;
@@ -1088,18 +1123,29 @@ WorkSpace\:Box WorkSpace\:PageStep {
 .tss-panel > .title div span.close:hover {
   background-position: -89px -29px;
 }
+.tss-panel-max {
+  top: 0;
+  left: 0;
+}
+.tss-panel-min {
+  height: 20px;
+  overflow: hidden;
+}
 .leftbar {
   box-sizing: content-box;
   position: fixed;
-  bottom: 20%;
+  bottom: 36%;
   z-index: 100;
   width: 30px;
-  height: 200px;
+  height: 110px;
   background-color: lightgrey;
   border-right: 2px solid #ffc40d;
   border-radius: 3px;
   -moz-transition: all linear 0.3s;
   transition: all linear 0.3s;
+}
+.leftbar:hover {
+  left: 0px;
 }
 .leftbar-open {
   left: 0;
@@ -1110,8 +1156,8 @@ WorkSpace\:Box WorkSpace\:PageStep {
 }
 .leftbar .leftbar-menu {
   width: 27px;
-  height: 110px;
-  padding: 90px 0 0 4px;
+  height: 60px;
+  padding: 50px 0 0 4px;
   border-radius: 3px;
   opacity: .5;
 }

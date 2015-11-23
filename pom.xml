@@ -3,16 +3,16 @@
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>wanma</groupId>
-	<artifactId>wanma</artifactId>
+	<groupId>com.jinhe.tss</groupId>
+	<artifactId>tss</artifactId>
 	<packaging>war</packaging>
 	<version>1.0</version>
-	<name>TSS Project Demo</name>
+	<name>Wanma Project</name>
 	<url>http://www.boubei.com</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<tss.version>3.3</tss.version>
+		<tss.version>3.4</tss.version>
 		<spring.version>3.2.0.RELEASE</spring.version>
 		<hibernate.version>3.5.1-Final</hibernate.version>
 		<maven.build.timestamp.format>yyyy-MM-dd HH:mm:ss</maven.build.timestamp.format>
@@ -32,10 +32,24 @@
 		</dependency>
 		<dependency>
 			<groupId>com.jinhe.tss</groupId>
-			<artifactId>tss-base</artifactId>
+			<artifactId>um</artifactId>
 			<version>${tss.version}</version>
 		</dependency>
-		
+		<dependency>
+			<groupId>com.jinhe.tss</groupId>
+			<artifactId>dm</artifactId>
+			<version>${tss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jinhe.tss</groupId>
+			<artifactId>cms</artifactId>
+			<version>${tss.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.jinhe.tss</groupId>
+			<artifactId>portal</artifactId>
+			<version>${tss.version}</version>
+		</dependency>
 
 		<!-- BASE dependency -->
 		<dependency>
@@ -288,7 +302,7 @@
 				<version>8.1.12.v20130726</version>
 				<configuration>
 					<webAppConfig>
-						<contextPath>/wanma</contextPath>
+						<contextPath>/tss</contextPath>
 					</webAppConfig>
 					<connectors>
 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector">
@@ -296,7 +310,7 @@
 						</connector>
 					</connectors>
 					<stopPort>9966</stopPort>
-					<stopKey>wanma</stopKey>
+					<stopKey>tss</stopKey>
 				</configuration>
 			</plugin>
 

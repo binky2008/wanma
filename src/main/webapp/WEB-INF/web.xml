@@ -1,19 +1,19 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<?xml version="1.0" encoding="UTF-8"?>
 
-<web-app>
-	<display-name>cwp</display-name>
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<display-name>TSS</display-name>
 	
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			classpath*:META-INF/*spring*.xml,
-			classpath*:META-INF/remote/um-*.xml,
 			/WEB-INF/remote-service.xml
 		</param-value>
 	</context-param>
-
+ 
 	<listener>
 		<listener-class>com.jinhe.tss.framework.web.listener.TSSContextLoaderListener</listener-class>
 	</listener>
@@ -29,12 +29,30 @@
 	</servlet-mapping>
 		
 	<servlet>
-	    <servlet-name>ResourcePermissionExporter</servlet-name>
+	    <servlet-name>LoginServiceExporter</servlet-name>
 	    <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
-	    <servlet-name>ResourcePermissionExporter</servlet-name>
-	    <url-pattern>/remote/ResourcePermission</url-pattern>
+	    <servlet-name>LoginServiceExporter</servlet-name>
+	    <url-pattern>/remote/LoginService</url-pattern>
+	</servlet-mapping>
+		
+	<servlet>
+	    <servlet-name>ResourceTypeDaoExporter</servlet-name>
+	    <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>ResourceTypeDaoExporter</servlet-name>
+	    <url-pattern>/remote/ResourceTypeDao</url-pattern>
+	</servlet-mapping>
+		
+	<servlet>
+	    <servlet-name>OnlineUserServiceExporter</servlet-name>
+	    <servlet-class>org.springframework.web.context.support.HttpRequestHandlerServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+	    <servlet-name>OnlineUserServiceExporter</servlet-name>
+	    <url-pattern>/remote/OnlineUserService</url-pattern>
 	</servlet-mapping>
 	<!-- config remote service end -->
 	

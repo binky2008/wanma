@@ -374,6 +374,7 @@
 
             isIE: mc(/.net/),
             isChrome: mc(/\bchrome\b/),
+            isFirefox: mc(/\bfirefox\b/),
             isWebKit: mc(/webkit/),
             supportCanvas: !!document.createElement('canvas').getContext,
             isMobile: mc(/ipod|ipad|iphone|android/gi),
@@ -1585,6 +1586,10 @@
         try {
             this.xmlValueDom = $.parseXML(responseText);
         } catch (e) {
+            // 尝试以JSON解析，如能解析，则不是异常，是发起ajax请求时没有填写type: "json"
+            try { if( $.parseJSON(responseText) ) return; } 
+            catch (e) { }
+            
             console.log(e);
             this.result.dataType = _HTTP_RESPONSE_DATA_TYPE_EXCEPTION;
             this.result.source = this.source;
@@ -2057,8 +2062,8 @@
             boxHtml[boxHtml.length] = "<span> <input type='text' id='loginName' placeholder='请输入您的账号'/> </span>";
             boxHtml[boxHtml.length] = "<span> <input type='password' id='password' placeholder='请输入您的密码' /> </span>";
             boxHtml[boxHtml.length] = "<span class='bottonBox'>";
-            boxHtml[boxHtml.length] = "  <input type='button' id='bt_login'  value='确  定'/>&nbsp;&nbsp;";
-            boxHtml[boxHtml.length] = "  <input type='button' id='bt_cancel' value='取  消'/>";
+            boxHtml[boxHtml.length] = "  <button class='tssbutton blue small' id='bt_login'>确  定</button> &nbsp;&nbsp;";
+            boxHtml[boxHtml.length] = "  <button class='tssbutton blue small' id='bt_cancel'>取  消</button>";
             boxHtml[boxHtml.length] = "</span>";
 
             reloginBox = $.createElement("div", "popupBox", "relogin_box");    
@@ -4488,8 +4493,13 @@
                             }
                         });
                     }
+                    $(cell).html(value);
                     
-                    $(cell).html(value).title(value);                          
+                    var showTitle = column.getAttribute("showTitle");
+                    if(showTitle != 'false') {
+                        $(cell).title(value);  
+                    }
+                                            
                     break;
             }                           
         },
@@ -4626,14 +4636,30 @@
 
         // 添加Grid事件处理
         addGridEvent: function() {          
-            var oThis = this;
+            var oThis = this, deltaY = 10;
 
             this.gridBox.onscroll = function() {
-                 // 判断是否到达底部 
-                 if(this.scrollHeight - this.scrollTop <= this.clientHeight) {
+                 /* 
+                  * 判断是否到达底部，需满足: scrollTop + clientHeight == scrollHeight 
+                  * scrollTop：滚动条在Y轴上的滚动距离。
+                  * clientHeight：内容可视区域的高度。
+                  * scrollHeight：内容可视区域的高度加上溢出（滚动）的距离。
+                  * 前提条件：是在向下滚动。
+                  */
+                var scrollDown = false;
+                if(this.scrollTop > deltaY)  { // down
+                    deltaY = this.scrollTop; 
+                    scrollDown = true;
+                } 
+                if(this.scrollTop == deltaY) { } // 横向运动, scrollLeft在变
+                if(this.scrollTop < deltaY)  { // up
+                    deltaY = this.scrollTop; 
+                }
+
+                if( scrollDown && (this.scrollHeight - this.scrollTop <= this.clientHeight) ) {
                     var eventFirer = new $.EventFirer(oThis.el, "onScrollToBottom");
                     eventFirer.fire();
-                 }
+                }
             };
 
             this.gridBox.onmousewheel = function() {
@@ -5585,7 +5611,7 @@
                 node = findedNodes[++ currentIndex % findedNodes.length];
             }
             else {
-                $(tree.el).notice("没有找到名称含有【" + lastSearchStr + "】的树节点。");
+                $.alert("没有找到名称含有【" + lastSearchStr + "】的树节点。");
             }
             tree.setActiveTreeNode(node);
         }
@@ -6139,6 +6165,26 @@
  * panel 
  */
 ;(function($){
+
+    $.openIframePanel = function(panelId, title, width, height, src, hideMaxMin) {
+        var $panel = $("#" + panelId);
+        if( !$panel.length ) {
+            var panel = $.createElement("div", "panel", panelId);
+            document.body.appendChild(panel);
+            
+            $panel = $(panel);
+            $panel.css("width", width + "px").css("height", height + "px").center();
+            $panel.panel(title, '<iframe frameborder="0"></iframe>', false);
+
+            if(hideMaxMin) {
+                $panel.find(".max").hide();
+                $panel.find(".min").hide();
+            }       
+        }
+
+        $panel.find("iframe").attr("src", src);
+        $panel.show();
+    }
 
     $.fn.extend({
         panel: function(title, contentHtml, resizable, moveable) {

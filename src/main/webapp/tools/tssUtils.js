@@ -1,10 +1,18 @@
+/*
+$(function() {
+    var scriptNode = document.createElement("script");
+    scriptNode.src = "http://s11.cnzz.com/z_stat.php?id=1256153120&web_id=1256153120";
+    scriptNode.async = false;
+    $('head').appendChild(scriptNode);
+});
+*/
 
 /*********************** 系统配置 开始 **********************************/
  var
 	IS_TEST = (location.protocol === 'file:'),
 
 	FROMEWORK_CODE = "TSS",    /* 当前框架名 */
-	APP_CODE       = "WANMA";    /* 当前应用名 */
+	APP_CODE       = "TSS";    /* 当前应用名 */
 
 /*********************** 系统配置 END **********************************/
  var
@@ -16,16 +24,8 @@
 	URL_UPLOAD_FILE  = AUTH_PATH + "file/upload",	
 
 	URL_CORE = IS_TEST ? "../../tools/tssJS/" : "/" + APPLICATION + "/tools/tssJS/",  // 界面核心包相对路径
-	ICON  =  URL_CORE + "images/";
+	ICON  =  URL_CORE + "img/";
 
-/*
-$(function() {
-    var scriptNode = document.createElement("script");
-    scriptNode.src = "http://s4.cnzz.com/z_stat.php?id=1256153120&web_id=1256153120";
-    scriptNode.async = false;
-    $('head').appendChild(scriptNode);
-});
-*/
 
 /*********************** 和工作区Workspace相关 的 公用函数 **********************************/
 
@@ -81,16 +81,22 @@ function openPalette() {
 }
 
 window.onresize = function() {
+	var bodyWidth = document.body.offsetWidth;
 	var bodyHeight = document.body.offsetHeight;
-	$("#palette #tree").css("height", (bodyHeight - 30) + "px");
-	$("#ws Tree").css("height", (bodyHeight - 110) + "px");	
+
+	$("#palette #tree").css("height", (bodyHeight - 23) + "px");
+	$("#ws Tree").css("height", (bodyHeight - 103) + "px");	
+
+	// 设置右边容易的最大宽度
+	$(".panel .body td.groove").css("maxWidth", (bodyWidth - 250) + "px");
+	$("#gridContainer").css("maxWidth", (bodyWidth - 250) + "px");
 }
  
 /* 事件绑定初始化 */
 function initEvents() {
 	/* 树节点查找 和 刷新 */
 	$(".refreshTreeBT").title("刷新").click( function() { loadInitData(); } );
-	$("#palette .search input[type=button]").addClass("btWeak").click(searchTree);
+	$("#palette .search input[type=button]").addClass("tssbutton small blue").click(searchTree);
 
 	window.onresize();
 
@@ -120,16 +126,21 @@ function searchTree() {
 	}
 }
 
+// @Deprecated Tree控件已经自动集成了此功能
 function openDefaultTreeNode(callback) {
 	var searchKey = $.Query.get("_treeNode");
 	if(searchKey) {
-		var tree = $.T('tree');
-		tree.searchNode(searchKey);
-		if(tree.getActiveTreeNode()) {
-    		callback = callback || tree.onTreeNodeDoubleClick || tree.onTreeNodeActived;
-    		callback && callback();
-        }
+		$.T('tree').searchNode(searchKey);
+		openActiveTreeNode(callback);
 	}
+}
+
+function openActiveTreeNode(callback) {	
+	var tree = $.T('tree');
+	if( tree && tree.getActiveTreeNode() ) {
+		callback = callback || tree.onTreeNodeDoubleClick || tree.onTreeNodeActived;
+		callback && callback();
+    }
 }
  
 function onTreeNodeActived(ev) { }
@@ -232,20 +243,8 @@ function setRole2Permission(resourceType, rootId) {
     globalValiable.isRole2Resource = "0";
     var title = "把【" + treeNode.name + "】作为资源授予角色";
 
-    var $panel = $("#permissionPanel");
-    if( !$panel.length ) {
-    	var permissionPanel = $.createElement("div", "panel", "permissionPanel");
-    	document.body.appendChild(permissionPanel);
-    	
-    	var $panel = $(permissionPanel);
-    	$panel.css("width", "844px").css("height", "626px").center();
-	    $panel.panel(title, '<iframe frameborder="0"></iframe>', false);
-	    $panel.find("iframe").css("width", "100%").css("height", "100%");
-    }
-
-    $panel.find("h2").html(title);
-    $panel.find("iframe").attr("src", "../um/setpermission.html");
-    $panel.show();
+    $.openIframePanel("permissionPanel", title, 844, 616, "../um/setpermission.html");
+    $("#permissionPanel").find("h2").html(title);
 }
 
 function createPermissionMenuItem(resourceType, operation) {
@@ -272,27 +271,27 @@ function syncButton(btObjs, request) {
 	}
 }
 
+/* 组件资源管理 */
+function fileManage(params, title) {
+    $.openIframePanel("fileManagerPanel", title, 440, 388, "../portal/filemanager.html?" + params, true);
+}
+
 /* 创建导入Div */
 function createImportDiv(remark, checkFileWrong, importUrl) {
 	var importDiv = $1("importDiv");
 	if( importDiv == null ) {
-		importDiv = $.createElement("div");    
-		importDiv.id = "importDiv";      
+		importDiv = $.createElement("div", null, "importDiv");    
 		document.body.appendChild(importDiv);
 
 		var str = [];
 		str[str.length] = "<form id='importForm' method='post' target='fileUpload' enctype='multipart/form-data'>";
 		str[str.length] = "	 <div class='fileUpload'> <input type='file' name='file' id='sourceFile' onchange=\"$('#importDiv h2').html(this.value)\" /> </div> ";
-		str[str.length] = "	 <input type='button' id='importBt' value='确定导入' class='tssbutton blue bigrounded'/> ";
-		str[str.length] = "	 <input type='button' id='closeBt'  value='关闭' class='tssbutton blue medium'/> ";
+		str[str.length] = "	 <input type='button' id='importBt' value='确定导入' class='tssbutton blue'/> ";
 		str[str.length] = "</form>";
-		str[str.length] = "<iframe width='0px' height='0px' name='fileUpload'></iframe>";
+		str[str.length] = "<iframe style='width:0; height:0;' name='fileUpload'></iframe>";
 
 		$(importDiv).panel(remark, str.join("\r\n"), false);
-
-		$("#closeBt").click( function () {
-			$(importDiv).hide();
-		});
+		$(importDiv).css("height", "300px").center();
 	}
 
 	// 每次 importUrl 可能不一样，比如导入门户组件时。不能缓存
@@ -714,18 +713,6 @@ function checkPasswordSecurityLevel(formObj, url, password, loginName) {
 }
 
 /*********************** 临时 公用函数 **********************************/
-Element.show = function(element, opacity) {
-	if(element) {
-		element.style.display = "block"; 
-		element.style.position = "absolute";  
-		element.style.left = "18%";   
-		element.style.top  = "50px";    
-		element.style.zIndex = "999"; 
-	
-		$.setOpacity(element, opacity || 95);
-	}
-}, 
-
 Element.attachResize = function(element, type) {
 	 $(element).resize(type);
 }
@@ -741,7 +728,7 @@ function popupTree(url, nodeName, params, callback) {
 
 	var boxName = "popupTree";
 	var el = $.createElement("div", "popupItem");
-	el.innerHTML = '<h2>' + (params._title || nodeName) + '</h2>' +
+	el.innerHTML = '<h2>' + (params._title || '选择目标树节点') + '</h2>' +
 		'<Tree id="' + boxName + '"><div class="loading"></div></Tree>' + 
 	    '<div class="bts">' + 
 	       '<input type="button" value="确定" class="tssbutton blue small b1" >' + 

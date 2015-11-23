@@ -10,8 +10,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.transaction.TransactionConfiguration;
 
-import com.best.btr.wanma.SystemInit;
 import com.jinhe.tss.framework.Global;
+import com.jinhe.tss.framework.SystemInit;
 import com.jinhe.tss.framework.component.param.ParamService;
 import com.jinhe.tss.framework.sso.IdentityCard;
 import com.jinhe.tss.framework.sso.TokenUtil;
@@ -26,7 +26,7 @@ import com.jinhe.tss.util.URLUtil;
 @ContextConfiguration(
 	  locations={
 			"classpath:META-INF/framework-spring.xml",
-		    "classpath:META-INF/remote/um-remote.xml",
+			"classpath:META-INF/um-spring.xml",
 		    "classpath:META-INF/spring-mvc.xml",
 		    "classpath:META-INF/spring-test.xml"
 	  }

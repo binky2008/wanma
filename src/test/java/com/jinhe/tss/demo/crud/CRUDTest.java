@@ -9,8 +9,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.jinhe.tss.demo.TxTestSupport;
+import com.jinhe.tss.framework.EasyUIDataGrid;
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framwork.EasyUIDataGrid;
 
 public class CRUDTest extends TxTestSupport {
 	

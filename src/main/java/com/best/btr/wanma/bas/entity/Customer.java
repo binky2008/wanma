@@ -9,9 +9,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.jinhe.tss.framework.AbstractEntity;
 import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.component.param.ParamConstants;
-import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
  * 客户实体

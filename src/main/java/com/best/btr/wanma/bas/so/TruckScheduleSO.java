@@ -1,6 +1,6 @@
 package com.best.btr.wanma.bas.so;
 
-import com.jinhe.tss.framwork.AbstractSO;
+import com.jinhe.tss.framework.AbstractSO;
 
 /**
  * Created by Hsian on 15/9/10.

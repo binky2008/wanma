@@ -12,8 +12,8 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.jinhe.tss.framework.AbstractEntity;
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framwork.AbstractEntity;
 
 /**
  * 网点人员/员工。 网点客服/老板负责新增自己网点的人员

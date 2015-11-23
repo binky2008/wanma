@@ -6,9 +6,22 @@
 		<property name="service" ref="PermissionService"/>
 	    <property name="serviceInterface" value="com.jinhe.tss.um.permission.PermissionService"/>
 	</bean>
-	
-	<bean name="ResourcePermissionExporter" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
-		<property name="service" ref="ResourcePermission"/>
-	    <property name="serviceInterface" value="com.jinhe.tss.um.permission.ResourcePermission"/>
+ 	
+	<bean name="LoginServiceExporter" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+		<property name="service" ref="LoginService"/>
+	    <property name="serviceInterface" value="com.jinhe.tss.um.service.ILoginService"/>
 	</bean>	
+	
+	<!-- Remote 获取每种资源类型对应的"未补全表"和"补全表"和"资源表名" --> 
+	<bean name="ResourceTypeDaoExporter" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+		<property name="service" ref="ResourceTypeDao"/>
+	    <property name="serviceInterface" value="com.jinhe.tss.um.permission.RemoteResourceTypeDao"/>
+	</bean>		
+	
+	<!-- Remote 在线用户管理，可选有 OnlineUserService or DBOnlineUserManager-->
+	<bean name="OnlineUserServiceExporter" class="org.springframework.remoting.httpinvoker.HttpInvokerServiceExporter">
+		<property name="service" ref="OnlineUserService"/>
+	    <property name="serviceInterface" value="com.jinhe.tss.framework.sso.online.IOnlineUserManager"/>
+	</bean>		
+ 
 </beans>

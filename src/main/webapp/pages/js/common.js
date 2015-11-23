@@ -1,6 +1,6 @@
 
 function initCombobox(id, code, params, init) {
-    var url = '/wanma/param/json/combo/' + code;
+    var url = '/tss/param/json/combo/' + code;
     $.get(url, params, function(data){
         var _data = [];
         $.each(data, function(i, item){

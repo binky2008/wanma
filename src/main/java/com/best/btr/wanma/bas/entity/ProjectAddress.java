@@ -9,8 +9,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.jinhe.tss.framework.AbstractEntity;
 import com.jinhe.tss.framework.component.param.ParamConstants;
-import com.jinhe.tss.framwork.AbstractEntity;
 
 @Entity
 @Table(name = "WM_BAS_PROJECT_ADDRESS")

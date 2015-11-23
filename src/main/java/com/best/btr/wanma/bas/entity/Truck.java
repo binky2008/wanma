@@ -1,7 +1,7 @@
 package com.best.btr.wanma.bas.entity;
 
+import com.jinhe.tss.framework.AbstractEntity;
 import com.jinhe.tss.framework.component.param.Param;
-import com.jinhe.tss.framwork.AbstractEntity;
 
 import javax.persistence.*;
 import java.io.Serializable;

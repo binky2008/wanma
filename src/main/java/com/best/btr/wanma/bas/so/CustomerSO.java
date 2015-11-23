@@ -3,7 +3,7 @@ package com.best.btr.wanma.bas.so;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.jinhe.tss.framwork.AbstractSO;
+import com.jinhe.tss.framework.AbstractSO;
 
 /**
  * 搜索客户信息的条件。
