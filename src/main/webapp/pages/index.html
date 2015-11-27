@@ -15,10 +15,10 @@
 
 <STYLE type="text/css">
 
-* { font-size:12px; font-family:Tahoma,Verdana,微软雅黑,新宋体; }
-body{ background:#D2E0F2; }
+* { font-size: 12px; font-family: Tahoma,Verdana,微软雅黑,新宋体; }
+html, body { height: 100%; }
 a { color:black; text-decoration:none; }
-a:hover{ color:red; text-decoration:underline; }
+a:hover { text-decoration:underline; }
 
 #north {
   overflow:hidden; height:30px; line-height:20px; color:#fff; 
@@ -28,34 +28,24 @@ a:hover{ color:red; text-decoration:underline; }
   border-radius: 0px;
   border: 0px;
 }
-#south {
-	height: 24px; background: #D2E0F2; 
-}
-#west {
-	width:180px;
-}
-#mm {
-	width:150px;
-}
+#south { height: 24px; background: #D2E0F2; }
+#west { width:180px; }
+#mm { width:150px; }
 
-.footer { text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold; }
 .head { float:right; padding-right:20px; }
 .head a { color:white; text-decoration:underline; }
+.footer { text-align:center;color:#15428B; margin:0px; padding:0px;line-height:23px; font-weight:bold; }
 
-.navlist { list-style-type:none; margin:0px; padding:10px; }
-.navlist li { padding:0; }
-.navlist li a { line-height:24px; }
-.navlist li div { margin:2px 0px; padding-left:10px; padding-top:2px; border:1px dashed #fff; }
-.navlist li div.hover { border:1px dashed #99BBE8; background:#efeff0; cursor:pointer; }
-.navlist li div.hover a { color:#416AA3; }
-.navlist li div.selected { border:1px solid #99BBE8; background:#E0ECFF;cursor:default; }
-.navlist li div.selected a { color:#416AA3; font-weight:bold; }
-
-.icon{ width:3px; line-height:18px; display:inline-block; } 
+.navlist { list-style-type:none; margin:0px; padding:0px; }
+.navlist li { height: 30px; padding: 0 20px; border-bottom: 1px solid rgba(204, 204, 204, 0.2); }
+.navlist li a { line-height: 28px; }
+.navlist li:hover { background-color: #FEF7A9; }
+.navlist li:hover a { color:#416AA3; text-decoration: none; }
+.navlist li a span { font-size: 13px; }
 		 
-	</STYLE>
+</STYLE>
 
-	<script type="text/javascript">
+<script type="text/javascript">
 
 var onlyOpenTitle="欢迎使用";
 
@@ -103,7 +93,7 @@ function initMenu() {
 
 	    	menuHTML.push('<li>');
 	    	menuHTML.push('<div><a ref="' + menu2.id + '" href="#" rel="' + menu2.url + '" >');
-	    	menuHTML.push('  <span class="icon ' + menu2.icon + '" >&nbsp;</span><span class="nav">' + menu2.name + '</span>');
+	    	menuHTML.push('  <span class="nav">' + menu2.name + '</span>');
 	    	menuHTML.push('</a></div>');
 
 				menuHTML.push('</li>');
@@ -113,7 +103,6 @@ function initMenu() {
 		$('#nav').accordion('add', {
 			title: menu1Name,
 			content: menuHTML.join('\n'),
-			//iconCls: 'icon ' + menu1.icon
       	});
 
 		// if( i==0 ) selectedPanelname = menu1Name;
@@ -132,10 +121,7 @@ function initMenu() {
 
 		$('#main').layout('collapse', 'west');
 		
-	}).hover(
-		function(){ $(this).parent().addClass("hover"); }, 
-		function(){ $(this).parent().removeClass("hover"); }
-	);
+	});
 }
 
 function addTab(subtitle, url, icon){
@@ -233,11 +219,12 @@ function closeTab(action) {
 </head>
 
 <body class="easyui-layout" style="overflow-y: hidden" fit="true" scroll="no" id="main">
-  <div region="north" id="north" split="false" border="false" style="line-height:25px;">
+  <!--
+  <div region="north" id="north" split="false" border="false" style="line-height:25px; ">
       <span class="head" style="font-size:13px;">欢迎【张三丰】</span>
       <span style="padding-left:10px; font-size:16px;">万马网点管理系统</span>
   </div>
-
+  -->
   <div region="west" id="west" split="true" title="万马功能导航">
 		<div id="nav"></div>
   </div>
@@ -249,10 +236,11 @@ function closeTab(action) {
 			</div>
 		</div>
 	</div>
-
+	<!--
 	<div region="south" id="south">
       <div class="footer">By 杭州卜贝软件有限公司</div>
-  </div>
+  	</div>
+  	-->
 
 	<div id="mm" class="easyui-menu">
 		<div id="refresh">刷新</div>

@@ -1,11 +1,8 @@
 114.215.240.170 root/800BESThangzhou
+114.215.240.170:1  VNC
 
-mysqldump -u root -p wanma > /home/tss/temp/wanma.sql  
-mysql -u root -p wanma  < /home/tss/temp/wanma.sql
-
-mysqldump -u root -p wanma > /Users/jinpujun/Desktop/workspace/release/tss/wanma.sql 
-mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/tss/wanma.sql
-
+mysqldump -u root -p wanma > /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql 
+mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql
 
 技术点：
 1、地址解析
@@ -19,12 +16,17 @@ mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/tss/wanma.
 派件网点需要把所有需要自己网点派送的运单从V5同步过来，如果一个网点在万马里是启用的，定时从V5同步其待派送的运单，用户打开派送计划时，
 再实时更新一遍最新的待派送运单。 派送成功的信息要上传回V5
 
-
 自己维护一份网点表、定期保持同步，当V5或天马的接口不可用时，可启用本地的网点表
-
 
 @JsonIgnore
 
 分拨给网点接件车时，可以按照网点设定的送货顺序（按派送车辆的行进路线），对货物进行排放，先送的货的放车后面，后送的放里面。
 
-万马的客户 和 V5的客户 区别， V5是维护一个客户的寄件目标地址，
+仓库、货主、制造商、库区、Loc、SKU、Inv、Inv 推荐、盘点、库存物权转换; 
+用户、登陆、操作日志；运维、机器购买安装部署
+
+1、万马 UI + SQL， 今天的完成一个
+2、进销存
+3、玩转阿里云，Tomcat、Apache/ngix、MySQL、图形化界面
+            Eclipse、Oracle、Kettle、Hadoop集群，抓取及分析云仓订单数据、地址数据
+  		    MySQL主&备（数据安全），Tomcat集群（应用安全）

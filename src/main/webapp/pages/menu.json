@@ -78,38 +78,6 @@
 		]
 	},
 	{
-		"id": 4,
-		"name": "录单",
-		"child": [
-			{
-				"id": 41,
-				"name": "普通录单",
-				"url": "to_record.html"
-			},
-			{
-				"id": 42,
-				"name": "代取件(待开发)",
-				"url": "to_record_2.html"
-			},
-			{
-				"id": 43,
-				"name": "代录单管理(待开发)",
-				"url": "to_record_3.html"
-			}
-		]
-	},
-	{
-		"id": 5,
-		"name": "订单管理",
-		"child": [
-			{
-				"id": 51,
-				"name": "订单管理",
-				"url": "so_manage.html"
-			}
-		]
-	},
-	{
 		"id": 6,
 		"name": "寄件运作管理",
 		"child": [
