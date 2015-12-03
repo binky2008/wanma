@@ -82,14 +82,14 @@ function initMenu() {
 
 	var selectedPanelname = '';
 	$.each(_menus, function(i, menu1) {
-		if( !menuPermissions.contains(menu1.id) ) return true;
+		// if( !menuPermissions.contains(menu1.id) ) return true;
 
 	  	var menu1Name = "&nbsp;&nbsp;" + menu1.name;
 
 		var menuHTML = [];
 		menuHTML.push('<ul class="navlist">');
 	    $.each(menu1.child, function(j, menu2) {
-	    	if( !menuPermissions.contains(menu2.id) ) return true;
+	    	// if( !menuPermissions.contains(menu2.id) ) return true;
 
 	    	menuHTML.push('<li>');
 	    	menuHTML.push('<div><a ref="' + menu2.id + '" href="#" rel="' + menu2.url + '" >');

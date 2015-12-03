@@ -6,11 +6,7 @@ mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/wanma/wanm
 
 技术点：
 1、地址解析
-2、地图调用
-3、子单打印
-4、安卓APP
-5、Form下拉列表按输入字过滤
-
+2、Form下拉列表按输入字过滤
 
 寄件网点跟踪查询运单：从V5库里读取，走BI路线
 派件网点需要把所有需要自己网点派送的运单从V5同步过来，如果一个网点在万马里是启用的，定时从V5同步其待派送的运单，用户打开派送计划时，
@@ -22,11 +18,12 @@ mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/wanma/wanm
 
 分拨给网点接件车时，可以按照网点设定的送货顺序（按派送车辆的行进路线），对货物进行排放，先送的货的放车后面，后送的放里面。
 
-仓库、货主、制造商、库区、Loc、SKU、Inv、Inv 推荐、盘点、库存物权转换; 
-用户、登陆、操作日志；运维、机器购买安装部署
+
 
 1、万马 UI + SQL， 今天的完成一个
-2、进销存
-3、玩转阿里云，Tomcat、Apache/ngix、MySQL、图形化界面
+2、玩转阿里云，Tomcat、Apache/ngix、MySQL、图形化界面
             Eclipse、Oracle、Kettle、Hadoop集群，抓取及分析云仓订单数据、地址数据
   		    MySQL主&备（数据安全），Tomcat集群（应用安全）
+  		    
+  		    
+天马数据，读取权限
