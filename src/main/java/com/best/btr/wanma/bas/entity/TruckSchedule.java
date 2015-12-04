@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.best.btr.wanma.system.entity.Center;
+import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.tss.framework.AbstractEntity;
 import com.jinhe.tss.framework.component.param.Param;
 

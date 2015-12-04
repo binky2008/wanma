@@ -2,8 +2,8 @@ package com.best.btr.wanma.bas;
 
 import com.best.btr.wanma.bas.action.CustomerAction;
 import com.best.btr.wanma.bas.entity.Customer;
-import com.best.btr.wanma.bas.entity.Site;
 import com.best.btr.wanma.bas.so.CustomerSO;
+import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.tss.demo.TxTestSupport;
 import com.jinhe.tss.framework.component.param.Param;
 import org.junit.Assert;

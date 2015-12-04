@@ -86,7 +86,7 @@
                     if (m == "city-district") {
                         b("#tab_street").trigger("click");
                         b.ajax({
-                            url: '../region/sublist/' + K,
+                            url: '../regions/' + K,
                             type: "GET",
                             //data: {"parentId": K},
                             dataType: "json",

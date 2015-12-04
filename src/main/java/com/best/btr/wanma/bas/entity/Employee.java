@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.tss.framework.AbstractEntity;
 import com.jinhe.tss.framework.component.param.Param;
 
@@ -57,14 +58,6 @@ public class Employee extends AbstractEntity {
 
     /** 性别 */
     private String gender;
-
-    /** 身份证照片附件地址 */
-    @Column(length = 255)
-    private String identityUrl;
-
-    /** 头像 */
-    @Column(length = 255)
-    private String headPictureUrl;
 
     /** 企业邮箱 */
     @Column(length = 128)
@@ -155,22 +148,6 @@ public class Employee extends AbstractEntity {
 
     public void setOwnerSite(Site ownerSite) {
         this.ownerSite = ownerSite;
-    }
-
-    public String getIdentityUrl() {
-        return identityUrl;
-    }
-
-    public void setIdentityUrl(String identityUrl) {
-        this.identityUrl = identityUrl;
-    }
-
-    public String getHeadPictureUrl() {
-        return headPictureUrl;
-    }
-
-    public void setHeadPictureUrl(String headPictureUrl) {
-        this.headPictureUrl = headPictureUrl;
     }
 
     public String getEmail() {

@@ -49,31 +49,36 @@ a:hover { text-decoration:underline; }
 
 var onlyOpenTitle="欢迎使用";
 
-var _menus, ownerSite, ownerCenter, menuPermissions;
+var _menus, ownerSite, ownerCenter;
 
-Array.prototype.contains = function(obj) {
-    var i = this.length;
-    while (i--) {
-        if (this[i] === obj) {
-            return true;
-        }
-    }
-    return false;
-};
+MENU_URL = "/tss/auth/navigator/json/65"; //"menu.json"
+USER_INFO_URL  =  "/tss/sys/user/info";
 
 $(function(){
-	$.getJSON("menu.json", function(json){
+	$.getJSON(MENU_URL, function(json){
 	  _menus = json;
 
 	  initMenu();
 	});
+
+	// tssJS.ajax({
+ //        url : URL_GET_USER_HAS,
+ //        method : "GET",
+ //        type : "json",
+ //        ondata: function() {
+ //            var result = this.getResponseJSON();
+ //            userGroups = result[0];
+ //            userRoles = result[1];
+ //            userCode = result[3];
+ //            userName = result[4];
+ //        }
+ //    });
 		
 	attachTabCloseEnvet();
 	attachTabEnvet();
 
 	ownerCenter = {"id": 1, "name": "杭州分拨"};
 	ownerSite   = {"id": 1, "name": "柯桥一部", "code": "KQYB" };
-	menuPermissions = [2, 21, 22, 23, 24, 25, 3, 31, 32, 33, 34, 35, 4, 41, 42, 43, 5, 51, 6, 61, 62, 7, 71, 72, 8, 81, 82, 83, 84, 9, 91, 10, 101, 102, 103, 104, 105, 106];
 });
 
 //初始化左侧
@@ -82,15 +87,12 @@ function initMenu() {
 
 	var selectedPanelname = '';
 	$.each(_menus, function(i, menu1) {
-		// if( !menuPermissions.contains(menu1.id) ) return true;
 
 	  	var menu1Name = "&nbsp;&nbsp;" + menu1.name;
 
 		var menuHTML = [];
 		menuHTML.push('<ul class="navlist">');
-	    $.each(menu1.child, function(j, menu2) {
-	    	// if( !menuPermissions.contains(menu2.id) ) return true;
-
+	    menu1.children && $.each(menu1.children, function(j, menu2) {
 	    	menuHTML.push('<li>');
 	    	menuHTML.push('<div><a ref="' + menu2.id + '" href="#" rel="' + menu2.url + '" >');
 	    	menuHTML.push('  <span class="nav">' + menu2.name + '</span>');

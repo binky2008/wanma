@@ -2,7 +2,7 @@
 	{
 		"id": 1,
 		"name": "网络查询",
-		"child": [
+		"children": [
 			{
 				"id": 11,
 				"name": "网络表查询",
@@ -18,7 +18,7 @@
 	{
 		"id": 2,
 		"name": "我的网点",
-		"child": [
+		"children": [
 			{
 				"id": 21,
 				"name": "客户管理",
@@ -48,18 +48,13 @@
 				"id": 26,
 				"name": "网点硬件能力盘点",
 				"url": "../pages/bas_yjnl.html"
-			},
-			{
-				"id": 27,
-				"name": "用户管理",
-				"url": "../pages/sys_user.html"
 			}
 		]
 	},
 	{
 		"id": 3,
 		"name": "寄件运作管理",
-		"child": [
+		"children": [
 			{
 				"id": 31,
 				"name": "快件跟踪查询",
@@ -85,7 +80,7 @@
 	{
 		"id": 4,
 		"name": "派件运作管理",
-		"child": [
+		"children": [
 			{
 				"id": 41,
 				"name": "派件查询",
@@ -101,7 +96,7 @@
 	{
 		"id": 5,
 		"name": "KPI考核",
-		"child": [
+		"children": [
 			
 			{
 				"id": 51,
@@ -113,7 +108,7 @@
 	{
 		"id": 6,
 		"name": "评价管理",
-		"child": [
+		"children": [
 			
 			{
 				"id": 61,
@@ -125,7 +120,7 @@
 	{
 		"id": 7,
 		"name": "网点财务管理",
-		"child": [
+		"children": [
 			{
 				"id": 71,
 				"name": "网点对账",

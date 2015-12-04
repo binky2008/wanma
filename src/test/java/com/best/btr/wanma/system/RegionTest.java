@@ -7,8 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.best.btr.wanma.system.action.RegionAction;
-import com.best.btr.wanma.system.entity.Region;
+import com.best.btr.wanma.system.action.SystemAction;
 import com.jinhe.tss.demo.TxTestSupport;
 
 /**
@@ -17,7 +16,7 @@ import com.jinhe.tss.demo.TxTestSupport;
 public class RegionTest extends TxTestSupport {
 
     @Autowired
-    RegionAction action;
+    SystemAction action;
 
     @Before
     public void setUp() throws Exception {
@@ -27,7 +26,7 @@ public class RegionTest extends TxTestSupport {
     @Test
     public void testGetByParentId() {
         Long parentId = 440307L; //深圳 龙岗区
-        List<Region> list = action.getRegionByParentId(parentId);
+        List<?> list = action.getRegionsByZone(parentId);
         Assert.assertNotNull(list);
         Assert.assertEquals(14 ,list.size());
     }

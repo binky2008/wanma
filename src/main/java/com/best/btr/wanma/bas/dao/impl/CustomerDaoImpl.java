@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.best.btr.wanma.bas.dao.CustomerDao;
 import com.best.btr.wanma.bas.entity.Customer;
-import com.best.btr.wanma.bas.entity.Site;
+import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.tss.framework.persistence.BaseDao;
 
 /**

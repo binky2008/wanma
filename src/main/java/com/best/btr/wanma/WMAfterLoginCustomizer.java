@@ -1,58 +1,110 @@
 package com.best.btr.wanma;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpSession;
+
+import com.best.btr.wanma.bas.entity.Employee;
+import com.best.btr.wanma.bas.service.EmployeeService;
+import com.best.btr.wanma.system.entity.Center;
+import com.best.btr.wanma.system.entity.Site;
+import com.best.btr.wanma.system.service.SystemService;
+import com.jinhe.tss.framework.Global;
+import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.sso.Environment;
 import com.jinhe.tss.framework.sso.ILoginCustomizer;
-import com.jinhe.tss.um.UMConstants;
+import com.jinhe.tss.framework.sso.SSOConstants;
+import com.jinhe.tss.framework.sso.context.Context;
+import com.jinhe.tss.um.permission.PermissionService;
+import com.jinhe.tss.util.EasyUtils;
 
 public class WMAfterLoginCustomizer implements ILoginCustomizer {
+	
+	// 万马网点固定角色一览
+	static Long ROLE_0 = 32L; // 基础角色
+	static Long ROLE_1 = 57L; // 财务
+	static Long ROLE_2 = 58L; // 客服
+	static Long ROLE_3 = 59L; // 物流专员
+	static Long ROLE_4 = 60L; // 职业经理
+	static Long ROLE_5 = 61L; // 网点
+	static Long ROLE_6 = 62L; // 网点承包区
+	
+	PermissionService permissionService = (PermissionService) Global.getBean("PermissionService");
+	EmployeeService employeeService = (EmployeeService) Global.getBean("EmployeeService");
+	SystemService systemService = (SystemService) Global.getBean("SystemService");
 
 	public void execute() {
-		
+		HttpSession session = Context.getRequestContext().getSession();
 		Object fromUserId = Environment.getUserInfo("fromUserId");
-		Long userId = Environment.getUserId();
-		if (fromUserId == null && UMConstants.ADMIN_USER_ID.equals(userId)) {
-			fromUserId = 102204L;
-		}
-//		baseInfoService.fetchWMSPermissions(EasyUtil.obj2Long(fromUserId));
+		Object employeeNo = Environment.getUserInfo("employeeNo"); // 网点编号User里，employeeNo记录了网点ID信息
+		Long logonUserId = Environment.getUserId();
 		
-		// TODO 读取登陆用户的所属站点、分拨等信息，存放到seesion中
+		List<Object[]> userRoles = new ArrayList<Object[]>();
+		@SuppressWarnings("unchecked")
+		List<Long> roleIds = (List<Long>) session.getAttribute(SSOConstants.USER_RIGHTS_IN_SESSION);
+		if(fromUserId != null) {
+			Long employeeId = EasyUtils.obj2Long(fromUserId);
+			Employee employee = employeeService.getEntityById(employeeId);
+			if(employee != null) {
+				Param position = employee.getPosition();
+				String positionName = position.getText();
+
+				if(positionName.indexOf("财务") >= 0) {
+					userRoles.add( new Object[] { logonUserId, ROLE_1 } );
+					roleIds.add(ROLE_1);
+				}
+				if(positionName.indexOf("客服") >= 0) {
+					userRoles.add( new Object[] { logonUserId, ROLE_2 } );
+					roleIds.add(ROLE_2);
+				}
+				if(positionName.indexOf("物流专员") >= 0) {
+					userRoles.add( new Object[] { logonUserId, ROLE_3 } );
+					roleIds.add(ROLE_3);
+				}
+				if(positionName.indexOf("职业经理") >= 0) {
+					userRoles.add( new Object[] { logonUserId, ROLE_4 } );
+					roleIds.add(ROLE_4);
+				}
+				
+				// 读取登陆用户的所属站点、分拨等信息，存放到seesion中
+		        Site site = employee.getOwnerSite();
+		        session.setAttribute("SITE_INFO", new Object[] {site.getId(), site.getCode(), site.getName()});
+		        
+		        Center center = systemService.getCenterBySite(site);
+		        if(center != null) {
+		        	session.setAttribute("CENTER_INFO", new Object[] {center.getId(), center.getCode(), center.getName()});
+		        }
+			}
+			else if(employeeNo != null) { // 网点编号登录
+				Long centerId = EasyUtils.obj2Long(employeeNo);
+				Long siteId = EasyUtils.obj2Long(fromUserId);
+				
+				Center center = (Center) systemService.getEntity(Center.class, centerId);
+				Site site = (Site) systemService.getEntity(Site.class, siteId);
+				if(site != null) {
+					session.setAttribute("SITE_INFO", new Object[] {site.getId(), site.getCode(), site.getName()});
+				}
+				if(center != null) {
+		        	session.setAttribute("CENTER_INFO", new Object[] {center.getId(), center.getCode(), center.getName()});
+		        }
+				
+				if(site.isBestSite()) {
+					userRoles.add( new Object[] { logonUserId, ROLE_5 } );
+					roleIds.add(ROLE_5);
+				} else {
+					userRoles.add( new Object[] { logonUserId, ROLE_6 } );
+					roleIds.add(ROLE_6);
+				}
+			}
+		}
+		
+		// 保存到用户权限（拥有的角色）对应表
+		userRoles.add( new Object[] { logonUserId, ROLE_0 } ); // 基础角色
+        permissionService.saveUserRolesAfterLogin(userRoles, logonUserId);
+        
+        roleIds.add(ROLE_0);
+        session.setAttribute(SSOConstants.USER_RIGHTS_IN_SESSION, roleIds);
 	}
 
 }
-/*
-select distinct t.id as id, t.parent_id as parentId, t.name, t.code as description from gtv_org_golden t where t.id >= :groupId
-union all
-select -1*t1.id, t1.org_id as parentId, t1.NAME, t1.CODE as description 
-  from gtv_site t1, gtv_org_golden t2
- where t1.org_id = t2.id
-   and t1.type_code = '01'
-   and t1.STATUS = 'ENABLE' 
-      
-
-select distinct u.id, case when u.owner_site_id is not null then u.owner_site_id*-1 else u.org_id end as groupId, 
-     u.user_name as loginName, u.user_name_cn as userName, u.user_password as password,
-     u.email, null as sex, null as birthday, u.owner_site_id as employeeNo, null authMethod
-  from gt_user u
-  where u.org_id >= 0
-    and u.is_enable = 1
-    and user_name in 
- (
-  select s.code
-  from gt_site s, gt_site s1
-  where s.parent_site_id = s1.id
-  and s.type<>110
-    and s.status = 'ENABLE'
-    and s.name not like '%同行%'
-    and s.name not like '%营业%'
-    and s.name not like '%项目%'
-  )
-  
-  select s.code
-  from gt_site s, gt_site s1
-  where s.parent_site_id = s1.id
-  and s.type<>110
-    and s.status = 'ENABLE'
-    and s.name not like '%同行%'
-    and s.name not like '%营业%'
-    and s.name not like '%项目%'
-*/
