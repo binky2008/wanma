@@ -1,6 +1,5 @@
 package com.best.btr.wanma;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +21,7 @@ public class WMIdentifyGetter extends UMIdentityGetter implements IdentityGetter
      * @return
      */
     public boolean indentify(IPWDOperator operator, String password) {
-        log.debug("用户登陆时密码在主用户组中验证不通过，转向WMS进行再次验证。");
+        log.debug("用户登陆时密码在主用户组中验证不通过，转向V5进行再次验证。");
         
         String loginName = operator.getLoginName();
         Long userId = loginInV5(loginName, password);
@@ -37,24 +36,16 @@ public class WMIdentifyGetter extends UMIdentityGetter implements IdentityGetter
         } 
     }
     
-    // 直接同步过来的密码 dac087c9549d22b73f7598e93c558e04
+    // 直接同步过来的密码, 初始化密码: 800best ==> dac087c9549d22b73f7598e93c558e04
     private Long loginInV5(String loginName, String password) {
-    	String script = "select id from um_user t where loginName = ? and passwor = ?";
+    	String script = "select id from um_user t where loginName = ? and password = ?";
+    	String md5password = InfoEncoder.string2MD5(password).toLowerCase();
 
-        Map<Integer, Object> params = new HashMap<Integer, Object>();
-        params.put(1, loginName);
-        params.put(2, InfoEncoder.string2MD5(password).toLowerCase());
-
-        List<Map<String, Object>> result = SQLExcutor.query(DMConstants.LOCAL_CONN_POOL, script, params);
-
+        List<Map<String, Object>> result = SQLExcutor.query(DMConstants.LOCAL_CONN_POOL, script, loginName, md5password);
         if (result.isEmpty()) {
             return null;
         }
-
         return EasyUtils.obj2Long(result.get(0).get("id"));
     }
-    
-//    public static void main(String[] args) {
-//    	System.out.println(InfoEncoder.string2MD5("800best").toLowerCase());
-//    }
+
 }

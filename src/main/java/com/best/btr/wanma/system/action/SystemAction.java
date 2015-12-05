@@ -35,12 +35,10 @@ public class SystemAction {
 	@RequestMapping(value = "/user/info", method = RequestMethod.GET)
 	@ResponseBody
 	public Object[] getUserHas() {
-		
 		Long userId = Environment.getUserId();
-		
 		HttpSession session = Context.getRequestContext().getSession();
 		
-		Object[] userHas = new Object[5];
+		Object[] userHas = new Object[6];
 		userHas[0] = session.getAttribute("SITE_INFO");    // site
 		userHas[1] = session.getAttribute("CENTER_INFO");  // center
 		userHas[2] = userId;

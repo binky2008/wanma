@@ -43,6 +43,13 @@ public class WMAfterLoginCustomizer implements ILoginCustomizer {
 		List<Object[]> userRoles = new ArrayList<Object[]>();
 		@SuppressWarnings("unchecked")
 		List<Long> roleIds = (List<Long>) session.getAttribute(SSOConstants.USER_RIGHTS_IN_SESSION);
+		if(roleIds == null) {
+			roleIds = new ArrayList<Long>();
+		}
+		for(Long roleId : roleIds) {
+			userRoles.add( new Object[] { logonUserId, roleId } );
+		}
+		
 		if(fromUserId != null) {
 			Long employeeId = EasyUtils.obj2Long(fromUserId);
 			Employee employee = employeeService.getEntityById(employeeId);
@@ -77,25 +84,24 @@ public class WMAfterLoginCustomizer implements ILoginCustomizer {
 		        }
 			}
 			else if(employeeNo != null) { // 网点编号登录
-				Long centerId = EasyUtils.obj2Long(employeeNo);
-				Long siteId = EasyUtils.obj2Long(fromUserId);
+				Long siteId = EasyUtils.obj2Long(employeeNo);
 				
-				Center center = (Center) systemService.getEntity(Center.class, centerId);
 				Site site = (Site) systemService.getEntity(Site.class, siteId);
 				if(site != null) {
 					session.setAttribute("SITE_INFO", new Object[] {site.getId(), site.getCode(), site.getName()});
+					if( site.isBestSite() ) {
+				        session.setAttribute("CENTER_INFO", new Object[] {site.getParentId(), site.getParentCode(), site.getParentName()});
+						
+						userRoles.add( new Object[] { logonUserId, ROLE_5 } );
+						roleIds.add(ROLE_5);
+					}
+					else {
+						userRoles.add( new Object[] { logonUserId, ROLE_6 } );
+						roleIds.add(ROLE_6);
+					}
 				}
-				if(center != null) {
-		        	session.setAttribute("CENTER_INFO", new Object[] {center.getId(), center.getCode(), center.getName()});
-		        }
 				
-				if(site.isBestSite()) {
-					userRoles.add( new Object[] { logonUserId, ROLE_5 } );
-					roleIds.add(ROLE_5);
-				} else {
-					userRoles.add( new Object[] { logonUserId, ROLE_6 } );
-					roleIds.add(ROLE_6);
-				}
+				// TODO 二级承包区账户登录处理，如何判断？ 也是从V5同步过来
 			}
 		}
 		

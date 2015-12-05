@@ -63,5 +63,5 @@ public class SystemServiceImpl implements SystemService {
 		}
 		return dao.getEntities(hql);
 	}
-
+	
 }

@@ -51,7 +51,7 @@ var onlyOpenTitle="欢迎使用";
 
 var _menus, ownerSite, ownerCenter;
 
-MENU_URL = "/tss/auth/navigator/json/65"; //"menu.json"
+MENU_URL = "/tss/auth/navigator/json/65"; //"data/menu.json"
 USER_INFO_URL  =  "/tss/sys/user/info";
 
 $(function(){
@@ -59,26 +59,15 @@ $(function(){
 	  _menus = json;
 
 	  initMenu();
-	});
 
-	// tssJS.ajax({
- //        url : URL_GET_USER_HAS,
- //        method : "GET",
- //        type : "json",
- //        ondata: function() {
- //            var result = this.getResponseJSON();
- //            userGroups = result[0];
- //            userRoles = result[1];
- //            userCode = result[3];
- //            userName = result[4];
- //        }
- //    });
+	  	$.getJSON(USER_INFO_URL, function(info){
+		  	ownerCenter = info[2] || [];
+			ownerSite   = info[1] || [];
+		});
+	});
 		
 	attachTabCloseEnvet();
 	attachTabEnvet();
-
-	ownerCenter = {"id": 1, "name": "杭州分拨"};
-	ownerSite   = {"id": 1, "name": "柯桥一部", "code": "KQYB" };
 });
 
 //初始化左侧
@@ -97,8 +86,7 @@ function initMenu() {
 	    	menuHTML.push('<div><a ref="' + menu2.id + '" href="#" rel="' + menu2.url + '" >');
 	    	menuHTML.push('  <span class="nav">' + menu2.name + '</span>');
 	    	menuHTML.push('</a></div>');
-
-				menuHTML.push('</li>');
+			menuHTML.push('</li>');
 	    });
 		menuHTML.push('</ul>');
 
