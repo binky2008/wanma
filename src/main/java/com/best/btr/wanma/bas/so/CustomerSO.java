@@ -19,6 +19,8 @@ public class CustomerSO extends AbstractSO {
     private String phone1;
     
     private String original;
+    
+    private String settleType;
 
     /** 所属站点 */
     private Long ownerSiteId;
@@ -37,6 +39,7 @@ public class CustomerSO extends AbstractSO {
         map.put("${phone1}", " and o.phone1 = :phone1");
         
         map.put("${original}", " and o.original = :original");
+        map.put("${settleType}", " and o.settleType = :settleType");
         
         map.put("${stateId}", " and o.state.id = :stateId");
         map.put("${businessorId}", " and o.businessor.id = :businessorId");
@@ -105,5 +108,13 @@ public class CustomerSO extends AbstractSO {
 
 	public void setOriginal(String original) {
 		this.original = original;
+	}
+
+	public String getSettleType() {
+		return settleType;
+	}
+
+	public void setSettleType(String settleType) {
+		this.settleType = settleType;
 	}
 }

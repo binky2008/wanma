@@ -92,11 +92,11 @@ function save(){
     $('#fm').form('submit',{
         url: SAVE_URL,
         onSubmit: function(){
-            $('#serialCode').textbox('setValue', '20:00/4.2');
+            $('#serialCode').textbox('setValue', '20:00/4.2'); // 给个值以通过表单验证
 
             var hasChecked = false;
-            $("input[name='modules']:checkbox").each(function (){ 
-                if( $(this).attr("checked") ){
+            $("input[name='executeDate']:checkbox").each(function (){ 
+                if( $(this).prop("checked") ){
                     hasChecked = true;    
                 } 
             });
@@ -137,6 +137,8 @@ var SCHEDULE_FIELDS = [
  */
 function query(params) {
     params = params || {};
+    params.ownerSiteId = window.parent.ownerSite.id;
+
     $('#t1').datagrid({
         url: QUERY_URL, // 数据地址
         queryParams: params, // 参数

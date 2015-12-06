@@ -11,6 +11,7 @@ import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.tss.framework.persistence.ICommonDao;
 import com.jinhe.tss.framework.persistence.IEntity;
 import com.jinhe.tss.um.entity.Group;
+import com.jinhe.tss.util.EasyUtils;
 
 /**
  * @author Created by Lu on 15/9/16.
@@ -25,19 +26,19 @@ public class SystemServiceImpl implements SystemService {
     }
 	
 	public Center getCenterBySite(Site site) {
-		Long centerId = null;
+		Object centerId = null;
     	if( site.isBestSite() ) {
-    		centerId = site.getParentId(); 
+    		centerId = site.getParentCode(); 
     	}
     	else {
     		site = (Site) dao.getEntity(Site.class, site.getParentId() );
     		if(site != null) {
-    			centerId = site.getParentId();
+    			centerId = site.getParentCode();
     		}
     	}
     	
     	if(centerId != null) {
-    		return (Center) dao.getEntity(Center.class, centerId );
+    		return (Center) dao.getEntity(Center.class, EasyUtils.obj2Long(centerId) );
     	}
     	return null;
 	}

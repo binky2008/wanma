@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>网点查询</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+BASE_URL = '../customer';
+QUERY_URL = BASE_URL + '/query';
+
+$(document).ready(function(){
+    query();
+    // initSiteList("param1");
+});
+
+var CUSTOMER_FIELDS = [
+    { field: 'name', title: '网点名称', width: 90 },
+    { field: 'code', title: '网点编号', width: 70 },
+    { field: 'f3', title: '负责人信息', width: 70 },
+    { field: 'f4', title: '客服电话', width: 70 },
+    { field: 'f5', title: '传真号码', width: 70 },
+    { field: 'f6', title: '所属中心', width: 70 },
+    { field: 'f7', title: '所属区域', width: 70 },
+    { field: 'f8', title: '是否到付', width: 70 },
+    { field: 'f9', title: '是否支持自提', width: 80 },
+    { field: 'f10', title: '派送范围', width: 120 },
+    { field: 'f11', title: '非派送区域', width: 120 },
+    { field: 'f12', title: '特殊派送区域', width: 100 },
+    { field: 'f13', title: '派送时效', width: 80 },
+    { field: 'f14', title: '录入签收时效', width: 80 }
+];
+
+/**
+ * 可用于第一次加载数据,也可用于查询;
+ * 第一次加载数据页面时参数为空.
+ */
+function query(params) {
+    params = params || {};
+    params.ownerSiteId = window.parent.ownerSite.id;
+
+    $('#t1').datagrid({
+        url : QUERY_URL, // 数据地址
+        queryParams : params, // 参数
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 30,
+        rownumbers : true,
+        singleSelect : false,
+        columns : [CUSTOMER_FIELDS],
+        /* 返回的结果再处理 */
+        loadFilter : function(data) {
+            $.each(data.rows, function(i, item) {
+                item.needMessage = item.needMessage ? "是" : "否";
+                item.stateName = item.disabled == 1 ? "停用" : "启用";
+            });
+            return data;
+        }
+    });
+}
+
+function beginQuery() {
+    var params = {};
+    params.param1 = $('#param1').val();
+    params.param2 = $('#param2').val();
+    params.param3 = $('#param3').val();
+    params.param4 = $('#param4').val();
+
+    query(params);
+}
+	
+</script>
+
+
+</head>
+
+<body>
+   
+<div id="main" class="easyui-layout" fit="true" >
+    <div id="queryContainer" data-options="region:'north'" border="false">
+        <label>网点名称:</label><input id="param1" class="easyui-textbox" />
+        <label>网点编号:</label><input id="param2" class="easyui-textbox" />
+        <label>联系电话:</label><input id="param3" class="easyui-textbox" />
+        <label>地区:</label><input id="param4" class="easyui-textbox" data-options="prompt:'省/市/区'"/>
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
+    </div>
+    <div id="dataContainer" data-options="region:'center'" border="false" title="网点列表">
+        <table id="t1" border="false"></table>
+    </div>
+</div>
+
+</body>
+</html>

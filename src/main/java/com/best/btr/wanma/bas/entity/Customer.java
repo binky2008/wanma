@@ -11,7 +11,6 @@ import javax.persistence.Table;
 
 import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.tss.framework.AbstractEntity;
-import com.jinhe.tss.framework.component.param.Param;
 import com.jinhe.tss.framework.component.param.ParamConstants;
 
 /**
@@ -19,7 +18,7 @@ import com.jinhe.tss.framework.component.param.ParamConstants;
  * @author Created by LU on 15/8/31.
  */
 @Entity
-@Table(name = "WM_BAS_CUSTOMER")
+@Table(name = "wm_bas_customer")
 @SequenceGenerator(name = "customer_sequence", sequenceName = "customer_sequence", initialValue = 1000, allocationSize = 10)
 public class Customer extends AbstractEntity {
 
@@ -46,9 +45,8 @@ public class Customer extends AbstractEntity {
     /** 客户类型 项目客户 普通客户等 */
     private String customerType;
 
-    /** 结算类型 */
-    @ManyToOne
-    private Param settleType;
+    /** 结算类型: 月结、现付 */
+    private String settleType;
 
     /** 联系人 */
     @Column(length = 128, nullable = false)
@@ -131,11 +129,11 @@ public class Customer extends AbstractEntity {
         this.original = original;
     }
 
-    public Param getSettleType() {
+    public String getSettleType() {
         return settleType;
     }
 
-    public void setSettleType(Param settleType) {
+    public void setSettleType(String settleType) {
         this.settleType = settleType;
     }
 

@@ -45,7 +45,7 @@ public class CustomerTest extends TxTestSupport {
         customer.setCode(code);
         customer.setName("客户001");
         customer.setContacts("联系人001");
-        customer.setSettleType(settleTypeList.get(0));
+        customer.setSettleType("月结");
         customer.setDisabled(0);
         customer.setPhone1("13558996822");
         customer.setRegion("浙江省杭州市江干区");

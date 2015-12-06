@@ -64,7 +64,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     	User user = new User();
     	user.setLoginName(entity.getCode());
     	user.setUserName(entity.getName() + "-" + site.getName());
-    	user.setAddress( site.getParentName() + "" + (fbGroup != null ? fbGroup.getName() : "") );
+    	user.setAddress( site.getParentName() + "，" + (fbGroup != null ? fbGroup.getName() : "") );
     	
     	user.setEmail(entity.getEmail());
     	user.setPassword( InfoEncoder.string2MD5(entity.getPassword()) );

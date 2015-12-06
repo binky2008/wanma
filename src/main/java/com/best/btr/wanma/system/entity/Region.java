@@ -10,7 +10,7 @@ import java.io.Serializable;
  * @author Created by Hsian on 15/9/14.
  */
 @Entity
-@Table(name = "WM_SYS_REGION")
+@Table(name = "wm_sys_region")
 @SequenceGenerator(name = "region_sequence", sequenceName = "region_sequence", initialValue = 47498, allocationSize = 10)
 public class Region implements IEntity {
 

@@ -22,7 +22,7 @@ import com.jinhe.tss.framework.component.param.Param;
  * @author Created by LU on 15/9/10.
  */
 @Entity
-@Table(name = "WM_BAS_TRUCK_SCHEDULE")
+@Table(name = "wm_bas_truck_schedule")
 @SequenceGenerator(name = "truck_schedule_sequence", sequenceName = "truck_schedule_sequence", initialValue = 1000, allocationSize = 10)
 public class TruckSchedule extends AbstractEntity {
 

@@ -22,7 +22,7 @@ import com.jinhe.tss.framework.component.param.Param;
  * @author Created by Lu on 15/9/3.
  */
 @Entity
-@Table(name = "WM_BAS_EMPLOYEE")
+@Table(name = "wm_bas_employee")
 @SequenceGenerator(name = "employee_sequence", sequenceName = "employee_sequence", initialValue = 1000, allocationSize = 10)
 public class Employee extends AbstractEntity {
 

@@ -86,7 +86,7 @@
                     if (m == "city-district") {
                         b("#tab_street").trigger("click");
                         b.ajax({
-                            url: '../regions/' + K,
+                            url: '/tss/sys/region/' + K,
                             type: "GET",
                             //data: {"parentId": K},
                             dataType: "json",
@@ -100,14 +100,14 @@
                         });
                         var j = function (N) {
                             w.html("");
-                            if (N.length > 0) {
+                            if (N && N.length > 0) {
                                 g(w, null, N, false)
                             }
                             var M = b("<a>", {title: "稍后再说", href: "javascript:void(0);"}).html("确定");
                             M.bind("click", function () {
                                 l.css("display", "none")
                             });
-                            var L = b("<span>").html("先填详细地址，稍后再获取街道地址");
+                            var L = b("<span>").html("");
                             w.append(b("<dl>").append(b("<dd>").append(M).append(L)).attr("class", "dl-border-top"));
                             F.callback(q, J)
                         }

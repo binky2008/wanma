@@ -36,7 +36,7 @@ public class TruckScheduleServiceImpl implements TruckScheduleService {
 
     public TruckSchedule update(TruckSchedule entity) {
     	Param truckType = (Param) dao.getEntity(Param.class, entity.getTruckType().getPK());
-    	entity.setSerialCode(entity.getArrivalTime() + "/" + truckType.getValue());
+    	entity.setSerialCode(entity.getArrivalTime() + "/" + truckType.getText());
     	
         return (TruckSchedule) dao.update(entity);
     }

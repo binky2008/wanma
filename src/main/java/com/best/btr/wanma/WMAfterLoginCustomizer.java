@@ -7,7 +7,6 @@ import javax.servlet.http.HttpSession;
 
 import com.best.btr.wanma.bas.entity.Employee;
 import com.best.btr.wanma.bas.service.EmployeeService;
-import com.best.btr.wanma.system.entity.Center;
 import com.best.btr.wanma.system.entity.Site;
 import com.best.btr.wanma.system.service.SystemService;
 import com.jinhe.tss.framework.Global;
@@ -76,22 +75,18 @@ public class WMAfterLoginCustomizer implements ILoginCustomizer {
 				
 				// 读取登陆用户的所属站点、分拨等信息，存放到seesion中
 		        Site site = employee.getOwnerSite();
-		        session.setAttribute("SITE_INFO", new Object[] {site.getId(), site.getCode(), site.getName()});
-		        
-		        Center center = systemService.getCenterBySite(site);
-		        if(center != null) {
-		        	session.setAttribute("CENTER_INFO", new Object[] {center.getId(), center.getCode(), center.getName()});
-		        }
+		        session.setAttribute("SITE_INFO", site);
+		        session.setAttribute("CENTER_INFO", systemService.getCenterBySite(site));
 			}
 			else if(employeeNo != null) { // 网点编号登录
 				Long siteId = EasyUtils.obj2Long(employeeNo);
 				
 				Site site = (Site) systemService.getEntity(Site.class, siteId);
 				if(site != null) {
-					session.setAttribute("SITE_INFO", new Object[] {site.getId(), site.getCode(), site.getName()});
+					session.setAttribute("SITE_INFO", site);
+					session.setAttribute("CENTER_INFO", systemService.getCenterBySite(site));
+					
 					if( site.isBestSite() ) {
-				        session.setAttribute("CENTER_INFO", new Object[] {site.getParentId(), site.getParentCode(), site.getParentName()});
-						
 						userRoles.add( new Object[] { logonUserId, ROLE_5 } );
 						roleIds.add(ROLE_5);
 					}

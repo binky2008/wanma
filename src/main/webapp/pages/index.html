@@ -56,13 +56,16 @@ USER_INFO_URL  =  "/tss/sys/user/info";
 
 $(function(){
 	$.getJSON(MENU_URL, function(json){
-	  _menus = json;
+		if(json.errorMsg) {
+			window.parent.location.href = "/tss/login.html";
+		}
 
-	  initMenu();
+	  	_menus = json;
+	  	initMenu();
 
 	  	$.getJSON(USER_INFO_URL, function(info){
-		  	ownerCenter = info[2] || [];
-			ownerSite   = info[1] || [];
+		  	ownerCenter = info[1] || {};
+			ownerSite   = info[0] || {"id": 0, "name": "非网点"};
 		});
 	});
 		

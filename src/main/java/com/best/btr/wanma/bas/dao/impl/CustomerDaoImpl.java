@@ -20,7 +20,7 @@ public class CustomerDaoImpl extends BaseDao<Customer> implements CustomerDao {
     }
     
     public String getCustomerCode(Long siteId) {
-    	String siteCode = ((Site)getEntity(Site.class, siteId)).getCode();
+    	String siteCode = ((Site)getEntity(Site.class, siteId)).getCode() + "-";
         Integer seqNo = getMaxSeqNo(siteId);
         if(seqNo < 10) {
         	return siteCode + "00" + seqNo;

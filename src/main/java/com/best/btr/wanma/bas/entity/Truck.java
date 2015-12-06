@@ -14,7 +14,7 @@ import java.util.Date;
  * @author Created by LU on 15/9/10.
  */
 @Entity
-@Table(name = "WM_BAS_TRUCK")
+@Table(name = "wm_bas_truck")
 @SequenceGenerator(name = "truck_sequence", sequenceName = "truck_sequence", initialValue = 1000, allocationSize = 10)
 public class Truck extends AbstractEntity {
 

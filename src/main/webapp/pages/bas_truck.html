@@ -97,6 +97,7 @@ var TRUCK_FIELDS = [
 
 function query(params) {
     params = params || {};
+    params.ownerSiteId = window.parent.ownerSite.id;
 
     $('#t1').datagrid({
         url: QUERY_URL, // 数据地址
@@ -112,8 +113,8 @@ function query(params) {
             { text: '新增', iconCls: 'icon-add', handler: create }, 
             '-', { text: '修改', iconCls: 'icon-edit', handler: update }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove }, 
-            '-', { text: '班车卡打印', iconCls : 'icon-print', handler : print1 },
-            '-', { text: '车厢条码打印', iconCls : 'icon-print', handler : print2 }
+            // '-', { text: '班车卡打印', iconCls : 'icon-print', handler : print1, id: "btn4" },
+            // '-', { text: '车厢条码打印', iconCls : 'icon-print', handler : print2, id: "btn5" }
         ] ,
         columns: [TRUCK_FIELDS],
         /* 返回的结果再处理 */
@@ -125,6 +126,10 @@ function query(params) {
                 item.ownerCenterName = item.ownerCenter ? item.ownerCenter.name : "";
             });
             return data;
+        },
+        onSelect: function(index, row) {
+            // $('#btn4').linkbutton("disable");
+            // $('#btn5').linkbutton("disable");
         }
     });
 }

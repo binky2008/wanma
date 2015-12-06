@@ -23,15 +23,6 @@ CREATE VIEW wanma.VIEW_WM_CENTER AS
 select fromGroupId*-1 as id, description as code, name, parentId as orgId from wanma.um_group 
 where levelNo = 5;
 
-truncate table wanma.wm_bas_truck_schedule;
-truncate table wanma.wm_bas_truck;
-
-drop table wanma.WM_BAS_CENTER;
-drop table wanma.WM_BAS_CENTRE;
-
-drop table wanma.wm_bas_vehicle;
-drop table wanma.wm_bas_vehicle_schedule;
-
  */
 @Entity
 @Table(name = "VIEW_WM_CENTER")

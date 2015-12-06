@@ -1,44 +1,33 @@
 114.215.240.170 root/800BESThangzhou
 114.215.240.170:1  VNC
-
-mysqldump -u root -p wanma > /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql 
-mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql
-
-技术点：
-1、地址解析
-2、Form下拉列表按输入字过滤
-
-寄件网点跟踪查询运单：从V5库里读取，走BI路线
-派件网点需要把所有需要自己网点派送的运单从V5同步过来，如果一个网点在万马里是启用的，定时从V5同步其待派送的运单，用户打开派送计划时，
-再实时更新一遍最新的待派送运单。 派送成功的信息要上传回V5
-
-自己维护一份网点表、定期保持同步，当V5或天马的接口不可用时，可启用本地的网点表
-
-
-分拨给网点接件车时，可以按照网点设定的送货顺序（按派送车辆的行进路线），对货物进行排放，先送的货的放车后面，后送的放里面。
-
-2、玩转阿里云，Tomcat、Apache/ngix、MySQL、图形化界面
+玩转阿里云，Tomcat、Apache/ngix、MySQL、图形化界面
             Eclipse、Oracle、Kettle、Hadoop集群，抓取及分析云仓订单数据、地址数据
   		    MySQL主&备（数据安全），Tomcat集群（应用安全）
-  		    
-  		    
-天马数据，读取权限
 
+3112000  萧山一部
+3111000  临平一部
+3120251  柯桥ZX
+2153351  昆山ZX
+
+承包区可以添加客户、员工、车辆，但不能添加班次
+
+mysqldump -uroot -p800best@com wanma > /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql 
+mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql
+
+技术点：地址解析、地图、打印、APP、Form下拉列表按输入字过滤
+分拨给网点接件车时，可以按照网点设定的送货顺序（按派送车辆的行进路线），对货物进行排放，先送的货的放车后面，后送的放里面。
 
 创建万马角色、菜单， 创建员工时自动生成用户并关联上角色， -- OK
 或者不用为用户绑定角色，每次登录的时候根据用户的岗位进行动态绑定角色？
 如果是网点编号登录，则需要通过网点编号关联出网点信息，放入session；
 万马里创建的员工账号登录，自身已经关联了网点记录，直接取过来  -- OK
 
-
-同步寄件客户，同步网点信息（要自动）
+自己维护一份网点表、定期保持同步，当V5或天马的接口不可用时，可启用本地的网点表   -- OK
+同步寄件客户，同步网点信息（要自动）。统一做一个或多个自动同步Job，定期同步各种数据
 
 怎么同步二级网点承包区的账号？ 账号上要标记出其所属的网点ID。
 
 网管的角色怎么定位？
 
-3112000  萧山一部
-3111000  临平一部
-3120251  柯桥ZX
-2153351  昆山ZX
+
 

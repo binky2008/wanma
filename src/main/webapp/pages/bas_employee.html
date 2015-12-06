@@ -103,11 +103,12 @@ var FIELDS_1 = [
         { field : 'gender', title : '性别', width : 80 }, 
         { field : 'email', title : '邮箱', width : 100 }, 
         { field : 'phone', title : '联系电话', width : 80 }, 
-        { field : 'original', title : '注册来源', width : 80 }
+        // { field : 'original', title : '注册来源', width : 80 }
     ];
 
 function query(params) {
     params = params || {};
+    params.ownerSiteId = window.parent.ownerSite.id;
 
     $('#t1').datagrid({
         url: QUERY_URL,
@@ -215,6 +216,7 @@ function beginQuery() {
                         <input name="state.id" id="stateId" class="easyui-textbox" style="width:80px;" required="true">
                     </td>
                 </tr>
+                <!--
                 <tr>
                     <td class="label">身份证照:</td>
                     <td>
@@ -232,6 +234,7 @@ function beginQuery() {
                         </span>                       
                     </td>
                 </tr>
+                -->
             </table>
         </form>
     </div>

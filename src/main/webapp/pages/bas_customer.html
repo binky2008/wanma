@@ -37,8 +37,6 @@ QUERY_URL = BASE_URL + '/query';
 $(document).ready(function(){
     query();
 
-    initCombobox('settleTypeId', 'SettleType');
-
     $('#ownerSiteId').combobox( {
         panelHeight: '60px',
         valueField: 'id',
@@ -52,6 +50,20 @@ $(document).ready(function(){
         panelHeight: '60px',
         valueField: 'id',
         textField: 'name' 
+    });
+
+    $('#settleType').combobox( {
+        panelHeight: '60px',
+        valueField: 'name',
+        textField: 'name',
+        data: [{"name": "月结"}, {"name": "现付"}] 
+    });
+
+    $('#param4').combobox( {
+        panelHeight: '60px',
+        valueField: 'name',
+        textField: 'name',
+        data: [{"name": "月结"}, {"name": "现付"}] 
     });
 
     $('#param5').combobox( {
@@ -114,7 +126,7 @@ var CUSTOMER_FIELDS = [
     { field : 'original', title : '客户来源', width : 70 },
     { field : 'name', title : '客户名称', width : 80 },
     { field : 'fullName', title : '客户全称', width : 80 },
-    { field : 'settleTypeName', title : '结算方式', width : 60 },
+    { field : 'settleType', title : '结算方式', width : 60 },
     { field : 'contacts', title : '联系人', width : 80 },
     { field : 'phone1', title : '联系电话1', width : 80 },
     { field : 'phone2', title : '联系电话2', width : 80 },
@@ -132,6 +144,8 @@ var CUSTOMER_FIELDS = [
  */
 function query(params) {
     params = params || {};
+    params.ownerSiteId = window.parent.ownerSite.id;
+
     $('#t1').datagrid({
         url : QUERY_URL, // 数据地址
         queryParams : params, // 参数
@@ -158,7 +172,6 @@ function query(params) {
                 item.needMessage = item.needMessage ? "是" : "否";
                 item.stateName = item.disabled == 1 ? "停用" : "启用";
                 item.typeName = item.type ? item.type.text : "普通客户";
-                item.settleTypeName = item.settleType ? item.settleType.text : "";
                 item.ownerSiteName  = item.ownerSite ? item.ownerSite.name : "";
                 item.businessorName = item.businessor ? item.businessor.name : "";
             });
@@ -182,7 +195,7 @@ function beginQuery() {
     params.code = $('#param1').val();
     params.name = $('#param2').val();
     params.phone1 = $('#param3').val();
-    params.original = $('#param4').val();
+    params.settleType = $('#param4').val();
     params.businessorId = $('#param5').textbox("getValue");;
 
     query(params);
@@ -215,7 +228,7 @@ function disable() {
             <label>客户编码:</label><input id="param1" class="easyui-textbox" />
             <label>客户名称:</label><input id="param2" class="easyui-textbox" />
             <label>联系电话:</label><input id="param3" class="easyui-textbox" />
-            <label>客户来源:</label><input id="param4" class="easyui-textbox" />
+            <label>结算类型:</label><input id="param4" class="easyui-textbox" />
             <label>业务员:</label><input id="param5" class="easyui-textbox" />
 
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
@@ -272,7 +285,7 @@ function disable() {
                     </td>
                     <td class="label">结算类型:</td>
                     <td>
-                        <input name="settleType.id" id="settleTypeId" class="easyui-textbox" required="true" />
+                        <input name="settleType" id="settleType" class="easyui-textbox" required="true" />
                     </td>
                 </tr>
                 <tr>

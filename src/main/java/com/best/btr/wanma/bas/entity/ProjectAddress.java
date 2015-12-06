@@ -14,7 +14,7 @@ import com.jinhe.tss.framework.AbstractEntity;
 import com.jinhe.tss.framework.component.param.ParamConstants;
 
 @Entity
-@Table(name = "WM_BAS_PROJECT_ADDRESS")
+@Table(name = "wm_bas_project_addr")
 @SequenceGenerator(name = "project_addr_sequence", sequenceName = "project_addr_sequence", initialValue = 1000, allocationSize = 10)
 public class ProjectAddress extends AbstractEntity {
 
