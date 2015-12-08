@@ -96,7 +96,7 @@ function create(){
     
     $('#_code').textbox('readonly', true);
 
-    $.post('../customer/getNewCode', {'siteId': window.parent.ownerSite.id}, function (data) {
+    $.post(BASE_URL + '/getNewCode', {'siteId': window.parent.ownerSite.id}, function (data) {
         $('#_code').textbox("setValue", data).textbox('readonly', true);
     });
 }
@@ -158,7 +158,7 @@ function query(params) {
         checkOnSelect : true,
         selectOnCheck : true,
         toolbar: [ 
-            { text: '同步V5', handler: syncV5 }, 
+            { text: '同步V5客户', handler: syncV5 }, 
             '-', { text: '新增', iconCls: 'icon-add', handler: create }, 
             '-', { text: '修改', iconCls: 'icon-edit', handler: update, id: "btn2" }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove, id: "btn3" }, 
@@ -203,7 +203,10 @@ function beginQuery() {
 
 // 网点登陆的时候自动同步V5的用户；同时支持手动同步
 function syncV5() {
-
+    $.post(BASE_URL + '/v5/sync', {'siteId': window.parent.ownerSite.id}, function (data) {
+        $.messager.show({ title: '操作结果', msg: '同步成功' });
+        query();
+    });
 }
 
 function disable() {

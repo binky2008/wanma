@@ -20,7 +20,7 @@ function initCombobox(id, code, params, init) {
     });
 }
 
-function initSiteList(var elId) {
+function initSiteList(elId) {
     $('#' + elId).combobox( {
         url: '/tss/sys/site/0' + window.parent.ownerSite.id,
         method : 'get',

@@ -29,4 +29,6 @@ public interface SystemService {
 
     @Cached
 	List<?> getSites(Long id);
+
+	void syncSiteFromV5(Long reportId);
 }

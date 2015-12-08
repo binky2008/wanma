@@ -32,6 +32,13 @@ public class CustomerAction {
     public Customer getEntityById(@PathVariable Long id) {
         return service.getEntityById(id);
     }
+    
+    @RequestMapping(value = "/v5/sync", method = RequestMethod.POST)
+    @ResponseBody
+    public Object syncFromV5() {
+        service.syncFromV5(696L, true);
+        return "SUCCESS";
+    }
 
     /**
      * 生成编码

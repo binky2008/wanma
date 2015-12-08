@@ -17,7 +17,7 @@ import com.jinhe.tss.framework.persistence.IEntity;
  * <p>可以同步V5数据,需要的字段以后慢慢添加</p>
  * @author Created by Hsian on 15/9/11.
  * 
-select  s.id ID, s.code 编号, s.name 网点名称, s1.id PID, s1.code pcode, s1.name pname
+select  s.id id, s.code code, s.name name, s1.id PID, s1.code pcode, s1.name pname
 from gt_site s,gt_site s1,data_site_age a
 where s.parent_site_id=s1.id
 and s.type<>110

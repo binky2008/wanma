@@ -16,9 +16,6 @@ import com.jinhe.tss.framework.sso.Environment;
 import com.jinhe.tss.framework.sso.SSOConstants;
 import com.jinhe.tss.framework.sso.context.Context;
 
-/**
- * @author Created by Hsian on 15/9/16.
- */
 @Controller("SystemAction")
 @RequestMapping("/sys")
 public class SystemAction {
@@ -53,5 +50,12 @@ public class SystemAction {
     @ResponseBody
     public List<?> getSites(@PathVariable Long id) {
         return service.getSites(id);
+    }
+    
+    @RequestMapping(value = "/site/sync", method = RequestMethod.GET)
+    @ResponseBody
+    public Object syncFromV5() {
+        service.syncSiteFromV5(693L);
+        return "SUCCESS";
     }
 }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>路由表查询</title>
+
+<link rel="stylesheet" href="css/wanma.css">
+
+<link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
+<link rel="stylesheet" href="../tools/easyui/themes/icon.css">
+
+<script src="../tools/easyui/jquery.min.js"></script>
+<script src="../tools/easyui/jquery.easyui.min.js"></script>
+<script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
+
+<script src="js/common.js"></script>
+
+<STYLE type="text/css">
+
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+BASE_URL = '../customer';
+QUERY_URL = BASE_URL + '/query';
+
+$(document).ready(function(){
+    query();
+    initSiteList("param1");
+});
+
+var CUSTOMER_FIELDS = [
+    { field: 'f1', title: '星期', width: 90 },
+    { field: 'f2', title: '时效', width: 70 },
+    { field: 'f3', title: '始发分拨', width: 70 },
+    { field: 'f4', title: '目的分拨', width: 70 },
+    { field: 'f5', title: '路由', width: 200 },
+    { field: 'f6', title: '类型', width: 70 },
+    { field: 'f7', title: '始发城市', width: 70 },
+    { field: 'f8', title: '目的城市', width: 70 }
+];
+
+/**
+ * 可用于第一次加载数据,也可用于查询;
+ * 第一次加载数据页面时参数为空.
+ */
+function query(params) {
+    params = params || {};
+
+    $('#t1').datagrid({
+        url : QUERY_URL, // 数据地址
+        queryParams : params, // 参数
+        fit : true,
+        fitColumns : true,
+        pagination : true,
+        pageSize : 30,
+        rownumbers : true,
+        singleSelect : false,
+        columns : [CUSTOMER_FIELDS],
+        /* 返回的结果再处理 */
+        loadFilter : function(data) {
+            $.each(data.rows, function(i, item) {
+                item.needMessage = item.needMessage ? "是" : "否";
+                item.stateName = item.disabled == 1 ? "停用" : "启用";
+            });
+            return data;
+        }
+    });
+}
+
+function beginQuery() {
+    var params = {};
+    params.param1 = $('#param1').val();
+    params.param2 = $('#param2').val();
+    params.param3 = $('#param3').val();
+    params.param4 = $('#param4').val();
+
+    query(params);
+}
+	
+</script>
+
+
+</head>
+
+<body>
+   
+<div id="main" class="easyui-layout" fit="true" >
+    <div id="queryContainer" data-options="region:'north'" border="false">
+        <label>网点名称:</label><input id="param1" class="easyui-textbox" />
+        <label>目的城市:</label><input id="param2" class="easyui-textbox" />
+        <label>查询日期:</label><input id="param3" class="easyui-textbox" />
+        <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
+    </div>
+    <div id="dataContainer" data-options="region:'center'" border="false" title="网点列表">
+        <table id="t1" border="false"></table>
+    </div>
+</div>
+
+</body>
+</html>

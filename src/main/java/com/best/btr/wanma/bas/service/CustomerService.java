@@ -15,6 +15,13 @@ public interface CustomerService {
      * @return
      */
     Customer getEntityById(Long id);
+    
+    /**
+     * 同步用户
+     * @param reportId
+     * @param bySite
+     */
+    void syncFromV5(Long reportId, boolean bySite);
 
     /**
      * 创建客户信息

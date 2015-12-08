@@ -54,7 +54,6 @@ var CUSTOMER_FIELDS = [
  */
 function query(params) {
     params = params || {};
-    params.ownerSiteId = window.parent.ownerSite.id;
 
     $('#t1').datagrid({
         url : QUERY_URL, // 数据地址
