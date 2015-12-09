@@ -23,24 +23,39 @@
 
 <script type="text/javascript">
 
-BASE_URL = '../customer';
-QUERY_URL = BASE_URL + '/query';
+QUERY_URL = BASE_DATA_URL + '695';
+
+if(IS_TEST) {
+    QUERY_URL = "data/query_route.json";
+}
 
 $(document).ready(function(){
-    query();
+    initGrid();
     initSiteList("param1");
 });
 
-var CUSTOMER_FIELDS = [
-    { field: 'f1', title: '星期', width: 90 },
-    { field: 'f2', title: '时效', width: 70 },
-    { field: 'f3', title: '始发分拨', width: 70 },
-    { field: 'f4', title: '目的分拨', width: 70 },
-    { field: 'f5', title: '路由', width: 200 },
-    { field: 'f6', title: '类型', width: 70 },
-    { field: 'f7', title: '始发城市', width: 70 },
-    { field: 'f8', title: '目的城市', width: 70 }
+var FIELDS_1 = [
+    { field: 'week', title: '星期', width: 60 },
+    { field: 'sx', title: '时效', width: 60 },
+    { field: 'sf_center', title: '始发分拨', width: 70 },
+    { field: 'md_center', title: '目的分拨', width: 70 },
+    { field: 'route', title: '路由', width: 250 },
+    { field: 'f6', title: '类型', width: 60 },
+    { field: 'site_name', title: '寄件网点', width: 70 },
+    { field: 'pname', title: '始发城市', width: 70 },
+    { field: 'md_pname', title: '目的城市', width: 70 },
+    { field: 'calculate_version', title: '路由计算版本', width: 70 }
 ];
+
+function initGrid() {
+    $('#t1').datagrid({
+        fit : true,
+        fitColumns : true,
+        nowrap: false,
+        columns : [FIELDS_1],
+        data: {"total": 0, "rows": []}
+    });
+}
 
 /**
  * 可用于第一次加载数据,也可用于查询;
@@ -49,20 +64,24 @@ var CUSTOMER_FIELDS = [
 function query(params) {
     params = params || {};
 
-    $('#t1').datagrid({
+    $('#t1').html("").datagrid({
         url : QUERY_URL, // 数据地址
         queryParams : params, // 参数
+        method : METHOD,
         fit : true,
         fitColumns : true,
         pagination : true,
         pageSize : 30,
         rownumbers : true,
         singleSelect : false,
-        columns : [CUSTOMER_FIELDS],
+        nowrap: false,
+        columns : [FIELDS_1],
         /* 返回的结果再处理 */
         loadFilter : function(data) {
             $.each(data.rows, function(i, item) {
-                item.needMessage = item.needMessage ? "是" : "否";
+                item.f6 = "标准";
+                item.week = WEEKDAY_LIST[item.week-1];
+                item.calculate_version = item.calculate_version.replace(" 00:00:00", "")
                 item.stateName = item.disabled == 1 ? "停用" : "启用";
             });
             return data;
@@ -70,12 +89,20 @@ function query(params) {
     });
 }
 
+var WEEKDAY_LIST = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"];
+
 function beginQuery() {
+    var site = $('#param1').textbox("getValue");
+
     var params = {};
-    params.param1 = $('#param1').val();
-    params.param2 = $('#param2').val();
-    params.param3 = $('#param3').val();
-    params.param4 = $('#param4').val();
+    if( site ) { params.param1 = site; } 
+    else { return $.messager.show({ title: '提示', msg: '请选择寄件网点' }); }
+
+    if( $('#param2').val() ) { params.param2 = $('#param2').val(); }
+    else { return $.messager.show({ title: '提示', msg: '请输入目标城市' }); }
+
+    if( $('#param3').val() ) { params.param3 = $('#param3').val(); }
+    else { return $.messager.show({ title: '提示', msg: '请选择查询日期' }); }
 
     query(params);
 }
@@ -89,9 +116,9 @@ function beginQuery() {
    
 <div id="main" class="easyui-layout" fit="true" >
     <div id="queryContainer" data-options="region:'north'" border="false">
-        <label>网点名称:</label><input id="param1" class="easyui-textbox" />
-        <label>目的城市:</label><input id="param2" class="easyui-textbox" />
-        <label>查询日期:</label><input id="param3" class="easyui-textbox" />
+        <label>寄件网点:</label><input id="param1" class="easyui-textbox" required="true"/>
+        <label>目的城市:</label><input id="param2" class="easyui-textbox" required="true"/>
+        <label>查询日期:</label><input id="param3" class="easyui-textbox" required="true"/>
         <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="beginQuery()">查询</a>
     </div>
     <div id="dataContainer" data-options="region:'center'" border="false" title="网点列表">

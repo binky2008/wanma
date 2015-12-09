@@ -27,11 +27,11 @@ public class Customer extends AbstractEntity {
     private Long id;
 
     /** 客户编码:  网点编号 + 3位有效数 */
-    @Column(length = 128, unique = true, nullable = false)
+    @Column(length = 128, nullable = false)
     private String code;
 
     /** 客户名称 */
-    @Column(length = 128, nullable = false)
+    @Column(length = 128)
     private String name;
 
     /** 客户全称 */
@@ -49,11 +49,11 @@ public class Customer extends AbstractEntity {
     private String settleType;
 
     /** 联系人 */
-    @Column(length = 128, nullable = false)
+    @Column(length = 128)
     private String contacts;
 
     /** 联系电话1(默认此字段为联系电话) */
-    @Column(length = 64, nullable = false)
+    @Column(length = 64)
     private String phone1;
 
     /** 联系电话2 */
@@ -72,7 +72,6 @@ public class Customer extends AbstractEntity {
     @ManyToOne
     private Site ownerSite;
     
-    @Column(nullable = false)
     private Integer seqNo;
 
     /** 所属行业 */

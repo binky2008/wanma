@@ -1,3 +1,7 @@
+BASE_DATA_URL = '/tss/data/json/';
+IS_TEST = false;
+
+METHOD = IS_TEST ? "GET" : "POST";
 
 function initCombobox(id, code, params, init) {
     var url = '/tss/param/json/combo/' + code;

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.jinhe.tss.framework.AbstractSO;
+import com.jinhe.tss.util.EasyUtils;
 
 /**
  * 搜索客户信息的条件。
@@ -49,7 +50,7 @@ public class CustomerSO extends AbstractSO {
     }
 
 	public String getCode() {
-		if(code != null){
+		if( !EasyUtils.isNullOrEmpty(code) ){
 			code = "%" + code.trim() + "%";           
         }
 		return code;
@@ -60,7 +61,7 @@ public class CustomerSO extends AbstractSO {
 	}
 
 	public String getName() {
-		if(name != null){
+		if( !EasyUtils.isNullOrEmpty(name) ){
 			name = "%" + name.trim() + "%";           
         }
 		return name;

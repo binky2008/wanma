@@ -52,6 +52,7 @@ public class SystemAction {
         return service.getSites(id);
     }
     
+    // http://10.45.10.216:8084/tss/sys/site/sync
     @RequestMapping(value = "/site/sync", method = RequestMethod.GET)
     @ResponseBody
     public Object syncFromV5() {

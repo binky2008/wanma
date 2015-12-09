@@ -15,7 +15,6 @@ import com.jinhe.tss.framework.persistence.IEntity;
 /**
  * <p>分拨实体</p>
  * <p> 查询TSS.Group的分拨作为分拨视图 </p>
- * @author Created by Hsian on 15/9/11.
  
 drop table VIEW_WM_CENTER;
 

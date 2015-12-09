@@ -18,9 +18,6 @@ import com.jinhe.tss.framework.persistence.IEntity;
 import com.jinhe.tss.um.entity.Group;
 import com.jinhe.tss.util.EasyUtils;
 
-/**
- * @author Created by Lu on 15/9/16.
- */
 @Service("SystemService")
 public class SystemServiceImpl implements SystemService {
 
@@ -71,12 +68,11 @@ public class SystemServiceImpl implements SystemService {
 		return dao.getEntities(hql);
 	}
 
-	// 693
 	public void syncSiteFromV5(Long reportId) {
 		Map<String, String> paramsMap = new HashMap<String, String>();
 		SQLExcutor ex = reportService.queryReport(reportId, paramsMap, 1, 50000, -1);
 		
-		String insertSQL = " insert WM_BAS_SITE (id,code,name,pid,pcode,pname) values (?, ?, ?, ?, ?, ?)";
+		String insertSQL = " insert WM_BAS_SITE (id,code,name,parentId,parentCode,parentName) values (?, ?, ?, ?, ?, ?)";
 		List<Map<Integer, Object>> paramsList = new ArrayList<Map<Integer,Object>>();
 		
     	for (Map<String, Object> row : ex.result) {
@@ -104,8 +100,9 @@ public class SystemServiceImpl implements SystemService {
 			paramsList.add(tempMap);
         }
     	
-		SQLExcutor.excuteBatch(insertSQL, paramsList, DMConstants.LOCAL_CONN_POOL);
+    	if(paramsList.size() > 0) {
+    		SQLExcutor.excuteBatch(insertSQL, paramsList, DMConstants.LOCAL_CONN_POOL);
+    	}
     }
-		
 	
 }

@@ -1,0 +1,41 @@
+{
+    "total": 3,
+    "rows": [
+        {
+            "site_id": 60061,
+            "site_name": "萧山一部",
+            "pname": "杭州市",
+            "md_pname": "北京市",
+            "sf_center": "杭州分拨",
+            "md_center": "北京分拨",
+            "week": "3",
+            "sx": 3,
+            "route": "杭州分拨(1_04:00)->(2_02:15)北京分拨",
+            "calculate_version": "2015-12-02 00:00:00"
+        },
+        {
+            "site_id": 60061,
+            "site_name": "萧山一部",
+            "pname": "杭州市",
+            "md_pname": "北京市",
+            "sf_center": "杭州分拨",
+            "md_center": "北京南分拨",
+            "week": "3",
+            "sx": 2,
+            "route": "杭州分拨(1_06:30)->(2_00:25)天津分拨(2_05:00)->(2_07:20)北京南分拨",
+            "calculate_version": "2015-12-02 00:00:00"
+        },
+        {
+            "site_id": 60061,
+            "site_name": "萧山一部",
+            "pname": "杭州市",
+            "md_pname": "北京市",
+            "sf_center": "杭州分拨",
+            "md_center": "北京北分拨",
+            "week": "3",
+            "sx": 2,
+            "route": "杭州分拨(1_07:00)->(2_06:05)北京北分拨",
+            "calculate_version": "2015-12-02 00:00:00"
+        }
+    ]
+}

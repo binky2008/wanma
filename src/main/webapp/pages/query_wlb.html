@@ -23,29 +23,35 @@
 
 <script type="text/javascript">
 
-BASE_URL = '../customer';
-QUERY_URL = BASE_URL + '/query';
+QUERY_URL = BASE_DATA_URL + '694';
+
+if(IS_TEST) {
+    QUERY_URL = "data/query_wlb.json";
+}
 
 $(document).ready(function(){
     query();
-    // initSiteList("param1");
 });
 
-var CUSTOMER_FIELDS = [
-    { field: 'name', title: '网点名称', width: 90 },
-    { field: 'code', title: '网点编号', width: 70 },
-    { field: 'f3', title: '负责人信息', width: 70 },
-    { field: 'f4', title: '客服电话', width: 70 },
-    { field: 'f5', title: '传真号码', width: 70 },
-    { field: 'f6', title: '所属中心', width: 70 },
-    { field: 'f7', title: '所属区域', width: 70 },
-    { field: 'f8', title: '是否到付', width: 70 },
-    { field: 'f9', title: '是否支持自提', width: 80 },
-    { field: 'f10', title: '派送范围', width: 120 },
-    { field: 'f11', title: '非派送区域', width: 120 },
-    { field: 'f12', title: '特殊派送区域', width: 100 },
-    { field: 'f13', title: '派送时效', width: 80 },
-    { field: 'f14', title: '录入签收时效', width: 80 }
+var FIELDS_1 = [
+    { field: '网点名称', title: '网点名称', width: 100 },
+    { field: '编号', title: '网点编号', width: 70 },
+    { field: '派送范围', title: '派送范围', width: 120 },
+    { field: '不派送范围', title: '非派送区域', width: 100 },
+    { field: 'f12', title: '特殊派送区域', width: 80 },
+    { field: '派送时效', title: '派送时效', width: 60 }
+], 
+FIELDS_2 = [
+    { field: '网点类型', title: '网点类型', width: 70 },
+    { field: '负责人', title: '负责人信息', width: 100, align: "center" },
+    { field: '查件电话', title: '客服电话', width: 90 },
+    { field: '传真', title: '传真号码', width: 90 },
+    { field: '所属分拨', title: '所属中心', width: 70 },
+    { field: '所属分公司', title: '所属分公司', width: 80 },
+    { field: '所属区域', title: '所属区域', width: 70 },
+    { field: '自提派送', title: '自提,派送', width: 90 },
+    { field: '行政区', title: '行政区', width: 150 }, 
+    { field: 'f14', title: '录入签收时效', width: 100 }
 ];
 
 /**
@@ -58,18 +64,20 @@ function query(params) {
     $('#t1').datagrid({
         url : QUERY_URL, // 数据地址
         queryParams : params, // 参数
+        method: METHOD,
         fit : true,
-        fitColumns : true,
+        fitColumns : false,
         pagination : true,
         pageSize : 30,
         rownumbers : true,
         singleSelect : false,
-        columns : [CUSTOMER_FIELDS],
+        nowrap: false,
+        frozenColumns: [FIELDS_1], 
+        columns : [FIELDS_2],
         /* 返回的结果再处理 */
         loadFilter : function(data) {
             $.each(data.rows, function(i, item) {
-                item.needMessage = item.needMessage ? "是" : "否";
-                item.stateName = item.disabled == 1 ? "停用" : "启用";
+                item["负责人"] = item["负责人"] + "<br>" + item["负责人联系方式"];
             });
             return data;
         }
@@ -78,10 +86,10 @@ function query(params) {
 
 function beginQuery() {
     var params = {};
-    params.param1 = $('#param1').val();
-    params.param2 = $('#param2').val();
-    params.param3 = $('#param3').val();
-    params.param4 = $('#param4').val();
+    if( $('#param1').val() ) params.param1 = $('#param1').val();
+    if( $('#param2').val() ) params.param2 = $('#param2').val();
+    if( $('#param3').val() ) params.param3 = $('#param3').val();
+    if( $('#param4').val() ) params.param4 = $('#param4').val();
 
     query(params);
 }

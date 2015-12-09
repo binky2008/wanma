@@ -119,20 +119,21 @@ function update(){
     }
 }
 
-var CUSTOMER_FIELDS = [
+var FIELDS_1 = [
     { field : 'ck', checkbox: true },
     { field : 'code', title : '客户编码', width : 90 },
-    { field : 'customerType', title : '客户类型', width : 70 },
-    { field : 'original', title : '客户来源', width : 70 },
     { field : 'name', title : '客户名称', width : 80 },
-    { field : 'fullName', title : '客户全称', width : 80 },
-    { field : 'settleType', title : '结算方式', width : 60 },
+    { field : 'original', title : '客户来源', width : 70 },
+    { field : 'settleType', title : '结算方式', width : 60 }    
+], FIELDS_2 = [
     { field : 'contacts', title : '联系人', width : 80 },
-    { field : 'phone1', title : '联系电话1', width : 80 },
+    { field : 'phone1', title : '联系电话1', width : 100 },
     { field : 'phone2', title : '联系电话2', width : 80 },
-    { field : 'address', title : '寄件地址', width : 130 },
+    { field : 'address', title : '寄件地址', width : 200 },
     { field : 'ownerSiteName', title : '所属站点', width : 80 },
     { field : 'industry', title : '所属行业', width : 80 },
+    { field : 'fullName', title : '客户全称', width : 80 },  
+    { field : 'customerType', title : '客户类型', width : 70 },
     { field : 'businessorName', title : '业务员', width : 60 },
     { field : 'needMessage', title : '是否发送消息', width : 80 },
     { field : 'stateName', title : '状态', width : 60 }
@@ -150,7 +151,7 @@ function query(params) {
         url : QUERY_URL, // 数据地址
         queryParams : params, // 参数
         fit : true,
-        fitColumns : true,
+        fitColumns : false,
         pagination : true,
         pageSize : 30,
         rownumbers : true,
@@ -163,9 +164,10 @@ function query(params) {
             '-', { text: '修改', iconCls: 'icon-edit', handler: update, id: "btn2" }, 
             '-', { text: '删除', iconCls : 'icon-remove', handler : _remove, id: "btn3" }, 
             '-', { text: '停用客户', handler : disable }, 
-            //'-', { text: '导出', handler : _export }
+            '-', { text: '导出', handler : _export }
         ] ,
-        columns : [CUSTOMER_FIELDS],
+        frozenColumns: [FIELDS_1], 
+        columns : [FIELDS_2],
         /* 返回的结果再处理 */
         loadFilter : function(data) {
             $.each(data.rows, function(i, item) {
@@ -195,8 +197,8 @@ function beginQuery() {
     params.code = $('#param1').val();
     params.name = $('#param2').val();
     params.phone1 = $('#param3').val();
-    params.settleType = $('#param4').val();
-    params.businessorId = $('#param5').textbox("getValue");;
+    params.settleType = $('#param4').textbox("getValue");
+    params.businessorId = $('#param5').textbox("getValue");
 
     query(params);
 }

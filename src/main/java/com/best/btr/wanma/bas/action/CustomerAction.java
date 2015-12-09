@@ -33,6 +33,7 @@ public class CustomerAction {
         return service.getEntityById(id);
     }
     
+    // 管理员进来同步，会同步所有站点
     @RequestMapping(value = "/v5/sync", method = RequestMethod.POST)
     @ResponseBody
     public Object syncFromV5() {
