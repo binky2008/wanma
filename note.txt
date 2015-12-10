@@ -9,14 +9,14 @@
 3120251  柯桥ZX
 2153351  昆山ZX
 
-172.18.8.204
+
 
 承包区可以添加客户、员工、车辆，但不能添加班次
 
 mysqldump -uroot -p800best@com wanma > /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql 
 mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql
 
-mysqldump -uroot -p800best@com wanma > /home/btrbi/release_wm/wanma.sql 
+mysqldump -uroot -p800best@com wanma > /home/btrbi/temp/wanma.sql 
 mysql -u root -p wanma  <   /home/btrbi/release_wm/wanma.sql
 
 技术点：地址解析、地图、打印、APP、Form下拉列表按输入字过滤
@@ -29,8 +29,6 @@ mysql -u root -p wanma  <   /home/btrbi/release_wm/wanma.sql
 签收照片的接口 和 问题件图片接口，V5提供
 
 寄件查询要求一页内展示 1万行？
-
-读取所有路由目的城市列表
 
 ----------------------------------------------
 创建万马角色、菜单， 创建员工时自动生成用户并关联上角色， -- OK

@@ -1,5 +1,5 @@
 BASE_DATA_URL = '/tss/data/json/';
-IS_TEST = false;
+IS_TEST = true;
 
 METHOD = IS_TEST ? "GET" : "POST";
 
@@ -24,11 +24,11 @@ function initCombobox(id, code, params, init) {
     });
 }
 
-function initSiteList(elId) {
+function initSiteList(elId, all) {
     $('#' + elId).combobox( {
-        url: '/tss/sys/site/0' + window.parent.ownerSite.id,
+        url: '/tss/sys/site/' + (all ? 0 : window.parent.ownerSite.id),
         method : 'get',
-        panelHeight: '60px',
+        panelHeight: all ? '150px' : '60px',
         valueField: 'id',
         textField: 'name' 
     });

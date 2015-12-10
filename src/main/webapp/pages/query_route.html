@@ -32,6 +32,8 @@ if(IS_TEST) {
 $(document).ready(function(){
     initGrid();
     initSiteList("param1");
+
+    $('#param1').combobox('setValue', window.parent.ownerSite.id);
 });
 
 var FIELDS_1 = [

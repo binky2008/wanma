@@ -80,8 +80,26 @@ function query(params) {
                 item["负责人"] = item["负责人"] + "<br>" + item["负责人联系方式"];
             });
             return data;
+        },
+        onClickCell: function(index, field, value) {
+            if(field == '所属分拨') {
+                showFenboInfo(value);
+            }
         }
     });
+}
+
+function showFenboInfo(center) {
+    var url = '/tss/data/json/' + 399;
+    $.post(url, {"param2": center}, function(data){
+        if(!data || !data.length) return;
+
+        var site = data[0];
+        $.messager.alert({
+            title: '提示',
+            msg: "分拨【" + center + "】负责人为：" + site["负责人"] + site["联系方式"] + "，客服电话：" + site["客服电话"]
+        });
+    }); 
 }
 
 function beginQuery() {
