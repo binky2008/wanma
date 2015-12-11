@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
 <link rel="stylesheet" href="../tools/easyui/themes/icon.css">
 
+<script src="../tools/tssJS/tssJS.js"></script>
+<script src="../tools/tssJS/tssJS.ajax.js"></script>
+
 <script src="../tools/easyui/jquery.min.js"></script>
 <script src="../tools/easyui/jquery.easyui.min.js"></script>
 <script src="../tools/easyui/datagrid-filter.js"></script>
@@ -17,10 +20,6 @@
 <script src="js/common.js"></script>
 
 <style type="text/css">
-    
-#queryContainer {
-
-}
 
 #mp {
     padding: 5px 0px;
@@ -31,22 +30,40 @@
 #mp label {
     margin-left: 10px;
 }
-
-b.circle {
-    display:inline-block; width:20px; height:20px; 
-    background-color: blue; 
-    color: #fff;
-    border-radius:10px;
+    
+#decrContainer {
+    height: 25px;
+    background-color: #eee;
+    line-height: 25px;
+    padding: 0 12px;
 }
+#decrContainer i {
+    color: red; font-size: 13px;
+}
+b.sxcs, b.process {
+    display: inline-block; line-height: 18px; margin: 5px 5px 0 5px;
+    color: #fff; font-size: 13px;
+}
+b.sxcs { width: 30px; padding: 0 5px; border-radius:5px; }
+.c24 { background-color: orange; }
+.c48 { background-color: #e36f5f; }
+.c72 { background-color: red; }
+
+b.process { width: 13px; padding: 0 5px; border-radius:10px; }
+.pc1 { background-color: red; }
+.pc2 { background-color: blue; }
+.pc3 { background-color: green; }
 
 </style>
 
 <script type="text/javascript">
 
-QUERY_URL = BASE_DATA_URL + '697';
+QUERY_URL_1 = BASE_DATA_URL + '697';
+QUERY_URL_2 = BASE_DATA_URL + '699';
 
 if(IS_TEST) {
-    QUERY_URL = 'data/jijian_2.json';
+    QUERY_URL_1 = 'data/jijian_query_1.json';
+    QUERY_URL_2 = 'data/jijian_query_2.json';
 }
 
 $(document).ready(function(){
@@ -61,7 +78,7 @@ $(document).ready(function(){
 
 var FIELDS_1 = [
         { field : '寄件日期', title : '寄件日期', width : 80, sortable: true},
-        { field : '签收时间', title : '签收时间', width : 60 },
+        { field : '签收时间', title : '签收时间', width : 80 },
         { field : '客户名称', title : '客户名称', width : 80, sortable: true },
         { field : '运单号', title : '运单号', width : 90, align: "center", styler: 
             function(value, row, index){
@@ -96,13 +113,47 @@ var FIELDS_1 = [
     ];
 
 function query(params) {
-    var init = !params;
+    var data1, data2;
     params = params || {};
 
-    var dg = $('#t1').datagrid({
-        url: QUERY_URL,
+    tssJS.ajax({
+        url : QUERY_URL_1,            
+        params : params, 
         method : METHOD,
-        queryParams: params,
+        type : "json",
+        waiting : true,
+        ondata : function() {
+            data1 = this.getResponseJSON();
+            data1 && data2 && show(data1, data2); 
+        }
+    });   
+
+    tssJS.ajax({
+        url : QUERY_URL_2,
+        params : params,
+        method : METHOD,
+        type : "json",
+        waiting : true,
+        ondata : function() {
+            data2 = this.getResponseJSON();
+            data1 && data2 && show(data1, data2); 
+        }
+    }); 
+}
+
+function show(data1, data2) {
+    data1.each(function(i, item1) {
+        data2.each(function(j, item2) {
+            if(item1["运单号"] === item2.code) {
+                item1["签收时间"] = item2.sign_date || "未签收";
+                item1["delay"] = item2.delay;
+                item1["trans_status"] = item2.trans_status;
+            }
+        });
+    });
+
+    var dg = $('#t1').datagrid({
+        data : data1,
         fit : true,
         fitColumns : false,
         pageSize : 1000,
@@ -125,21 +176,30 @@ function query(params) {
             cmenu.menu('show', {left:e.pageX, top:e.pageY});
         },
         rowStyler: function(index, row) {
-            if (row.hasW){
+            if (row.hasW) {
                 return 'background-color:red;';
             }
         },
-        onDblClickCell: function(index, field, value) {
-            if(field !== '运单编号') return;
+        onClickCell: function(index, field, value) {
+            if(field !== '运单号') return;
             $.messager.alert({
                 title: '提示',
-                msg: '打开运单【'+value+'】的《快件跟踪查询》和《问题件信息查询》'
+                msg: '打开运单【'+value+'】的《快件跟踪查询》'
+            });
+        },
+        onDblClickRow: function(index, row) {
+            $.messager.alert({
+                title: '提示',
+                msg: '打开运单【'+ row["运单号"] +'】的《快件跟踪查询》'
             });
         },
         loadFilter : function(data) {
             $.each(data, function(i, item) {
+                item["寄件日期"] = item["寄件日期"].replace(" 00:00:00", "")
                 item["X1"] = item["件数"] + "/" + item["体积"] + "/" + item["重量"];
-                item["异常件"] = '<b class="circle">中</b>';
+
+                item["异常件"] = '<b class="process pc2">中</b>';
+                item["整体时效"] = '<b class="sxcs c48">超48</b>';
             });
             return {"rows": data};
         }
@@ -176,7 +236,7 @@ function beginQuery() {
         <div id="queryContainer" data-options="region:'north'" border="false">
             <label>寄件网点:</label><input id="param1" class="easyui-textbox" required="true"/>
             <label>查询条件:</label>
-            <input id="param2" class="easyui-textbox" data-options="prompt:'运单号/客户单号/客户名称'" style="width:400px"/>
+            <input id="param2" class="easyui-textbox" data-options="prompt:'运单号/客户名称'" style="width:400px"/>
             <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick='beginQuery()'>查询</a>&nbsp;&nbsp;
             <a href="#" class="easyui-linkbutton" onclick='moreParams()'>更多查询条件</a>
 
@@ -196,7 +256,14 @@ function beginQuery() {
             <table id="t1" border="false"></table>
         </div>
         <div id="decrContainer" data-options="region:'south'" border="false" style="height:25px;">
-            <div>说明</div>
+            <i>说明:</i>
+            <b class="sxcs c24">超24</b>时效超过24小时
+            <b class="sxcs c48">超48</b>时效超过48小时
+            <b class="sxcs c72">超72</b>时效超过72小时
+            &nbsp;&nbsp;
+            <b class="process pc1">未</b>未处理
+            <b class="process pc2">中</b>处理中
+            <b class="process pc3">完</b>处理完成
         </div>
     </div>
 
