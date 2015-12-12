@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>寄件运单综合查询</title>
+<title>寄件查询</title>
 
 <link rel="stylesheet" href="css/wanma.css">
 
@@ -21,39 +21,6 @@
 
 <style type="text/css">
 
-#mp {
-    padding: 5px 0px;
-    line-height: 30px;
-    display: none;
-    border-bottom: 1px solid #ccc;
-}
-#mp label {
-    margin-left: 10px;
-}
-    
-#decrContainer {
-    height: 25px;
-    background-color: #eee;
-    line-height: 25px;
-    padding: 0 12px;
-}
-#decrContainer i {
-    color: red; font-size: 13px;
-}
-b.sxcs, b.process {
-    display: inline-block; line-height: 18px; margin: 5px 5px 0 5px;
-    color: #fff; font-size: 13px;
-}
-b.sxcs { width: 30px; padding: 0 5px; border-radius:5px; }
-.c24 { background-color: orange; }
-.c48 { background-color: #e36f5f; }
-.c72 { background-color: red; }
-
-b.process { width: 13px; padding: 0 5px; border-radius:10px; }
-.pc1 { background-color: red; }
-.pc2 { background-color: blue; }
-.pc3 { background-color: green; }
-
 </style>
 
 <script type="text/javascript">
@@ -62,8 +29,8 @@ QUERY_URL_1 = BASE_DATA_URL + '697';
 QUERY_URL_2 = BASE_DATA_URL + '699';
 
 if(IS_TEST) {
-    QUERY_URL_1 = 'data/jijian_query_1.json';
-    QUERY_URL_2 = 'data/jijian_query_2.json';
+    QUERY_URL_1 = 'data/jj_query_1.json';
+    QUERY_URL_2 = 'data/jj_query_2.json';
 }
 
 $(document).ready(function(){
@@ -77,17 +44,15 @@ $(document).ready(function(){
 });
 
 var FIELDS_1 = [
-        { field : '寄件日期', title : '寄件日期', width : 80, sortable: true},
-        { field : '签收时间', title : '签收时间', width : 80 },
-        { field : '客户名称', title : '客户名称', width : 80, sortable: true },
+        { field : '寄件日期', title : '寄件日期', width : 75, sortable: true},
+        { field : '签收时间', title : '签收时间', width : 75 },
+        { field : '客户名称', title : '客户名称', width : 60, sortable: true },
         { field : '运单号', title : '运单号', width : 90, align: "center", styler: 
             function(value, row, index){
-                if (value){
-                    return 'cursor: pointer;';
-                }
+                if (value) {  return 'cursor: pointer; color: blue;' ; }
             } 
         }, 
-        { field : '在途信息', title : '在途信息', width : 160 }, 
+        { field : '在途信息', title : '在途信息', width : 280 }, 
         { field : '目的城市', title : '目的城市', width : 60 }
     ],
     FIELDS_2 = [
@@ -109,12 +74,14 @@ var FIELDS_1 = [
         { field : '收件人地址', title : '收件人地址', width : 120 },      
         { field : '录单员', title : '录单员', width : 70, sortable: true }, 
         { field : '取件员', title : '取件员', width : 60 },
-        { field : '来源及订单编号', title : '来源及订单编号', width : 70 }
+        { field : '来源及订单编号', title : '来源及订单编号', width : 90 }
     ];
 
 function query(params) {
     var data1, data2;
     params = params || {};
+    params.page = 1;
+    params.rows = 1000;
 
     tssJS.ajax({
         url : QUERY_URL_1,            
@@ -142,12 +109,13 @@ function query(params) {
 }
 
 function show(data1, data2) {
-    data1.each(function(i, item1) {
-        data2.each(function(j, item2) {
+    data1.rows.each(function(i, item1) {
+        data2.rows.each(function(j, item2) {
             if(item1["运单号"] === item2.code) {
                 item1["签收时间"] = item2.sign_date || "未签收";
                 item1["delay"] = item2.delay;
-                item1["trans_status"] = item2.trans_status;
+                item1["在途信息"] = (item2.trans_status || "").replace(/\;/, "<br>");
+                item1["目的城市"] = item2.destination;               
             }
         });
     });
@@ -194,14 +162,38 @@ function show(data1, data2) {
             });
         },
         loadFilter : function(data) {
-            $.each(data, function(i, item) {
-                item["寄件日期"] = item["寄件日期"].replace(" 00:00:00", "")
-                item["X1"] = item["件数"] + "/" + item["体积"] + "/" + item["重量"];
+            $.each(data.rows, function(i, item) {                
+                // 初次（后续排序、过滤，还会执行loadFilter）
+                if( !item["X1"] ) {
+                    item["寄件日期"] = item["寄件日期"].replace(" 00:00:00", "");
+                    item["X1"] = item["件数"] + "/" + item["体积"] + "/" + item["重量"];
+            
+                    var wtj = item["异常件"] || "";
+                    item["异常件"] = "";
+                    if(wtj.indexOf("NEW") >= 0) {
+                        item["异常件"] = '<b class="process pc1">未</b>';
+                    }
+                    if(wtj.indexOf("PROCESSING") >= 0) {
+                        item["异常件"] += '<b class="process pc2">中</b>';
+                    }
+                    if(wtj.indexOf("FINISH") >= 0) {
+                        item["异常件"] += '<b class="process pc3">完</b>';
+                    }
 
-                item["异常件"] = '<b class="process pc2">中</b>';
-                item["整体时效"] = '<b class="sxcs c48">超48</b>';
+                    if(item.delay) {
+                        if(item.delay >= 24 && item.delay < 48) {
+                            item["整体时效"] = '<b class="sxcs c24">超24</b>';
+                        }
+                        if(item.delay >= 48 && item.delay < 72) {
+                            item["整体时效"] = '<b class="sxcs c48">超48</b>';
+                        }
+                        if(item.delay >= 72) {
+                            item["整体时效"] = '<b class="sxcs c72">超72</b>';
+                        }
+                    }
+                }
             });
-            return {"rows": data};
+            return data;
         }
     });
 
@@ -222,7 +214,20 @@ function beginQuery() {
     $("#dataContainer").html('<table id="t1" border="false"></table>');
 
     var params = {};
-    params.code = $('#param1').val();
+
+    var site = $('#param1').textbox("getValue");
+    if( site ) { params.param1 = site; } 
+    else { return $.messager.show({ title: '提示', msg: '请选择寄件网点' }); }
+
+    params.param2 = $('#param2').val();
+
+    params.param3 = $('#param3').val() || "today-7";
+    params.param4 = $('#param4').val() || "today+1";
+
+    params.param5 = $('#param5').val();
+    params.param6 = $('#param6').val();
+    params.param7 = $('#param7').val();
+    params.param8 = $('#param8').val();
 
     query(params);
     lessParams();

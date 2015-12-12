@@ -1,0 +1,197 @@
+{
+    "total": 24,
+    "rows": [
+        {
+            "code": "10106640773",
+            "sign_date": "2015/12/10 11:27:37",
+            "sign_status": "签收",
+            "delay": 50,
+            "destination": "南昌市",
+            "trans_status": "2015/12/10 08:17:55 1件从南昌分拨发往南昌县一部"
+        },
+        {
+            "code": "10121885340",
+            "sign_date": "2015/12/09 15:05:02",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "台州市",
+            "trans_status": "2015/12/09 07:30:20 10件从台州分拨发往台州临海三部"
+        },
+        {
+            "code": "10121885443",
+            "sign_date": "2015/12/09 15:27:51",
+            "sign_status": "签收",
+            "delay": 60,
+            "destination": "衢州市",
+            "trans_status": "2015/12/09 10:05:56 10件从衢州分拨发往开化"
+        },
+        {
+            "code": "10121888685",
+            "sign_date": "2015/12/09 21:54:03",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "上海市",
+            "trans_status": "2015/12/09 11:19:20 38件从浦东分拨发往上海川沙一部"
+        },
+        {
+            "code": "10121889153",
+            "sign_date": "2015/12/11 11:53:53",
+            "sign_status": "签收",
+            "delay": 12,
+            "destination": "泉州市",
+            "trans_status": "2015/12/10 10:47:22 83件从泉州分拨发往泉州清濛"
+        },
+        {
+            "code": "10140215024",
+            "sign_date": "2015/12/09 12:32:15",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "南京市",
+            "trans_status": "2015/12/09 09:47:59 9件从南京江北分拨发往南京六合一部"
+        },
+        {
+            "code": "10140215540",
+            "sign_date": "2015/12/09 15:23:11",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "绍兴市",
+            "trans_status": "2015/12/09 08:15:48 21件从上虞分拨发往绍兴诸暨一部"
+        },
+        {
+            "code": "10140215551",
+            "sign_date": "2015/12/10 08:58:58",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "天津市",
+            "trans_status": "2015/12/10 02:33:37 2件从杭州分拨抵达天津分拨"
+        },
+        {
+            "code": "10140215901",
+            "sign_date": "2015/12/09 16:33:17",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "衢州市",
+            "trans_status": "2015/12/09 10:13:27 6件从衢州分拨发往江山"
+        },
+        {
+            "code": "10140215912",
+            "sign_date": "2015/12/09 18:56:42",
+            "sign_status": "签收",
+            "delay": 80,
+            "destination": "衢州市",
+            "trans_status": "2015/12/09 09:49:53 5件从衢州分拨发往衢州"
+        },
+        {
+            "code": "10140216251",
+            "sign_date": "2015/12/09 21:38:07",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "台州市",
+            "trans_status": "2015/12/09 07:27:57 13件从台州分拨发往玉环"
+        },
+        {
+            "code": "10140216262",
+            "sign_date": "2015/12/10 12:56:24",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "宁波市",
+            "trans_status": "2015/12/09 04:00:24 1件从宁波分拨发往余姚"
+        },
+        {
+            "code": "10140216586",
+            "sign_date": "2015/12/09 19:45:38",
+            "sign_status": "签收",
+            "delay": 80,
+            "destination": "苏州市",
+            "trans_status": "2015/12/09 07:12:13 1件从苏州分拨发往常熟二部"
+        },
+        {
+            "code": "10140217080",
+            "sign_date": "2015/12/09 18:38:50",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "宁波市",
+            "trans_status": "2015/12/09 04:07:03 9件从宁波分拨发往余姚"
+        },
+        {
+            "code": "10140217091",
+            "sign_date": null,
+            "sign_status": "未签收",
+            "delay": 15,
+            "destination": "深圳市",
+            "trans_status": "2015/12/11 03:34:57 1件从深圳分拨发往宝安观澜"
+        },
+        {
+            "code": "10140217102",
+            "sign_date": null,
+            "sign_status": "未签收",
+            "delay": 0,
+            "destination": "桂林市",
+            "trans_status": "2015/12/11 02:06:16 2件从长沙分拨发往南宁分拨;2015/12/11 13:10:56 2件从桂林分拨抵达桂林秀峰一部"
+        },
+        {
+            "code": "10140217113",
+            "sign_date": null,
+            "sign_status": "未签收",
+            "delay": 39,
+            "destination": "湖州市",
+            "trans_status": "2015/12/09 07:45:40 2件从湖州分拨发往湖州一部"
+        },
+        {
+            "code": "10140217511",
+            "sign_date": "2015/12/10 12:01:37",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "赣州市",
+            "trans_status": "2015/12/10 10:17:18 4件从赣州分拨发往赣州南康"
+        },
+        {
+            "code": "10140217533",
+            "sign_date": "2015/12/10 19:29:16",
+            "sign_status": "签收",
+            "delay": 20,
+            "destination": "绍兴市",
+            "trans_status": "2015/12/09 04:26:23 1件从上虞分拨发往绍兴诸暨一部"
+        },
+        {
+            "code": "10140217835",
+            "sign_date": "2015/12/09 17:39:51",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "宁波市",
+            "trans_status": "2015/12/09 04:06:05 16件从宁波分拨发往余姚"
+        },
+        {
+            "code": "10140217846",
+            "sign_date": null,
+            "sign_status": "未签收",
+            "delay": 15,
+            "destination": "广州市",
+            "trans_status": "2015/12/11 10:09:24 1件从东莞分拨发往萝岗永和"
+        },
+        {
+            "code": "10140217850",
+            "sign_date": "2015/12/09 15:58:31",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "温州市",
+            "trans_status": "2015/12/09 08:40:17 1件从温州分拨发往温州瓯海"
+        },
+        {
+            "code": "10140217861",
+            "sign_date": "2015/12/09 13:58:53",
+            "sign_status": "签收",
+            "delay": 0,
+            "destination": "台州市",
+            "trans_status": "2015/12/09 08:16:59 1件从台州分拨发往路桥"
+        },
+        {
+            "code": "10140217872",
+            "sign_date": "2015/12/10 17:38:31",
+            "sign_status": "签收",
+            "delay": 80,
+            "destination": "舟山市",
+            "trans_status": "2015/12/09 15:56:54 1件从宁波分拨抵达舟山"
+        }
+    ]
+}

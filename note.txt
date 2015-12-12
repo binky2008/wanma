@@ -9,8 +9,6 @@
 3120251  柯桥ZX
 2153351  昆山ZX
 
-
-
 承包区可以添加客户、员工、车辆，但不能添加班次
 
 mysqldump -uroot -p800best@com wanma > /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql 

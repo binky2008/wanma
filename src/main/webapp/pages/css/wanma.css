@@ -44,3 +44,37 @@ a:hover{ color:red; text-decoration:underline; }
 .easyui-dialog form table input.easyui-datetimebox {
     width:172px;
 }
+
+/*  寄、派件 */
+#mp {
+    padding: 5px 0px;
+    line-height: 30px;
+    display: none;
+    border-bottom: 1px solid #ccc;
+}
+#mp label {
+    margin-left: 10px;
+}
+    
+#decrContainer {
+    height: 25px;
+    background-color: #eee;
+    line-height: 25px;
+    padding: 0 12px;
+}
+#decrContainer i {
+    color: red; font-size: 13px;
+}
+b.sxcs, b.process {
+    display: inline-block; line-height: 18px; margin: 5px 5px 0 5px;
+    color: #fff; font-size: 13px;
+}
+b.sxcs { width: 30px; padding: 0 5px; border-radius:5px; }
+.c24 { background-color: orange; }
+.c48 { background-color: #e36f5f; }
+.c72 { background-color: red; }
+
+b.process { width: 13px; padding: 0 5px; border-radius:10px; }
+.pc1 { background-color: red; }
+.pc2 { background-color: blue; }
+.pc3 { background-color: green; }
