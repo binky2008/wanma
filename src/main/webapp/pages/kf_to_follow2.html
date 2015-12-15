@@ -6,6 +6,7 @@
 <title>运单跟踪查询</title>
 
 <link href="../tools/tssJS/css/boubei.css" rel="stylesheet">
+<link rel="stylesheet" href="css/wanma.css">
 
 <script src="../tools/tssJS/tssJS.all.js"></script>
 <script src="../tools/tssUtils.js"></script>
@@ -29,11 +30,11 @@
     #d1 div>ul { display: none; position: absolute; right: 0px; border: 1px solid #95B8E7; padding: 10px; }
     #d1 div:hover>ul { display: block; }
 
-    #t1 { width: 100%; margin-top: 10px; }
-    #t1 th { line-height: 30px; font-size: 15px; }
-    #t1>thead>tr>th:nth-child(1) { width: 15%; color: #999; }
+    #t1 { width: 75%; margin-top: 10px; }
+    #t1 th { line-height: 30px; font-size: 15px;  }
+    #t1>thead>tr>th:nth-child(1) { width: 20%; color: #999; }
     #t1>thead>tr>th:nth-child(2) { width: 35%; }
-    #t1>thead>tr>th:nth-child(3) { width: 50%; }
+    #t1>thead>tr>th:nth-child(3) { width: 45%; }
 
     #t1>tbody>tr>td:nth-child(1) { color: #999; }
 
@@ -42,13 +43,17 @@
 
     #r1 td { background-color: #eee; height: 40px; line-height: 20px; }
     #r1 td h4 { padding-left: 3px;  }
-    #r1 td b { padding-left: 30px; font-size: 14px; }
+    #r1 td i { padding-left: 30px; font-size: 14px; }
 
     #t1 td.step { position: relative; }
-    #t1 td.step>div { line-height: 20px; margin: 12px 3px; border: 1px solid #ccc; text-align: center; }
+    #t1 td.step>div { height: 40px; line-height: 40px; margin: 12px 3px; border: 1px solid #ccc; 
+        text-align: center; font-size: 14px; }
     #t1 td.step>label { position: absolute; bottom: 10px; right: 20px; }
 
-    #t1 td.step .end { border-radius: 30px; width: 60px; line-height: 60px; background-color: #eee; }
+    #t1 td:nth-child(2).step>div { border: 1px solid #000; line-height: 20px; text-indent: 20px; }
+    #t1 td:nth-child(2).step>div i { margin-left: 12px; }
+
+    #t1 td.step .end { border-radius: 30px; width: 60px; background-color: #eee; }
 
     .arrow {
       width: 40px;
@@ -85,6 +90,9 @@
       border-width: 20px 20px;
       border-top-color: #ccc;
     }
+
+    #t1 td:nth-child(2) .arrow-down:before { background-color: #049cdb; } 
+    #t1 td:nth-child(2) .arrow-down:after { border-top-color: #049cdb; }
 		 
 </STYLE>
 
@@ -101,20 +109,25 @@
 </head>
 
 <body>
-
+    <div style="margin: 5px 0 10px 0;">
+        <input id="param1" placeholder ="输入单个：运单号/客户单号/订单号" style="width:400px; height:25px;"/> &nbsp;
+        <a href="#" class="tssbutton blue medium" onclick='beginQuery()'>查 询</a>
+    </div>
     <div id="d1">
         <h3>基本情况</h3>
         <span>数量：<b>6</b>件</span>
         <span>重量：<b>25</b>KG</span>
         <span>体积：<b>0.4</b>立方米</span>
-        <div><i>子单跟踪</i>
+        <button class="tssbutton orange small">电子运单</button>
+        <div>
+            <i>子单列表</i>
             <ul>
                 <li>100842971001</li>
-                <li>100842971001</li>
-                <li>100842971001</li>
-                <li>100842971001</li>
-                <li>100842971001</li>
-                <li>100842971001</li>
+                <li>100842971002</li>
+                <li>100842971003</li>
+                <li>100842971004</li>
+                <li>100842971005</li>
+                <li>100842971006</li>
             </ul>
         </div>
     </div>
@@ -131,11 +144,18 @@
             <tr id="r1">
                 <td>
                     <h4>计划用时</h4>
-                    <b>1天23小时</b>
+                    <i>1天23小时</i>
                 </td>
                 <td>
-                    <h4>实际用时</h4>
-                    <b>2天12小时</b>
+                    <span style="display:inline-block;">
+                        <h4>已经到达</h4>
+                        <i>保定新市区</i>
+                    </span>         
+                    <span style="display:inline-block; margin-left: 40px;">          
+                        <h4>实际用时</h4>
+                        <i>2天12小时</i>
+                    </span>
+                    <b class="sxcs c24">超24</b>
                 </td>
                 <td></td>
             </tr>
@@ -148,7 +168,14 @@
                         <b>2015/09/09 12:12</b>
                     </label>
                 </td>
-                <td></td>
+                <td class="step">
+                    <div>北京昌平<i>负责人：张三<br>内线：0571-88819585 外线：1375677899</i></div>
+                    <span class="arrow arrow-down"></span>
+                    <label>
+                        <b>2015/09/09 01:00</b>
+                        <h4>扫描人：张三</h4>
+                    </label>
+                </td>
                 <td></td>
             </tr>   
             <tr>
@@ -160,7 +187,18 @@
                         <b>2015/09/09 16:12</b>
                     </label>
                 </td>
-                <td></td>
+                <td class="step">
+                    <label>
+                        <h4>实际到达</h4>
+                        <b>2015/09/09 12:12</b>
+                    </label>
+                    <div>北京北分拨</div>
+                    <span class="arrow arrow-down"></span>
+                    <label>
+                        <h4>实际到达</h4>
+                        <b>2015/09/09 16:12</b>
+                    </label>
+                </td>
                 <td></td>
             </tr>   
             <tr>

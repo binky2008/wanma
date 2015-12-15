@@ -1,7 +1,5 @@
 * { font-size:12px; font-family:Tahoma,Verdana,微软雅黑,新宋体; color: #555; }
-body{ background:#D2E0F2; }
-a { color:black; text-decoration:none; }
-a:hover{ color:red; text-decoration:underline; }
+.icon { color: #049cdb; font-size: 16px; }
 
 #dlg, #dlg2 {
 	padding:3px
@@ -69,12 +67,49 @@ b.sxcs, b.process {
     display: inline-block; line-height: 18px; margin: 5px 5px 0 5px;
     color: #fff; font-size: 13px;
 }
-b.sxcs { width: 30px; padding: 0 5px; border-radius:5px; }
+b.sxcs { width: auto; padding: 0 5px; border-radius:5px; }
 .c24 { background-color: orange; }
 .c48 { background-color: #e36f5f; }
 .c72 { background-color: red; }
 
-b.process { width: 13px; padding: 0 5px; border-radius:10px; }
+b.process { width: auto; padding: 0 5px; border-radius:10px; }
 .pc1 { background-color: red; }
 .pc2 { background-color: blue; }
 .pc3 { background-color: green; }
+
+/* 箭头 */
+.arrow {
+  width: 40px;
+  height: 100px;
+  position: relative;
+  display: inline-block;
+  margin: 0px 5px;
+}
+.arrow:before, .arrow:after {
+  content: '';
+  border-color: transparent;
+  border-style: solid;
+  position: absolute;
+}
+.arrow .curve {
+  position: absolute;
+  overflow: hidden;
+}
+.arrow .curve:before {
+  content: '';
+  position: absolute;
+}  
+.arrow-down:before {
+  border: none;
+  background-color: #ccc;
+  height: 70%;
+  width: 30%;
+  top: 0;
+  left: 35%;
+}
+.arrow-down:after {
+  left: 0;
+  top: 70%;
+  border-width: 20px 20px;
+  border-top-color: #ccc;
+}

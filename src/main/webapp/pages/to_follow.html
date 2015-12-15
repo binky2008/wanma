@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html> 
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>    
+<meta charset="UTF-8">
+<title>运单跟踪查询</title>
+
+<link rel="stylesheet" href="../tools/tssJS/css/boubei.css">
+<link rel="stylesheet" href="../tools/tssJS/fonts/icons.css">
+<link rel="stylesheet" href="css/wanma.css">
+
+<script src="../tools/tssJS/tssJS.all.js"></script>
+<script src="../tools/tssUtils.js"></script>
+
+<STYLE type="text/css">
+    html {
+      box-sizing: border-box;
+      height: 100%;
+    }
+    body {
+      height: 100%;
+      padding: 5px;
+      margin-bottom: 35px;
+    }
+    h3 { font-size: 13px; }
+
+    #toList { display: inline-block; margin-left: 20px; position: absolute; }
+    #toList li { float: left; list-style: none;  width: 150px; height: 25px; 
+        background-color: #00b0f4;
+    }
+
+    #d1 { position: relative; border: 1px solid #ccc; line-height: 26px; }
+    #d1 h3 { display: inline-block; background-color: #ccc; padding: 0 12px; }
+    #d1 span { padding: 0 12px; }
+    #d1 div { position: absolute; right: 0; display: inline-block; height: 100%; background-color: #049cdb; }
+    #d1 div>i {  padding: 0 12px; }
+    #d1 div>ul { display: none; position: absolute; right: 0px; border: 1px solid #95B8E7; padding: 10px; background-color: #fff; box-shadow: #000 0px 0px 50px; }
+    #d1 div:hover>ul { display: block; }
+
+    #t1 { width: 80%; margin-top: 10px; display: inline-table; }
+    #t1 th { line-height: 30px; font-size: 15px;  }
+    #t1>thead>tr>th:nth-child(1) { width: 20%; color: #999; }
+    #t1>thead>tr>th:nth-child(2) { width: 38%; }
+    #t1>thead>tr>th:nth-child(3) { width: 42%;  }
+
+    #t1>tbody>tr>td:nth-child(1) { color: #999; }
+
+    #t1>thead>tr>th,
+    #t1>tbody>tr>td { border-right: 1px dashed #ccc; padding: 0 5px; }
+
+    #r0 td { background-color: #eee; line-height: 24px; }
+    #r0 td h4 { padding-left: 3px;  }
+    #r0 td i { padding-left: 30px; font-size: 14px; }
+    #r0 td:nth-child(3) div { text-align: center; }
+
+    #t1 td.step { position: relative; vertical-align: top; }
+    #t1 td.step>div.center { height: 40px; line-height: 40px; margin: 12px 3px; border: 1px solid #ccc; 
+        text-align: center; font-size: 14px; }
+
+    #t1 td.step>div.scan { padding-left: 50px; }
+    #t1 td.step>div.sxinfo { padding-left: 50px; }
+
+    #t1 td:nth-child(2).step>div.center {  line-height: 20px; text-indent: 20px; }
+    #t1 td:nth-child(2).step>div i { margin-left: 12px; }
+    #t1 td:nth-child(2) .arrow-down:before { background-color: #049cdb; } 
+    #t1 td:nth-child(2) .arrow-down:after { border-top-color: #049cdb; }
+
+    #t1 td.step .end { border-radius: 30px; width: 60px; line-height: 60px; 
+        background-color: #eee; text-align: center; }
+    #t1 td:nth-child(2) .end { background-color: #999; color: #fff; }
+
+    td.wtj { vertical-align: bottom importment!; }
+    td.wtj h2 { font-size: 13px; padding: 5px 3px 3px 3px; }
+    td.wtj .content { padding: 3px; text-indent: 2em; }
+    td.wtj .author { text-align: right; padding:3px 12px; border-bottom: 1px solid #ccc; }
+    td.wtj .reply { padding-left: 2em; }
+    td.wtj .reply .author { border-bottom: 1px dashed #ccc; }
+
+    #d2 { 
+        display: inline-block; height: 500px; width: 19.5%; 
+        position: absolute; margin-top: 10px;
+    }
+    #d2 h2, #d2 h3 { line-height: 30px; font-size: 15px; text-align: center; border-bottom: 1px solid #ccc; }
+    #d2 h3 { line-height: 40px; }
+    #d21 { height: 150px; overflow: auto; }
+    .comment h4 { font-size: 13px; padding: 6px 3px 3px 5px; }
+    .comment .content { padding: 3px; text-indent: 2em; }
+    .comment time { text-align: right; padding: 3px 12px; border-bottom: 1px dashed #ccc; 
+        width: 100%; height: 25px; display: block; }
+
+    @media screen and (max-width: 800px) {
+        #t1 { width: 100%; }
+        #t1 th:nth-child(1), #t1 td:nth-child(1) { display: none; }
+        #d2 { display: none; }
+    }
+		 
+</STYLE>
+
+<script type="text/javascript">
+
+// TODO 
+// 1、查出的主单信息中，点击寄件站点或派件站点，自动进行拨号，拨通网点电话；
+// 2、异常子单扫描信息怎么定义？
+
+	
+</script>
+
+
+</head>
+
+<body>
+    <div style="margin: 5px 0 10px 0;">
+        <input id="param1" placeholder ="输入单个：运单号/客户单号/订单号" style="width:400px; height:25px;"/> &nbsp;
+        <a href="#" class="tssbutton blue medium" onclick='beginQuery()'>查 询</a>
+
+        <ul id="toList">
+            <li>主单10084249711部分一</li>
+            <li>主单10084249711部分二</li>
+            <li>主单10084249711部分三</li>
+        </ul>
+    </div>
+    <div id="d1">
+        <h3>基本情况</h3>
+        <span>数量：<b>6</b>件</span>
+        <span>重量：<b>25</b>KG</span>
+        <span>体积：<b>0.4</b>立方米</span>
+        <button class="tssbutton orange small">电子运单</button>
+        <div>
+            <i>子单列表</i>
+            <ul>
+                <li>100842971001</li>
+                <li>100842971002</li>
+                <li>100842971003</li>
+                <li>100842971004</li>
+                <li>100842971005</li>
+                <li>100842971006</li>
+            </ul>
+        </div>
+    </div>
+
+    <table id="t1">
+        <thead>
+            <tr>
+                <th>计划路线</th>
+                <th>实际路线</th>
+                <th>异常件/费用状态</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr id="r0">
+                <td>
+                    <h4>计划用时</h4>
+                    <i>1天23小时</i>
+                </td>
+                <td>
+                    <span style="display:inline-block;">
+                        <h4>已经到达</h4>
+                        <i>保定新市区</i>
+                    </span>         
+                    <span style="display:inline-block; margin-left: 40px;">          
+                        <h4>实际用时</h4>
+                        <i>2天12小时</i>
+                    </span>
+                    <b class="sxcs c24">超24</b>
+                </td>
+                <td>
+                    <div>
+                        <b>异常件接收：</b>
+                        <b class="process pc1">未</b>1
+                        <b class="process pc2">中</b>2
+                        <b class="process pc3">完</b>3
+                    </div>
+                    <div>
+                        <b>&nbsp;&nbsp;&nbsp;&nbsp;费用接收：</b>
+                        <b class="process pc1">未</b>1
+                        <b class="process pc2">中</b>2
+                        <b class="process pc3">完</b>3
+                    </div>
+                </td>
+            </tr>
+            <!-- 入网分拨 -->
+            <tr id="r1">
+                <td class="step">
+                    <div class="center">北京昌平</div>
+                </td>
+                <td class="step">
+                    <div class="center">北京昌平<i>负责人：张三<br>内线：0571-88819585，外线：1375677899</i></div>
+                    <div class="scan">
+                        <b>2015/09/09 01:00</b>
+                        <h4>扫描人：张三</h4>
+                    </div>
+                </td>
+                <td class="wtj">                  
+                    <h2>
+                        北京昌平【发起】#退件# 【接收方】保定新市区<b class="process pc1">未</b>
+                    </h2> 
+                    <div class="content">
+                      客户需要退件，已和客户协商完成。
+                    </div>
+                    <div class="author">
+                      <span>BL00618</span>
+                      <span data-icon="E" class="icon"></span>
+                      <time>2015-11-22 09:12</time>
+                    </div>
+                </td>
+            </tr>   
+            <!-- 途经分拨 -->
+            <tr>
+                <td class="step">
+                    <span class="arrow arrow-down"></span>
+                    <div class="sxinfo">
+                        <h4>计划到达</h4>
+                        <b>2015/09/09 12:12</b>
+                    </div>
+                    <div class="center">北京北分拨</div>
+                </td>
+                <td class="step">                   
+                    <span class="arrow arrow-down"></span>
+                    <div class="sxinfo">
+                        <h4>实际到达【班车号：24000205】</h4>
+                        <b>2015/09/09 12:12 <b class="sxcs c24">到达超时1小时</b> </b>
+                    </div>
+                    <div class="center">北京北分拨<i>负责人：李四<br>内线：0571-88819585，外线：1375677899</i></div>
+                    <div class="scan">
+                        <b>2015/09/09 01:00</b>
+                        <h4>扫描人：李四</h4>
+                    </div>
+                </td>
+                <td class="wtj">                  
+                    <h2>
+                        北京北分拨【发起】#留仓（中转爆仓）# 【接收方】北京昌平<b class="process pc3">完</b>
+                    </h2> 
+                    <div class="content">
+                      发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。
+                    </div>
+                    <div class="author">
+                      <span>BL00323</span>
+                      <span data-icon="E" class="icon"></span>
+                      <time>2015-11-22 09:12</time>
+                    </div>
+                    <div class="reply">
+                        <h2>
+                            北京昌平【答复】: 知悉！
+                        </h2> 
+                        <div class="author">
+                          <span>BL00123</span>
+                          <span data-icon="E" class="icon"></span>
+                          <time>2015-11-22 09:12</time>
+                        </div>
+                    </div>
+
+                    <h2>
+                        北京北分拨【发起】#留仓（中转爆仓）# 【接收方】北京昌平<b class="process pc2">中</b>
+                    </h2> 
+                    <div class="content">
+                      发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。发货爆仓，需要明天发货。
+                    </div>
+                    <div class="author">
+                      <span>BL00618</span>
+                      <span data-icon="E" class="icon"></span>
+                      <time>2015-11-22 09:12</time>
+                    </div>
+                    <div class="reply">
+                        <h2>
+                            北京昌平【答复】: 知悉！
+                        </h2> 
+                        <div class="author">
+                          <span>BL00123</span>
+                          <span data-icon="E" class="icon"></span>
+                          <time>2015-11-22 09:12</time>
+                        </div>
+                    </div>
+                </td>
+            </tr>   
+ 
+            <!-- 签收 -->
+            <tr>
+                <td class="step">
+                    <span class="arrow arrow-down"></span>
+                    <div class="end">签收</div>
+                </td>
+                <td class="step">
+                    <span class="arrow arrow-down"></span>
+                    <div class="end">签收</div>
+                </td>
+                <td></td>
+            </tr>   
+        </tbody>
+    </table>
+
+    <div id="d2">
+        <h2>评价详情</h2>
+        <h3>收到的评价 <button class="tssbutton small blue">申请客服介入</button></h3>
+        <div id="d21" class="comment">
+            <h4>
+                来自派件网点【西湖一部】的 #好评#:
+            </h4> 
+            <div class="content">
+                寄件网点费用确认很快，表扬
+            </div>
+            <time>2015-11-22 09:12</time>
+        </div>
+        <h3>给他人的评价 <button class="tssbutton small blue">评价/修改</button></h3>
+        <div id="d22">
+            <div class="comment">
+                <h4>
+                    给派件网点【西湖一部】的 #好评#:
+                </h4> 
+                <div class="content">
+                    派件网点送货很快，客户很满意，好评！
+                </div>
+                <time>2015-11-22 09:12</time>
+            </div>
+            <div class="comment">
+                <h4>
+                    给分拨【杭州】的 #差评#:
+                </h4> 
+                <div class="content">
+                    态度恶劣，差评！
+                </div>
+                <time>2015-11-22 09:12</time>
+            </div>
+        </div>
+    </div>
+
+    <div id="decrContainer" data-options="region:'south'" border="false" style="width: 99%; height:25px; position: fixed; bottom:0; ">
+        <i>说明:</i>
+        <b class="sxcs c24">超24</b>时效超过24小时
+        <b class="sxcs c48">超48</b>时效超过48小时
+        <b class="sxcs c72">超72</b>时效超过72小时
+        &nbsp;&nbsp;
+        <b class="process pc1">未</b>未处理
+        <b class="process pc2">中</b>处理中
+        <b class="process pc3">完</b>处理完成
+    </div>
+
+</body>
+</html>

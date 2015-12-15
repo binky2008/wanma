@@ -49,6 +49,9 @@ $(document).ready(function(){
     $('#param1').combobox('setValue', window.parent.ownerSite.id);
 });
 
+
+/* 到货日期: 分拨中心作了发件后所产生的日期，即网点作了派件班次关联后所产生的日期。 */
+
 var FIELDS_1 = [
         { field : '到货日期', title : '到货日期', width : 75, sortable: true},
         { field : '签收时间', title : '签收时间', width : 75 },
@@ -193,7 +196,6 @@ function show(data1, data2) {
                         }
                     }
                 }
-            });
             });
             return data;
         }
