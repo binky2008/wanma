@@ -101,10 +101,11 @@ public class WMAfterLoginCustomizer implements ILoginCustomizer {
 		}
 		
 		// 保存到用户权限（拥有的角色）对应表
-		userRoles.add( new Object[] { logonUserId, ROLE_0 } ); // 基础角色
+		if( !Environment.isAnonymous() ) {
+			userRoles.add( new Object[] { logonUserId, ROLE_0 } ); // 基础角色
+			roleIds.add(ROLE_0);
+		}
         permissionService.saveUserRolesAfterLogin(userRoles, logonUserId);
-        
-        roleIds.add(ROLE_0);
         session.setAttribute(SSOConstants.USER_RIGHTS_IN_SESSION, roleIds);
 	}
 

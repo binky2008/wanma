@@ -14,7 +14,7 @@
 mysqldump -uroot -p800best@com wanma > /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql 
 mysql -u root -p wanma  <   /Users/jinpujun/Desktop/workspace/release/wanma/wanma.sql
 
-mysqldump -uroot -p800best@com wanma > /home/btrbi/temp/wanma.sql 
+mysqldump -uroot -p800best@com wanma > /home/btrbi/temp/wanma-1216.sql 
 mysql -u root -p wanma  <   /home/btrbi/release_wm/wanma.sql
 
 技术点：地址解析、地图、打印、APP、Form下拉列表按输入字过滤

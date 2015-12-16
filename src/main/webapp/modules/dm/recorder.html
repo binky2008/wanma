@@ -210,6 +210,8 @@ function showDetail(rowID) {
         if( ws.noTabOpend() ) {
             $("#ws").hide();
         }            
+        delete $.cache.XmlDatas[rowID];  // 清除缓存的数据，可能已经做了修改。关闭意味着放弃修改内容
+        detachReminder(rowID); // 解除提醒
     };
 
     callback.onTabChange = function() {
@@ -271,7 +273,6 @@ function loadDetailData(rowID) {
     }
     $("#page1BtCancel").click( function() { 
         ws.closeActiveTab(); 
-        delete $.cache.XmlDatas[rowID];  // 清除缓存的数据，可能已经做了修改。关闭意味着放弃修改内容
     } );
 
     $('#btnViewAttach').remove();

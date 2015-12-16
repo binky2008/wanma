@@ -18,23 +18,26 @@
       height: 100%;
     }
     body {
-      height: 100%;
       padding: 5px;
-      margin-bottom: 35px;
+      margin-bottom: 50px;
     }
     h3 { font-size: 13px; }
 
     #toList { display: inline-block; margin-left: 20px; position: absolute; }
-    #toList li { float: left; list-style: none;  width: 150px; height: 25px; 
-        background-color: #00b0f4;
+    #toList li { float: left; list-style: none;  width: 150px; line-height: 28px; text-indent: 5px;
+        background-color: #eee;
+        border-radius: 15px 15px 0 0 ;
+        cursor: pointer;
     }
+    #toList li:hover { color: red; }
+    #toList li.active { background-color: orange; }
 
     #d1 { position: relative; border: 1px solid #ccc; line-height: 26px; }
     #d1 h3 { display: inline-block; background-color: #ccc; padding: 0 12px; }
     #d1 span { padding: 0 12px; }
     #d1 div { position: absolute; right: 0; display: inline-block; height: 100%; background-color: #049cdb; }
     #d1 div>i {  padding: 0 12px; }
-    #d1 div>ul { display: none; position: absolute; right: 0px; border: 1px solid #95B8E7; padding: 10px; background-color: #fff; box-shadow: #000 0px 0px 50px; }
+    #d1 div>ul { display: none; position: absolute; right: 0px; border: 1px solid #95B8E7; padding: 10px; background-color: #fff; box-shadow: #000 0px 0px 50px; z-index: 100; }
     #d1 div:hover>ul { display: block; }
 
     #t1 { width: 80%; margin-top: 10px; display: inline-table; }
@@ -43,7 +46,7 @@
     #t1>thead>tr>th:nth-child(2) { width: 38%; }
     #t1>thead>tr>th:nth-child(3) { width: 42%;  }
 
-    #t1>tbody>tr>td:nth-child(1) { color: #999; }
+    #t1>tbody>tr>td:nth-child(1) * { color: #999; }
 
     #t1>thead>tr>th,
     #t1>tbody>tr>td { border-right: 1px dashed #ccc; padding: 0 5px; }
@@ -65,9 +68,9 @@
     #t1 td:nth-child(2) .arrow-down:before { background-color: #049cdb; } 
     #t1 td:nth-child(2) .arrow-down:after { border-top-color: #049cdb; }
 
-    #t1 td.step .end { border-radius: 30px; width: 60px; line-height: 60px; 
+    #t1 td.step .end { border-radius: 20px; width: 200px; line-height: 20px; 
         background-color: #eee; text-align: center; }
-    #t1 td:nth-child(2) .end { background-color: #999; color: #fff; }
+    #t1 td:nth-child(2) .end { background-color: #ccc; }
 
     td.wtj { vertical-align: bottom importment!; }
     td.wtj h2 { font-size: 13px; padding: 5px 3px 3px 3px; }
@@ -83,6 +86,7 @@
     #d2 h2, #d2 h3 { line-height: 30px; font-size: 15px; text-align: center; border-bottom: 1px solid #ccc; }
     #d2 h3 { line-height: 40px; }
     #d21 { height: 150px; overflow: auto; }
+    #d2 button { font-size: 13px; }
     .comment h4 { font-size: 13px; padding: 6px 3px 3px 5px; }
     .comment .content { padding: 3px; text-indent: 2em; }
     .comment time { text-align: right; padding: 3px 12px; border-bottom: 1px dashed #ccc; 
@@ -98,10 +102,16 @@
 
 <script type="text/javascript">
 
-// TODO 
-// 1、查出的主单信息中，点击寄件站点或派件站点，自动进行拨号，拨通网点电话；
-// 2、异常子单扫描信息怎么定义？
+function showTO (toNO) {
+    tssJS.openIframePanel("toPanel", " - 电子运单", 820, 520, "to_detail.html?toNO=" + toNO);
+}
 
+$(function(){
+    $("#toList li").click(function(i, li){
+        $("#toList li").removeClass("active");
+        $(this).addClass("active");
+    });
+});
 	
 </script>
 
@@ -110,11 +120,11 @@
 
 <body>
     <div style="margin: 5px 0 10px 0;">
-        <input id="param1" placeholder ="输入单个：运单号/客户单号/订单号" style="width:400px; height:25px;"/> &nbsp;
+        <input id="param1" placeholder ="输入单个：运单号/客户单号/订单号" style="width:366px; height:25px;"/> &nbsp;
         <a href="#" class="tssbutton blue medium" onclick='beginQuery()'>查 询</a>
 
         <ul id="toList">
-            <li>主单10084249711部分一</li>
+            <li class="active">主单10084249711部分一</li>
             <li>主单10084249711部分二</li>
             <li>主单10084249711部分三</li>
         </ul>
@@ -124,7 +134,7 @@
         <span>数量：<b>6</b>件</span>
         <span>重量：<b>25</b>KG</span>
         <span>体积：<b>0.4</b>立方米</span>
-        <button class="tssbutton orange small">电子运单</button>
+        <button class="tssbutton orange small" onclick="showTO()">电子运单</button>
         <div>
             <i>子单列表</i>
             <ul>
@@ -277,11 +287,17 @@
             <tr>
                 <td class="step">
                     <span class="arrow arrow-down"></span>
-                    <div class="end">签收</div>
+                    <div class="end">
+                        <h4>计划签收</h4>
+                        <b>2015/09/12 12:12</b>
+                    </div>
                 </td>
                 <td class="step">
                     <span class="arrow arrow-down"></span>
-                    <div class="end">签收</div>
+                    <div class="end">
+                        <h4>实际签收</h4>
+                        <b>2015/09/13 12:12</b>
+                    </div>
                 </td>
                 <td></td>
             </tr>   
