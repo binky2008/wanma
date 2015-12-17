@@ -10,6 +10,9 @@
 <link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
 <link rel="stylesheet" href="../tools/easyui/themes/icon.css">
 
+<script src="../tools/tssJS/tssJS.js"></script>
+<script src="../tools/tssJS/tssJS.ajax.js"></script>
+
 <script src="../tools/easyui/jquery.min.js"></script>
 <script src="../tools/easyui/jquery.easyui.min.js"></script>
 <script src="../tools/easyui/easyui-lang-zh_CN.js"></script>
@@ -19,11 +22,13 @@
 <STYLE type="text/css">
 
 
-		 
 </STYLE>
 
 <script type="text/javascript">
 
+var ownerSite = window.parent.ownerSite.id,
+	trucks, tsL, drivers, remainTS,
+	combinedTOs;
 
 $(function(){
 	init();
@@ -31,179 +36,294 @@ $(function(){
 });
 
 function init() {
-	showGL();
-	showGrid1();
-	showGrid2();
 
-	$('#param1').combobox( {
-        panelHeight: '60px',
-        valueField: 'id',
-        textField: 'name',
-        data: [ 
-        	{"id": 1, "name": "20:00/7.2"}, 
-        	{"id": 2, "name": "22:00/7.2"}, 
-        	{"id": 3, "name": "23:00/9.6"}
-        ]
+	// 把已经排班的班次从可选列表里移除，车辆和司机应该可以重复使用
+
+	$.getJSON('../truckschedule/list/' + ownerSite, {}, function(data) {
+		tsL = data; // id | serialCode
+
+		showGrid1();
     });
-
-	$('#param2').combobox( {
-        panelHeight: '60px',
-        valueField: 'id',
-        textField: 'name',
-        data: [ 
-        	{"id": 1, "name": "浙A-99999/7.2"}, 
-        	{"id": 2, "name": "浙A-1212D/7.2"}, 
-        	{"id": 3, "name": "浙A-21312/9.6"}
-        ]
+    $.getJSON('../truck/list/' + ownerSite, {}, function(data) {
+		trucks = data;
+		
+		$('#param2').combobox( {
+			panelHeight: '60px',
+	        valueField: 'id',
+	        textField: 'code',
+	        data: trucks
+	    });
+    });
+    $.getJSON('../employee/site/' + ownerSite, {}, function(data) {
+		drivers = data;
+		$('#param3').combobox( {
+			panelHeight: '60px',
+	        valueField: 'id',
+	        textField: 'name',
+	        data: drivers
+	    });
     });
 }
-
-function showGL() {
-	var rows = [
-        { "name": "日期", "group": "今日录单", "value": "2015-10-01" },
-        { "name": "票数", "group": "今日录单", "value": "30" },
-        { "name": "实际重量", "group": "今日录单", "value": "3000kg" },
-        { "name": "实际体积", "group": "今日录单", "value": "8立方" },
-
-        { "name": "票数", "group": "未完成班次关联货物", "value": "10" },
-        { "name": "实际重量", "group": "未完成班次关联货物", "value": "1000kg" },
-        { "name": "实际体积", "group": "未完成班次关联货物", "value": "3立方" },
-
-        { "name": "班次号：20:00/9.6", "group": "班次关联情况", "value": "已关联" },
-        { "name": "班次号：23:00/9.6", "group": "班次关联情况", "value": "未关联" }
-    ];
-
-	$('#tt').propertygrid({
-        width: 298,
-        height: 'auto',
-        showGroup: true,
-        scrollbarSize: 0,
-        columns: [[
-                { field: 'name', title: '名称', width: 100, resizable: true },
-                { field: 'value', title: '值', width: 100, resizable: false }
-        ]]
-    });
-    $('#tt').propertygrid('loadData', rows);
-}
-
 
 var FIELDS_1 = [
-	    { field : 'ck', checkbox: true },
-	    { field : 'f1', title : '客户名称', width : 80 },
-	    { field : 'f2', title : '客户单号', width : 90 },
-	    { field : 'f3', title : '运单号', width : 100 },
-	    { field : 'f4', title : '目的地', width : 80 },
-	    { field : 'f5', title : '货物数量', width : 80 },
-	    { field : 'f6', title : '货物体积（立方）', width : 120 },
-	    { field : 'f7', title : '货物重量（kg）', width : 100 },
-	    { field : 'f8', title : '计费重量（kg）', width : 100 },
-	    { field : 'f9', title : '目的站点', width : 80 },
-	    { field : 'fa', title : '付款方式', width : 80 },
-	    { field : 'fb', title : '取件员', width : 80 },
-	    { field : 'fc', title : '提货车辆', width : 80 },
-	    // { field : 'fd', title : '班次', width : 100 }
-	];
-
-function showGrid1(row){   
-	var params = {}; 
-	if(row) {
-		// TODO 重新排班时，把已经做关联的货量查出来，自动勾选上
-		params.bcID = row.id;
-	}
- 
-
-    $('#t1').datagrid({
-        url : 'data/jijian_0.json',
-        method : 'get',
-        queryParams : params, // 参数 "bcID": 12
-        fit : true,
-        fitColumns : true,
-        rownumbers : true,
-        singleSelect : false,
-        columns : [FIELDS_1],
-        onLoadSuccess: function(data) {
-            $.each(data.rows, function(i, item) {
-                // 默认选中
-                // $('#t1').datagrid("selectRecord", id);
-                if(row) {
-                	if( item._checked ) $('#t1').datagrid("selectRow", i);
-                } 
-                else {
-                	// $('#t1').datagrid("selectRow", i);
-                }              
-            });
-        }
-    }); 
-}
-
-var FIELDS_2 = [
-	    { field : 'truckScheduleCode', title : '寄件班次', width : 90 },
+	    { field : 'tsCode', title : '寄件班次', width : 90 },
 	    { field : 'truckCode', title : '车牌号', width : 80 },
 	    { field : 'truckType', title : '车型', width : 80 },
-	    { field : 'businessorName', title : '业务员', width : 80 },
+	    { field : 'driverName', title : '驾驶员', width : 80 },
 	    { field : 'weight', title : '重量', width : 80 },
 	    { field : 'cubic', title : '体积', width : 80 },
-	    { field : 'num', title : '件数', width : 80 },
+	    { field : 'amount', title : '件数', width : 80 },
 	    { field : 'f8', title : '编辑', width : 100, align: "center" }
 	];
 
-function showGrid2(){    
-    $.getJSON('data/jijian_1.json', {}, function(data){
+function showGrid1(){    
+	var url = "/tss/to/jjpc/today"; // 'data/jijian_1.json'
+    $.getJSON(url, {}, function(data) {
+
+    	remainTS = [];
+    	$.each(tsL, function(j, ts){
+    		var tag = false
+    		$.each(data, function(i, item){
+	        	if(ts.id === item.ts.id) {
+	        		tag = true;
+	        	}
+        	});
+
+        	!tag && remainTS.push(ts);
+        });
+
+    	combinedTOs = [];
         $.each(data, function(i, item){
             item.f8 = '<a href="javascript:void(0)" onclick="recombine('+i+')">重新选择货量</a>';
-            item.truckScheduleCode = item.truckSchedule.code;
+            item.tsCode = item.ts.code;
             item.truckCode = item.truck.code;
             item.truckType = item.truck.type.text;
-            item.businessorName = item.businessor.name;
+            item.driverName = item.driver.name;
+
+            $.each(item.toList, function(j, to){
+            	combinedTOs.push(to);
+            });
         });
+
+        $('#param1').combobox( {
+	        panelHeight: '60px',
+	        valueField: 'id',
+	        textField: 'serialCode',
+	        data: remainTS
+	    });
 
         $('#t2').datagrid({
 	        fit : true,
 	        fitColumns : true,
 	        rownumbers : true,
 	        singleSelect : true,
-	        columns : [FIELDS_2],
+	        columns : [FIELDS_1],
 	        data: data
 	    });
+
+	    showGrid2();
     });
 }
 
+var FIELDS_2 = [
+	    { field : 'ck', checkbox: true },
+	    { field : '目的地', title : '目的地', width : 80 },
+	    { field : '目的网点', title : '目的网点', width : 100 },
+	    { field : '件数', title : '件数', width : 50 },
+	    { field : '体积', title : '体积（立方）', width : 70 },
+	    { field : '重量', title : '重量（kg）', width : 70 },
+	    { field : '计费重量', title : '计费重量', width : 70 },
+
+	    { field : '客户名称', title : '客户名称', width : 80 },
+	    { field : '运单号', title : '运单号', width : 90 },
+	    { field : '订单号', title : '订单号', width : 80 },
+	    { field : '录单时间', title : '录单时间', width : 80 },	    
+	    { field : '付款方式', title : '付款方式', width : 70 },
+	    { field : '取件员', title : '取件员', width : 60 }
+	];
+
+function showGrid2(row){   
+	var params = {}; 
+	if(row) {		
+		$('#param1').combobox( {
+	        panelHeight: '60px',
+	        valueField: 'id',
+	        textField: 'serialCode',
+	        data: tsL
+	    });
+	}
+
+    $('#t1').datagrid({
+        url : 'data/jijian_2.json',
+        method : 'get',
+        queryParams : params, 
+        fit : true,
+        fitColumns : true,
+        rownumbers : true,
+        singleSelect : false,
+        remoteSort : false,
+        sortName : "取件员",
+        sortOrder : "desc",
+        columns : [FIELDS_2],
+        onLoadSuccess: function(data) {
+            $.each(data.rows, function(i, item) {
+                // 重新排班时，把已经做关联的货量查出来，自动勾选上
+                if(row && row.toList && row.toList.contains(item["运单号"]) ) {
+                	$('#t1').datagrid("selectRow", i);
+                }          
+            });
+        },
+        loadFilter : function(data) {
+        	var _data = [], amount = 0, cubic = 0, weight = 0, amount1 = 0, cubic1 = 0, weight1 = 0;
+            $.each(data, function(i, item) {                
+            	item["录单时间"] = item["录单时间"].replace(" 00:00:00", "");
+
+                amount += parseFloat(item["件数"]); 
+                cubic  += parseFloat(item["体积"]); 
+                weight += parseFloat(item["重量"]);
+                if( !combinedTOs.contains(item["运单号"]) ) {
+                	amount1 += parseFloat(item["件数"]); 
+                	cubic1  += parseFloat(item["体积"]); 
+                	weight1 += parseFloat(item["重量"]);
+
+                	_data.push(item); // 过滤掉已经排班的
+            	}
+            	else {
+            		if(row && row.toList && row.toList.contains(item["运单号"]) ) {
+	                	_data.push(item); // 重新排班的时候，把该班次的重新载入到待关联Grid
+	                }
+            	}
+            });
+
+            var day = new Date().format("yyyy-MM-dd");
+        	var rows = [
+		        { "name": "日期", "group": "今日录单", "value": day, "editor": "datebox" },
+		        { "name": "票数", "group": "今日录单", "value": data.length },
+		        { "name": "件数", "group": "今日录单", "value": amount },
+		        { "name": "实际重量", "group": "今日录单", "value": Math.round(weight) + " KG" },
+		        { "name": "实际体积", "group": "今日录单", "value": Math.round(cubic) + " 立方" },
+
+		        { "name": "票数", "group": "未完成班次关联货物", "value": _data.length },
+		        { "name": "件数", "group": "未完成班次关联货物", "value": amount1 },
+		        { "name": "实际重量", "group": "未完成班次关联货物", "value": Math.round(weight1) + " KG" },
+		        { "name": "实际体积", "group": "未完成班次关联货物", "value": Math.round(cubic1) + " 立方" },
+		    ];
+
+		    $.each(tsL, function(n, ts) {
+		    	var val = remainTS.contains(ts) ? "未关联" : "已关联";
+		    	rows.push({ "name": "班次：" + ts.serialCode, "group": "班次关联情况", "value": val })
+		    });
+
+            showGL(rows);
+
+            return {"rows": _data};
+        },
+        onClickRow: function(index, row) {
+        	recombineRow && combine(true);
+        }
+    }); 
+}
+
+function showGL(rows) {
+	$('#tt').propertygrid({
+        width: 268,
+        height: 'auto',
+        showGroup: true,
+        scrollbarSize: 0,
+        fitColumns : false,
+        columns: [[
+                { field: 'name', title: '名称', width: 122, resizable: true },
+                { field: 'value', title: '值', width: 130, resizable: false }
+        ]]
+    });
+    $('#tt').propertygrid('loadData', rows);
+}
+
+
+var recombineRow;
 function recombine(index) {
 	$('#t2').datagrid("selectRow", index);
-	var selectRow = $('#t2').datagrid("getSelected");
+	recombineRow = $('#t2').datagrid("getSelected");
 
-	if(selectRow) {
-		showGrid1( selectRow );
-		$('#param1').combobox("setValue", selectRow.truckSchedule.id);
-		$('#param2').combobox("setValue", selectRow.truck.id);
+	if(recombineRow) {
+		showGrid2( recombineRow );
+		$('#param1').combobox("setValue", recombineRow.ts.id);
+		$('#param2').combobox("setValue", recombineRow.truck.id);		
+		$('#param3').combobox("setValue", recombineRow.driver.id);
 	}
 }
 
-function combine() {
+function combine(auto) {
 	var truckSchedule = $('#param1').combobox("getValue");
 	if( !truckSchedule ) {
 		$.messager.show({ title: '提示', msg: '请选择班次。'});
 	    return;
 	}
-
 	var truck = $('#param2').combobox("getValue");
 	if( !truck ) {
 		$.messager.show({ title: '提示', msg: '请选择车辆。'});
 	    return;
 	}
+	var driver = $('#param3').combobox("getValue");
+	if( !driver ) {
+		$.messager.show({ title: '提示', msg: '请选择司机。'});
+	    return;
+	}
 
 	var selectedRows = $('#t1').datagrid("getSelections");
-	if(selectedRows.length == 0) {
+	if(selectedRows.length == 0 && !auto) {
 		$.messager.show({ title: '提示', msg: '您还没有选中任何货量。' });
 	    return;
 	}
 
-	$.messager.show({
-        title: '提示',
-        msg: '已经成功关联本次选择的货量，共有'+ selectedRows.length +'票货.您可以继续对剩余的货量进行排班关联。'
-    });
+	// 开始保存
+	var amount = 0, cubic = 0, weight = 0, toList = [];
+	$.each(selectedRows, function(i, item){
+		amount += parseFloat(item["件数"]); 
+        cubic  += parseFloat(item["体积"]); 
+        weight += parseFloat(item["重量"]);
+        toList.push(item["运单号"]);
+	});
 
-    // TODO 刷新货量Grid列表，隐藏已经关联的货量
+	var params = {
+		"ownerSite.id": ownerSite,
+		"truck.id": truck,
+		"ts.id": truckSchedule,
+		"driver.id": driver,
+		"amount": amount,
+		"cubic": Math.round(cubic),
+		"weight": Math.round(weight),
+		"tos": toList.join(",")
+	}
+	if(recombineRow) {
+		params.id = recombineRow.id
+		params.createTime = recombineRow.createTime;
+		params.creatorId = recombineRow.creatorId;
+		params.creatorName = recombineRow.creatorName;
+		params.lockVersion = recombineRow.lockVersion;
+	}
+	tssJS.ajax({
+		url: "/tss/to/jjpc",
+		method: "POST",
+		params: params,
+		ondata: function() {
+			if(auto) {
+				recombineRow.lockVersion = parseInt(recombineRow.lockVersion)+1;
+				return;
+			}
+
+			$.messager.show({
+		        title: '提示',
+		        msg: '已经成功关联本次选择的货量，共有'+ selectedRows.length +'票货.您可以继续对剩余的货量进行排班关联。'
+		    });
+
+		    // 刷新货量Grid列表，隐藏已经关联的货量
+		    recombineRow = null;
+		    showGrid1();
+		    $('#param2').combobox("setValue", "");
+		    $('#param3').combobox("setValue", "");
+		}
+	});
 }
 	
 </script>
@@ -221,8 +341,10 @@ function combine() {
 	            <label>班次:&nbsp;&nbsp;</label><input id="param1" class="easyui-textbox" style="width: 180px;"/>
 	            <br>
 	            <label>车辆:&nbsp;&nbsp;</label><input id="param2" class="easyui-textbox" style="width: 180px;"/>
+	            <br>
+	            <label>司机:&nbsp;&nbsp;</label><input id="param3" class="easyui-textbox" style="width: 180px;"/>
 	            <div style="margin-top: 6px;">
-		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="combine()" >进行班次关联</a>&nbsp;&nbsp;
+		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="combine()" >保存班次关联</a>&nbsp;&nbsp;
 		            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-reload'" onclick="init()" >刷新</a>
 	            </div>
             </div>
@@ -230,14 +352,6 @@ function combine() {
 
         <div id="dataContainer" data-options="region:'center'" border="false">
             <div id="main" class="easyui-layout" fit="true" >
-            	<!--
-		        <div id="queryContainer" data-options="region:'north'" border="false">
-		            <label>班次:</label><input id="param1" class="easyui-textbox" style="width: 180px;" />
-		            <label>车辆:</label><input id="param2" class="easyui-textbox" style="width: 180px;" />
-		            &nbsp;&nbsp;&nbsp;&nbsp;
-		            <a href="#" class="easyui-linkbutton" onclick="combine()">进行班次关联</a>
-		        </div>
-		        -->
 		        <div id="dataContainer" data-options="region:'center'" border="false" title="待关联货量信息">
 		            <table id="t1" border="false"></table>
 		        </div>

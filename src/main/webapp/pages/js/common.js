@@ -24,12 +24,12 @@ function initCombobox(id, code, params, init) {
     });
 }
 
-function initSiteList(elId, all) {
+function initSiteList(elId, all, byName) {
     $('#' + elId).combobox( {
         url: '/tss/sys/site/' + (all ? 0 : window.parent.ownerSite.id),
         method : 'get',
         panelHeight: all ? '150px' : '60px',
-        valueField: 'id',
+        valueField: byName ? 'name' : 'id',
         textField: 'name' 
     });
 }

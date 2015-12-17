@@ -1,4 +1,4 @@
-package com.best.btr.wanma.bas.service.impl;
+package com.best.btr.wanma.bas.service;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.best.btr.wanma.bas.dao.CustomerDao;
 import com.best.btr.wanma.bas.entity.Customer;
-import com.best.btr.wanma.bas.service.CustomerService;
 import com.best.btr.wanma.bas.so.CustomerSO;
 import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.dm.data.sqlquery.SQLExcutor;

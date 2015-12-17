@@ -1,5 +1,7 @@
 package com.best.btr.wanma.bas.service;
 
+import java.util.List;
+
 import com.best.btr.wanma.bas.entity.Truck;
 import com.best.btr.wanma.bas.so.TruckSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
@@ -43,4 +45,6 @@ public interface TruckService {
      * @return
      */
     PageInfo search(TruckSO so);
+
+	List<?> getListBySite(Long siteId);
 }

@@ -1,5 +1,7 @@
 package com.best.btr.wanma.bas.action;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,12 @@ public class TruckScheduleAction {
 
     @Autowired
     private TruckScheduleService service;
+    
+    @RequestMapping(value = "/list/{siteId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<?> getListBySite(@PathVariable Long siteId) {
+    	return service.getListBySite(siteId);
+    }
  
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody

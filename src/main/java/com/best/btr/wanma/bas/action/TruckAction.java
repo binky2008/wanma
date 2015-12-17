@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author Created by Hsian on 15/9/3.
@@ -23,6 +24,12 @@ public class TruckAction {
 
     @Autowired
     private TruckService service;
+    
+    @RequestMapping(value = "/list/{siteId}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<?> getListBySite(@PathVariable Long siteId) {
+    	return service.getListBySite(siteId);
+    }
  
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody

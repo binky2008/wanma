@@ -1,4 +1,4 @@
-package com.best.btr.wanma.bas.service.impl;
+package com.best.btr.wanma.bas.service;
 
 import java.util.List;
 
@@ -10,7 +10,6 @@ import com.best.btr.wanma.bas.dao.ProjectDao;
 import com.best.btr.wanma.bas.entity.Customer;
 import com.best.btr.wanma.bas.entity.Project;
 import com.best.btr.wanma.bas.entity.ProjectAddress;
-import com.best.btr.wanma.bas.service.ProjectService;
 import com.best.btr.wanma.bas.so.ProjectSO;
 import com.best.btr.wanma.system.entity.Site;
 import com.jinhe.tss.framework.component.param.ParamConstants;

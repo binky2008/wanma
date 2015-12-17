@@ -27,10 +27,7 @@ $(document).ready(function () {
     initCombobox('stateId', 'TruckState');
     initCombobox('typeId', 'TruckType');
     initCombobox('param2', 'TruckType');
-
-    /**
-     * 暂时初始化一个默认站点
-     */
+ 
     $('#ownerSiteId').combobox({
         panelHeight: '60px',
         valueField: 'id',
@@ -38,15 +35,22 @@ $(document).ready(function () {
         data: [window.parent.ownerSite]
     }).textbox('readonly', true);
 
-    /**
-     * 暂时初始化一个默认分拨
-     */
     $('#ownerCenterId').combobox({
         panelHeight: '60px',
         valueField: 'id',
         textField: 'name',
         data: [window.parent.ownerCenter]
     }).textbox('readonly', true);
+
+    $('#vi').combobox( {
+        panelHeight: '60px',
+        valueField: 'name',
+        textField: 'name',
+        data: [ 
+            {"name": "有"}, 
+            {"name": "无"}
+        ]
+    });
 });
 
 function create() {
@@ -202,6 +206,16 @@ function print2() {
                 <td class="label">车品牌:</td>
                 <td>
                     <input name="brand" class="easyui-textbox" required/>
+                </td>
+            </tr>
+            <tr>
+                <td class="label">VI设计:</td>
+                <td>
+                    <input name="vi" id="vi" class="easyui-textbox"/>
+                </td>
+                <td class="label">车龄:</td>
+                <td>
+                    <input name="age" class="easyui-textbox"/>
                 </td>
             </tr>
             <tr>

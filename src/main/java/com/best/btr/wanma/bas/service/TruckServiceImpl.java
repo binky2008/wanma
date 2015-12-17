@@ -1,11 +1,12 @@
-package com.best.btr.wanma.bas.service.impl;
+package com.best.btr.wanma.bas.service;
+
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.best.btr.wanma.bas.dao.TruckDao;
 import com.best.btr.wanma.bas.entity.Truck;
-import com.best.btr.wanma.bas.service.TruckService;
 import com.best.btr.wanma.bas.so.TruckSO;
 import com.jinhe.tss.framework.persistence.pagequery.PageInfo;
 import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
@@ -17,6 +18,11 @@ import com.jinhe.tss.framework.persistence.pagequery.PaginationQueryByHQL;
 public class TruckServiceImpl implements TruckService {
 
     @Autowired private TruckDao dao;
+    
+    public List<?> getListBySite(Long siteId) {
+    	String hql = " from Truck o where o.ownerSite.id = ? ";
+        return dao.getEntities(hql, siteId);
+    }
 
     public Truck getEntityById(Long id) {
         return dao.getEntity(id);

@@ -56,6 +56,10 @@ public class Truck extends AbstractEntity {
     /** 车辆状态 */
     @ManyToOne
     private Param state;
+    
+    private String vi;  // 是|否
+    
+    private Integer age; // 车龄
 
     @Override
     public Serializable getPK() {
@@ -142,4 +146,19 @@ public class Truck extends AbstractEntity {
         this.state = state;
     }
 
+	public String getVi() {
+		return vi;
+	}
+
+	public void setVi(String vi) {
+		this.vi = vi;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
 }

@@ -1,4 +1,4 @@
-package com.best.btr.wanma.bas.service.impl;
+package com.best.btr.wanma.bas.service;
 
 import java.util.Date;
 import java.util.List;
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import com.best.btr.wanma.bas.dao.EmployeeDao;
 import com.best.btr.wanma.bas.entity.Employee;
-import com.best.btr.wanma.bas.service.EmployeeService;
 import com.best.btr.wanma.bas.so.EmployeeSO;
 import com.best.btr.wanma.system.entity.Site;
 import com.best.btr.wanma.system.service.SystemService;

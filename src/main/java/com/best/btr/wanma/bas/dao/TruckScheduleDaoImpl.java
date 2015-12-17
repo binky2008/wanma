@@ -1,8 +1,7 @@
-package com.best.btr.wanma.bas.dao.impl;
+package com.best.btr.wanma.bas.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.best.btr.wanma.bas.dao.TruckScheduleDao;
 import com.best.btr.wanma.bas.entity.TruckSchedule;
 import com.jinhe.tss.framework.persistence.BaseDao;
 
