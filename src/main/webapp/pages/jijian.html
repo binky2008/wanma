@@ -26,6 +26,14 @@
 
 <script type="text/javascript">
 
+QUERY_URL_1 = BASE_DATA_URL + '698';
+QUERY_URL_2 = BASE_DATA_URL + '700';
+
+if(IS_TEST) {
+    QUERY_URL_1 = 'data/pj_query_1.json';
+    QUERY_URL_2 = 'data/pj_query_2.json';
+}
+
 var ownerSite = window.parent.ownerSite.id,
 	trucks, tsL, drivers, remainTS,
 	combinedTOs;
@@ -73,11 +81,12 @@ var FIELDS_1 = [
 	    { field : 'weight', title : '重量', width : 80 },
 	    { field : 'cubic', title : '体积', width : 80 },
 	    { field : 'amount', title : '件数', width : 80 },
+	    { field : 'num', title : '票数', width : 80 },
 	    { field : 'f8', title : '编辑', width : 100, align: "center" }
 	];
 
 function showGrid1(){    
-	var url = "/tss/to/jjpc/today"; // 'data/jijian_1.json'
+	var url = "/tss/to/jjpc/1"; // 'data/jijian_2.json'
     $.getJSON(url, {}, function(data) {
 
     	remainTS = [];
@@ -95,7 +104,7 @@ function showGrid1(){
     	combinedTOs = [];
         $.each(data, function(i, item){
             item.f8 = '<a href="javascript:void(0)" onclick="recombine('+i+')">重新选择货量</a>';
-            item.tsCode = item.ts.code;
+            item.tsCode = item.ts.serialCode;
             item.truckCode = item.truck.code;
             item.truckType = item.truck.type.text;
             item.driverName = item.driver.name;
@@ -293,7 +302,8 @@ function combine(auto) {
 		"amount": amount,
 		"cubic": Math.round(cubic),
 		"weight": Math.round(weight),
-		"tos": toList.join(",")
+		"tos": toList.join(","),
+		"tag": 1
 	}
 	if(recombineRow) {
 		params.id = recombineRow.id

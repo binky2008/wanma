@@ -19,7 +19,7 @@ import com.jinhe.tss.framework.persistence.entityaop.OperateInfo;
 import com.jinhe.tss.util.EasyUtils;
  
 /**
- * 寄件排车班次
+ * 寄件(接件)排车班次
  */
 @Entity
 @Table(name = "wm_to_jjpc")
@@ -50,6 +50,13 @@ public class JJPC extends OperateInfo {
     
     @Column(length = 4000)
     private String tos;
+    
+    @Column(length = 2, nullable = false)
+    private Integer tag;  // 1:寄件排车   2：接件排车
+    
+    public Integer getNum() {
+    	return this.getToList().length;
+    }
     
     public String[] getToList(){
     	if( EasyUtils.isNullOrEmpty(tos) ) {
@@ -132,6 +139,14 @@ public class JJPC extends OperateInfo {
 
 	public void setTos(String tos) {
 		this.tos = tos;
+	}
+
+	public Integer getTag() {
+		return tag;
+	}
+
+	public void setTag(Integer tag) {
+		this.tag = tag;
 	}
     
 }
