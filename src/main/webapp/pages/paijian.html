@@ -140,8 +140,8 @@ var FIELDS_2 = [
 
 	    { field : '货物名称', title : '货物名称', width : 80 },
 	    { field : '件数', title : '件数', width : 50 },
-	    { field : '体积', title : '体积（立方）', width : 70 },
-	    { field : '重量', title : '重量（kg）', width : 70 },
+	    { field : '体积', title : '体积(立方)', width : 75 },
+	    { field : '重量', title : '重量(kg)', width : 70 },
 	    { field : '客户名称', title : '客户名称', width : 80 },
 	    { field : '运单号', title : '运单号', width : 90 },
 
@@ -151,7 +151,7 @@ var FIELDS_2 = [
 	];
 
 function showGrid2(row){   
-	var params = {}; 
+	var params = {"site": ownerSite}; 
 	if(row) {		
 		$('#param1').combobox( {
 	        panelHeight: '60px',
@@ -207,7 +207,7 @@ function showGrid2(row){
         	var rows = [
 		        { "name": "日期", "group": "明日派件预报", "value": day },
 		        { "name": "票数", "group": "明日派件预报", "value": data.length },
-		        { "name": "件数", "group": "今日录单", "value": amount },
+		        { "name": "件数", "group": "明日派件预报", "value": amount },
 		        { "name": "实际重量", "group": "明日派件预报", "value": Math.round(weight) + " KG" },
 		        { "name": "实际体积", "group": "明日派件预报", "value": Math.round(cubic) + " 立方" }
 		    ];

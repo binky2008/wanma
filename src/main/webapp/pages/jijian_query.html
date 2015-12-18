@@ -149,17 +149,14 @@ function show(data1, data2) {
             }
         },
         onClickCell: function(index, field, value) {
-            if(field !== '运单号') return;
-            $.messager.alert({
-                title: '提示',
-                msg: '打开运单【'+value+'】的《快件跟踪查询》'
-            });
+            if(field == '运单号') {
+                var to = value;
+                window.parent.addTab("运单" + "【"+to+"】", "to_follow.html?to=" + to);
+            }           
         },
         onDblClickRow: function(index, row) {
-            $.messager.alert({
-                title: '提示',
-                msg: '打开运单【'+ row["运单号"] +'】的《快件跟踪查询》'
-            });
+            var to = row["运单号"];
+            window.parent.addTab("运单" + "【"+to+"】", "to_follow.html?to=" + to);
         },
         loadFilter : function(data) {
             $.each(data.rows, function(i, item) {                

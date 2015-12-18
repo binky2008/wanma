@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="../tools/easyui/themes/default/easyui.css">
 <link rel="stylesheet" href="../tools/easyui/themes/icon.css">
 
+<script src="../tools/tssJS/tssJS.js"></script>
+
 <script src="../tools/easyui/jquery.min.js"></script>
 <script src="../tools/easyui/jquery.easyui.min.js"></script>
 
@@ -119,18 +121,19 @@ function initMenu() {
 	});
 }
 
-function addTab(subtitle, url, icon){
+function addTab(subtitle, url, refresh){
 	if( !$('#tabs').tabs('exists',subtitle) ){
 		$('#tabs').tabs('add', {
 			title:subtitle,
 			content: createFrame(url),
-			closable: true,
-			icon:icon
+			closable: true
 		});
-	}
+	} 
 	else {
 		$('#tabs').tabs('select', subtitle);
-		// $('#refresh').click();
+		if(refresh || url.indexOf("to=") > 0) {
+			$('#refresh').click(); // 刷新页面
+		}
 	}
 	attachTabCloseEnvet();
 }
